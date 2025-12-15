@@ -1,0 +1,302 @@
+@ -0,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ورود مدیران - SMART FIT</title>
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- استایل اختصاصی -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    
+    <style>
+        .admin-login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 20px;
+        }
+        
+        .admin-login-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            width: 100%;
+            max-width: 450px;
+            border-top: 5px solid #2a087c;
+        }
+        
+        .admin-login-header {
+            background: linear-gradient(135deg, #2a087c 0%, #1a054d 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .admin-login-header::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: #4cc9f0;
+            border-radius: 2px;
+        }
+        
+        .admin-login-header h2 {
+            margin: 0;
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+        
+        .admin-login-header p {
+            opacity: 0.9;
+            margin-top: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .admin-login-body {
+            padding: 40px;
+        }
+        
+        .admin-badge {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: #f94144;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .security-note {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            border-right: 4px solid #2a087c;
+            font-size: 0.85rem;
+        }
+        
+        .admin-features {
+            display: flex;
+            justify-content: space-around;
+            margin: 25px 0;
+            text-align: center;
+        }
+        
+        .admin-feature {
+            padding: 10px;
+        }
+        
+        .admin-feature i {
+            font-size: 1.5rem;
+            color: #2a087c;
+            margin-bottom: 8px;
+        }
+        
+        .admin-feature div {
+            font-size: 0.8rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-login-container">
+        <div class="admin-login-card">
+            <div class="admin-login-header">
+                <div class="admin-badge">مدیریت سطح بالا</div>
+                <h2><i class="fas fa-user-shield me-2"></i>پنل مدیریت سیستم</h2>
+                <p>دسترسی محدود به مدیران ارشد</p>
+            </div>
+            
+            <div class="admin-login-body">
+                <div class="security-note">
+                    <i class="fas fa-exclamation-triangle me-2 text-warning"></i>
+                    این صفحه تنها برای مدیران سیستم قابل دسترسی است.
+                </div>
+                
+                <form id="admin-login-form">
+                    <!-- نام کاربری مدیر -->
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="admin-username" 
+                               placeholder="نام کاربری" required>
+                        <label for="admin-username">
+                            <i class="fas fa-user-cog me-2"></i>نام کاربری مدیر
+                        </label>
+                    </div>
+                    
+                    <!-- رمز عبور مدیر -->
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="admin-password" 
+                               placeholder="رمز عبور" required>
+                        <label for="admin-password">
+                            <i class="fas fa-key me-2"></i>رمز عبور مدیر
+                        </label>
+                    </div>
+                    
+                    <!-- کلید امنیتی -->
+                    <div class="form-floating mb-4">
+                        <input type="text" class="form-control" id="admin-security-key" 
+                               placeholder="کلید امنیتی" required>
+                        <label for="admin-security-key">
+                            <i class="fas fa-fingerprint me-2"></i>کلید امنیتی
+                        </label>
+                        <small class="text-muted mt-1 d-block">
+                            کلید ۱۲ رقمی اختصاصی مدیر
+                        </small>
+                    </div>
+                    
+                    <!-- ویژگی‌های پنل مدیریت -->
+                    <div class="admin-features">
+                        <div class="admin-feature">
+                            <i class="fas fa-users"></i>
+                            <div>مدیریت کاربران</div>
+                        </div>
+                        <div class="admin-feature">
+                            <i class="fas fa-chart-bar"></i>
+                            <div>آمار سیستم</div>
+                        </div>
+                        <div class="admin-feature">
+                            <i class="fas fa-cog"></i>
+                            <div>تنظیمات</div>
+                        </div>
+                    </div>
+                    
+                    <!-- دکمه ورود -->
+                    <button type="submit" class="btn btn-dark w-100 py-3 fw-bold" 
+                            style="background: linear-gradient(135deg, #2a087c 0%, #1a054d 100%);">
+                        <i class="fas fa-sign-in-alt me-2"></i>ورود به پنل مدیریت
+                    </button>
+                </form>
+                
+                <!-- لینک بازگشت -->
+                <div class="text-center mt-4">
+                    <a href="login.html" class="text-decoration-none">
+                        <i class="fas fa-arrow-right me-1"></i>
+                        بازگشت به ورود کاربران عادی
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- اسکریپت‌ها -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/script.js"></script>
+    
+    <script>
+        // اعتبارسنجی ورود ادمین
+        document.getElementById('admin-login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('admin-username').value;
+            const password = document.getElementById('admin-password').value;
+            const securityKey = document.getElementById('admin-security-key').value;
+            
+            // اطلاعات مدیر پیش‌فرض
+            const adminCredentials = {
+                username: 'admin',
+                password: 'Admin@123',
+                securityKey: 'SMART-FIT-2024'
+            };
+            
+            // اعتبارسنجی
+            if (username === adminCredentials.username && 
+                password === adminCredentials.password && 
+                securityKey === adminCredentials.securityKey) {
+                
+                // نمایش موفقیت
+                const btn = this.querySelector('button');
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>در حال ورود...';
+                btn.disabled = true;
+                
+                // ذخیره session
+                localStorage.setItem('smartfit_admin', 'true');
+                localStorage.setItem('smartfit_admin_name', 'مدیر ارشد سیستم');
+                
+                // هدایت به داشبورد ادمین
+                setTimeout(() => {
+                    window.location.href = 'admin-dashboard.html';
+                }, 1500);
+                
+            } else {
+                alert('اطلاعات ورود نادرست است. لطفاً مجدداً تلاش کنید.');
+                
+                // هایلایت فیلدهای اشتباه
+                document.querySelectorAll('.form-control').forEach(input => {
+                    input.classList.add('is-invalid');
+                });
+                
+                setTimeout(() => {
+                    document.querySelectorAll('.form-control').forEach(input => {
+                        input.classList.remove('is-invalid');
+                    });
+                }, 2000);
+            }
+        });
+        
+        // اعتبارسنجی بلادرنگ
+        document.querySelectorAll('#admin-login-form input').forEach(input => {
+            input.addEventListener('input', function() {
+                if (this.value) {
+                    this.classList.remove('is-invalid');
+                    this.classList.add('is-valid');
+                } else {
+                    this.classList.remove('is-valid');
+                }
+            });
+        });
+    </script>
+    <script>
+// راه‌اندازی کپچا
+document.addEventListener('DOMContentLoaded', function() {
+    // اگر تابع initializeCaptcha وجود داره
+    if (typeof initializeCaptcha === 'function') {
+        initializeCaptcha();
+    } else {
+        // راه‌اندازی ساده
+        generateSimpleCaptcha();
+    }
+});
+
+function generateSimpleCaptcha() {
+    const num1 = Math.floor(Math.random() * 10) + 1;
+    const num2 = Math.floor(Math.random() * 10) + 1;
+    const answer = num1 + num2;
+    
+    const questionEl = document.getElementById('captcha-question');
+    if (questionEl) {
+        questionEl.innerHTML = `${num1} + ${num2} = ?`;
+    }
+    
+    window.currentCaptchaAnswer = answer;
+    
+    // دکمه تازه‌سازی
+    const refreshBtn = document.getElementById('refresh-captcha');
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', function() {
+            generateSimpleCaptcha();
+        });
+    }
+}
+</script>
+</body>
+</html>

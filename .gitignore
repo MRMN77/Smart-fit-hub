@@ -1,0 +1,15 @@
+# IDE
+.phcode.json
+.brackets.json
+.vscode/
+
+# System
+.DS_Store
+Thumbs.db
+
+# Dependencies
+node_modules/
+bower_components/
+
+# Logs
+*.log

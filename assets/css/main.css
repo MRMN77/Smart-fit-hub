@@ -1,0 +1,430 @@
+/* SMART FIT - استایل‌های اصلی */
+
+/* تنظیمات پایه */
+* {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body {
+   * {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+    background-color: #f5f7fa;
+    color: #333;
+}
+
+/* هدر و ناوبری */
+.navbar {
+    background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+    -webkit-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: white !important;
+}
+
+/* کارت‌ها */
+.card {
+    border: none;
+    border-radius: 15px;
+    -webkit-box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+/* استایل‌های اصلاحی صفحه اصلی */
+.gallery-container {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.gallery-item {
+    border: 3px solid white;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.gallery-caption {
+    background: linear-gradient(transparent, rgba(67, 97, 238, 0.9));
+    font-size: 1rem;
+    padding: 12px;
+}
+
+.motivation-card {
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-left: 5px solid #4361ee;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* تبلیغ اپ */
+.phone-mockup svg path {
+    fill: white;
+    stroke: #dee2e6;
+}
+
+.download-btn {
+    background: white;
+    border: 2px solid #dee2e6;
+    transition: all 0.3s;
+}
+
+.download-btn:hover {
+    background: #f8f9fa;
+    border-color: #4361ee;
+    transform: translateY(-3px);
+}
+
+/* فوتر مرتب‌تر */
+.footer-link {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-link:hover {
+    color: white;
+    text-decoration: underline;
+}
+.card:hover {
+    -webkit-transform: translateY(-5px);
+    transform: translateY(-5px);
+    -webkit-box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* دکمه‌ها */
+.btn-primary {
+    background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 25px;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #3a0ca3 0%, #2a087c 100%);
+    -webkit-transform: scale(1.05);
+    transform: scale(1.05);
+}
+
+/* فرم‌ها */
+.form-control {
+    border-radius: 8px;
+    border: 2px solid #e0e0e0;
+    padding: 12px 15px;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.form-control:focus {
+    border-color: #4361ee;
+    -webkit-box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
+}
+
+/* فوتر */
+.footer {
+    background-color: #2a087c;
+    color: white;
+    padding: 30px 0;
+    margin-top: 50px;
+}
+/* چت بات هوشمند */
+.smartfit-chatbot {
+    position: fixed;
+    bottom: 100px;
+    left: 30px;
+    width: 350px;
+    background: white;
+    border-radius: 15px;
+    -webkit-box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: none;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+
+.smartfit-chatbot.open {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.chatbot-header {
+    background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+    color: white;
+    padding: 15px 20px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.chatbot-title {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+}
+
+.chatbot-title i {
+    font-size: 1.2rem;
+}
+
+.chatbot-close {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 5px;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-transition: background 0.3s;
+    transition: background 0.3s;
+}
+
+.chatbot-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.chatbot-messages {
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    padding: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+    direction: rtl;
+}
+
+.message {
+    margin-bottom: 15px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    max-width: 80%;
+}
+
+.message.user {
+    -ms-flex-item-align: start;
+    align-self: flex-start;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+}
+
+.message.bot {
+    -ms-flex-item-align: end;
+    align-self: flex-end;
+    -webkit-box-align: end;
+    -ms-flex-align: end;
+    align-items: flex-end;
+}
+
+.message-content {
+    padding: 12px 16px;
+    border-radius: 18px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.message.user .message-content {
+    background: #4361ee;
+    color: white;
+    border-bottom-right-radius: 5px;
+}
+
+.message.bot .message-content {
+    background: #f0f2f5;
+    color: #333;
+    border-bottom-left-radius: 5px;
+}
+
+.message-time {
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: 5px;
+}
+
+.chatbot-input {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 15px 20px;
+    border-top: 1px solid #e0e0e0;
+    background: #f8f9fa;
+}
+
+.chatbot-input-field {
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 25px;
+    font-size: 0.95rem;
+    outline: none;
+    -webkit-transition: border 0.3s;
+    transition: border 0.3s;
+    font-family: 'Vazirmatn', sans-serif;
+}
+
+.chatbot-input-field:focus {
+    border-color: #4361ee;
+}
+
+.chatbot-send {
+    background: #4361ee;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    margin-right: 10px;
+    cursor: pointer;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.chatbot-send:hover {
+    background: #3a0ca3;
+    -webkit-transform: scale(1.05);
+    transform: scale(1.05);
+}
+
+.chatbot-toggle-btn {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    -webkit-box-shadow: 0 8px 25px rgba(67, 97, 238, 0.3);
+    box-shadow: 0 8px 25px rgba(67, 97, 238, 0.3);
+    z-index: 999;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.chatbot-toggle-btn:hover {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+    -webkit-box-shadow: 0 12px 35px rgba(67, 97, 238, 0.4);
+    box-shadow: 0 12px 35px rgba(67, 97, 238, 0.4);
+}
+
+.chatbot-notification {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #f94144;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-animation: pulse 2s infinite;
+    animation: pulse 2s infinite;
+}
+
+@-webkit-keyframes pulse {
+    0% { -webkit-transform: scale(1); transform: scale(1); }
+    50% { -webkit-transform: scale(1.1); transform: scale(1.1); }
+    100% { -webkit-transform: scale(1); transform: scale(1); }
+}
+
+@keyframes pulse {
+    0% { -webkit-transform: scale(1); transform: scale(1); }
+    50% { -webkit-transform: scale(1.1); transform: scale(1.1); }
+    100% { -webkit-transform: scale(1); transform: scale(1); }
+}
+
+/* ریسپانسیو چت بات */
+@media (max-width: 768px) {
+    .smartfit-chatbot {
+        width: calc(100% - 40px);
+        left: 20px;
+        right: 20px;
+        bottom: 80px;
+    }
+    
+    .chatbot-toggle-btn {
+        left: 20px;
+        bottom: 20px;
+    }
+}

@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ثبت‌نام - SMART FIT</title>
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- استایل اختصاصی -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    
+    <style>
+        .register-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+        }
+        
+        .register-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .register-header {
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .register-header h2 {
+            margin: 0;
+            font-weight: 700;
+        }
+        
+        .register-header p {
+            opacity: 0.9;
+            margin-top: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .register-body {
+            padding: 40px;
+        }
+        
+        .form-floating > label {
+            right: 0 !important;
+            left: auto !important;
+            padding-right: 0.75rem !important;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+        
+        .form-control {
+            border-radius: 10px;
+            padding: 16px 20px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: #4361ee;
+            box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+        }
+        
+        .phone-verification {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border-right: 4px solid #4361ee;
+        }
+        
+        .verification-code-container {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .code-inputs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .code-input {
+            width: 45px;
+            height: 55px;
+            font-size: 1.5rem;
+            text-align: center;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .code-input:focus {
+            border-color: #4361ee;
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+            outline: none;
+            transform: scale(1.05);
+        }
+        
+        .timer-badge {
+            font-family: monospace;
+            font-size: 1.1rem;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        .strength-meter {
+            height: 5px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s, background 0.3s;
+            border-radius: 3px;
+        }
+        
+        .requirements {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        .requirement {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin: 3px 0;
+        }
+        
+        .requirement i {
+            font-size: 0.8rem;
+        }
+        
+        .requirement.met {
+            color: #4bb543;
+        }
+        
+        .requirement.unmet {
+            color: #999;
+        }
+        
+        .register-footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        .register-footer a {
+            color: #4361ee;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .register-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-card">
+            <div class="register-header">
+                <h2><i class="fas fa-user-plus me-2"></i>ایجاد حساب جدید</h2>
+                <p>همین حالا به خانواده SMART FIT بپیوندید</p>
+            </div>
+            
+            <div class="register-body">
+                <form id="register-form" onsubmit="return validateRegisterForm(event)">
+                    <!-- نام کامل -->
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="register-name" 
+                               placeholder="نام و نام خانوادگی" required>
+                        <label for="register-name">
+                            <i class="fas fa-user me-2"></i>نام و نام خانوادگی
+                        </label>
+                    </div>
+                    
+                    <!-- ایمیل -->
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="register-email" 
+                               placeholder="name@example.com" required>
+                        <label for="register-email">
+                            <i class="fas fa-envelope me-2"></i>آدرس ایمیل
+                        </label>
+                    </div>
+                    
+                    <!-- شماره تلفن -->
+                    <div class="phone-verification">
+                        <h6 class="mb-3">
+                            <i class="fas fa-mobile-alt me-2"></i>
+                            تأیید شماره تلفن همراه
+                        </h6>
+                        
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">+۹۸</span>
+                            <input type="tel" class="form-control" id="phone" 
+                                   placeholder="9123456789" maxlength="10" required>
+                            <button class="btn btn-outline-primary" type="button" 
+                                    id="send-verification">
+                                <i class="fas fa-paper-plane me-1"></i>ارسال کد
+                            </button>
+                        </div>
+                        
+                        <div class="verification-code-container" id="verification-code-section">
+                            <p class="mb-2">کد ۶ رقمی ارسال شده را وارد کنید:</p>
+                            
+                            <div class="code-inputs">
+                                <input type="text" maxlength="1" class="code-input" data-index="1">
+                                <input type="text" maxlength="1" class="code-input" data-index="2">
+                                <input type="text" maxlength="1" class="code-input" data-index="3">
+                                <input type="text" maxlength="1" class="code-input" data-index="4">
+                                <input type="text" maxlength="1" class="code-input" data-index="5">
+                                <input type="text" maxlength="1" class="code-input" data-index="6">
+                            </div>
+                            
+                            <input type="hidden" id="verification-code">
+                            
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="text-muted small">
+                                    زمان باقی‌مانده: 
+                                    <span class="badge bg-warning timer-badge" id="verification-timer">۲:۰۰</span>
+                                </span>
+                                <button type="button" class="btn btn-link text-decoration-none p-0" 
+                                        id="resend-code" disabled>
+                                    <i class="fas fa-redo me-1"></i>ارسال مجدد
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- رمز عبور -->
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="register-password" 
+                               placeholder="رمز عبور" required minlength="6">
+                        <label for="register-password">
+                            <i class="fas fa-lock me-2"></i>رمز عبور
+                        </label>
+                        
+                        <!-- قدرت رمز عبور -->
+                        <div class="strength-meter">
+                            <div class="strength-fill" id="password-strength"></div>
+                        </div>
+                        
+                        <!-- شرایط رمز عبور -->
+                        <div class="requirements">
+                            <div class="requirement unmet" id="req-length">
+                                <i class="far fa-circle"></i>
+                                حداقل ۶ کاراکتر
+                            </div>
+                            <div class="requirement unmet" id="req-upper">
+                                <i class="far fa-circle"></i>
+                                شامل حرف بزرگ
+                            </div>
+                            <div class="requirement unmet" id="req-number">
+                                <i class="far fa-circle"></i>
+                                شامل عدد
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- تکرار رمز عبور -->
+                    <div class="form-floating mb-4">
+                        <input type="password" class="form-control" id="register-confirm-password" 
+                               placeholder="تکرار رمز عبور" required>
+                        <label for="register-confirm-password">
+                            <i class="fas fa-lock me-2"></i>تکرار رمز عبور
+                        </label>
+                        <div class="text-muted small mt-1" id="password-match"></div>
+                    </div>
+                    
+                    <!-- قوانین -->
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="checkbox" id="accept-terms" required>
+                        <label class="form-check-label small" for="accept-terms">
+                            <a href="#" class="text-primary">قوانین و شرایط</a> استفاده از سرویس SMART FIT را می‌پذیرم
+                        </label>
+                    </div>
+                    
+                    <!-- دکمه ثبت‌نام -->
+                    <button type="submit" class="btn btn-primary w-100 py-3 fw-bold" id="register-btn">
+                        <i class="fas fa-user-plus me-2"></i>ایجاد حساب کاربری
+                    </button>
+                </form>
+                
+                <!-- ورود -->
+                <div class="register-footer">
+                    قبلاً حساب دارید؟ 
+                    <a href="login.html">ورود به حساب کاربری</a>
+                    <div class="mt-2">
+                        <a href="../index.html" class="text-muted">
+                            <i class="fas fa-arrow-right me-1"></i>بازگشت به صفحه اصلی
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- اسکریپت‌های ضروری -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/script.js"></script>
+    <!-- چت بات هوشمند -->
+    <script src="../assets/js/chatbot.js"></script>
+    
+    <script>
+        // راه‌اندازی سیستم ثبت‌نام
+        document.addEventListener('DOMContentLoaded', function() {
+            // اگر تابع initializeRegistration وجود داره، فراخوانی کن
+            if (typeof initializeRegistration === 'function') {
+                initializeRegistration();
+            }
+            
+            // قدرت رمز عبور
+            const passwordInput = document.getElementById('register-password');
+            const strengthFill = document.getElementById('password-strength');
+            const requirements = {
+                length: document.getElementById('req-length'),
+                upper: document.getElementById('req-upper'),
+                number: document.getElementById('req-number')
+            };
+            
+            passwordInput.addEventListener('input', function() {
+                const password = this.value;
+                let strength = 0;
+                
+                // بررسی شرایط
+                const hasLength = password.length >= 6;
+                const hasUpper = /[A-Z]/.test(password);
+                const hasNumber = /[0-9]/.test(password);
+                
+                // آپدیت نمایش شرایط
+                updateRequirement(requirements.length, hasLength);
+                updateRequirement(requirements.upper, hasUpper);
+                updateRequirement(requirements.number, hasNumber);
+                
+                // محاسبه قدرت
+                if (hasLength) strength += 33;
+                if (hasUpper) strength += 33;
+                if (hasNumber) strength += 34;
+                
+                // آپدیت نوار قدرت
+                strengthFill.style.width = strength + '%';
+                
+                if (strength < 33) {
+                    strengthFill.style.backgroundColor = '#f94144';
+                } else if (strength < 66) {
+                    strengthFill.style.backgroundColor = '#f9c74f';
+                } else {
+                    strengthFill.style.backgroundColor = '#4bb543';
+                }
+            });
+            
+            // تطابق رمز عبور
+            const confirmInput = document.getElementById('register-confirm-password');
+            const matchText = document.getElementById('password-match');
+            
+            confirmInput.addEventListener('input', function() {
+                const password = passwordInput.value;
+                const confirm = this.value;
+                
+                if (confirm.length === 0) {
+                    matchText.textContent = '';
+                    matchText.style.color = '';
+                } else if (password === confirm) {
+                    matchText.textContent = '✓ رمز عبور مطابقت دارد';
+                    matchText.style.color = '#4bb543';
+                } else {
+                    matchText.textContent = '✗ رمز عبور مطابقت ندارد';
+                    matchText.style.color = '#f94144';
+                }
+            });
+            
+            // ورود خودکار کد تأیید
+            const codeInputs = document.querySelectorAll('.code-input');
+            const hiddenCodeInput = document.getElementById('verification-code');
+            
+            codeInputs.forEach((input, index) => {
+                input.addEventListener('input', (e) => {
+                    if (e.target.value.length === 1) {
+                        if (index < codeInputs.length - 1) {
+                            codeInputs[index + 1].focus();
+                        }
+                        updateHiddenCode();
+                    }
+                });
+                
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                        codeInputs[index - 1].focus();
+                    }
+                });
+                
+                input.addEventListener('keypress', (e) => {
+                    if (!/[0-9]/.test(e.key)) {
+                        e.preventDefault();
+                    }
+                });
+            });
+            
+            function updateHiddenCode() {
+                const code = Array.from(codeInputs).map(input => input.value).join('');
+                hiddenCodeInput.value = code;
+            }
+            
+            function updateRequirement(element, condition) {
+                if (condition) {
+                    element.classList.remove('unmet');
+                    element.classList.add('met');
+                    element.querySelector('i').className = 'fas fa-check-circle';
+                } else {
+                    element.classList.remove('met');
+                    element.classList.add('unmet');
+                    element.querySelector('i').className = 'far fa-circle';
+                }
+            }
+            
+            // تایمر ارسال مجدد کد
+            let resendTimer = 120; // ۲ دقیقه
+            const timerElement = document.getElementById('verification-timer');
+            const resendBtn = document.getElementById('resend-code');
+            
+            function updateTimer() {
+                const minutes = Math.floor(resendTimer / 60);
+                const seconds = resendTimer % 60;
+                
+                timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (resendTimer <= 30) {
+                    timerElement.className = 'badge bg-danger timer-badge';
+                }
+                
+                if (resendTimer <= 0) {
+                    resendBtn.disabled = false;
+                    timerElement.textContent = 'پایان';
+                    timerElement.className = 'badge bg-secondary timer-badge';
+                } else {
+                    resendTimer--;
+                    setTimeout(updateTimer, 1000);
+                }
+            }
+            
+            // دکمه ارسال کد
+            document.getElementById('send-verification').addEventListener('click', function() {
+                const phone = document.getElementById('phone').value;
+                
+                if (!phone || phone.length !== 10) {
+                    alert('لطفاً شماره تلفن معتبر وارد کنید (۱۰ رقم)');
+                    return;
+                }
+                
+                // نمایش بخش کد
+                document.getElementById('verification-code-section').style.display = 'block';
+                
+                // شروع تایمر
+                resendTimer = 120;
+                updateTimer();
+                
+                // غیرفعال کردن دکمه ارسال
+                this.disabled = true;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>ارسال شد';
+                
+                // شبیه‌سازی ارسال کد
+                setTimeout(() => {
+                    const fakeCode = Math.floor(100000 + Math.random() * 900000);
+                    console.log('کد تأیید (شبیه‌سازی):', fakeCode);
+                    alert(`کد تأیید ${fakeCode} به شماره ۰۹${phone} ارسال شد (شبیه‌سازی)`);
+                }, 1500);
+            });
+            
+            // ارسال مجدد کد
+            resendBtn.addEventListener('click', function() {
+                if (!this.disabled) {
+                    resendTimer = 120;
+                    updateTimer();
+                    this.disabled = true;
+                    alert('کد جدید ارسال شد');
+                }
+            });
+        });
+        <!-- انتخاب نقش -->
+<div class="mb-4">
+    <label class="form-label fw-bold">
+        <i class="fas fa-user-tag me-2"></i>نقش کاربری
+    </label>
+    <div class="row g-3">
+        <div class="col-6">
+            <div class="form-check card-option">
+                <input class="form-check-input" type="radio" name="user-role" 
+                       id="role-athlete" value="athlete" checked>
+                <label class="form-check-label w-100 p-3 text-center" for="role-athlete">
+                    <i class="fas fa-running fa-2x mb-2 text-primary"></i>
+                    <div class="fw-bold">ورزشکار</div>
+                    <small class="text-muted">استفاده از خدمات ورزشی</small>
+                </label>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-check card-option">
+                <input class="form-check-input" type="radio" name="user-role" 
+                       id="role-coach" value="coach">
+                <label class="form-check-label w-100 p-3 text-center" for="role-coach">
+                    <i class="fas fa-user-tie fa-2x mb-2 text-success"></i>
+                    <div class="fw-bold">مربی</div>
+                    <small class="text-muted">ارائه برنامه ورزشی</small>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+    </script>
+    
+</body>
+</html>

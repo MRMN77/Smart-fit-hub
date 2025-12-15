@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>داشبورد مدیریت - SMART FIT</title>
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- استایل اختصاصی -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    
+    <style>
+        .admin-dashboard {
+            padding: 20px;
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+        
+        .admin-header {
+            background: linear-gradient(135deg, #2a087c 0%, #1a054d 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(42, 8, 124, 0.2);
+        }
+        
+        .admin-badge {
+            background: #f94144;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        
+        .stat-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+        
+        .user-table-container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+        
+        .action-buttons .btn {
+            padding: 6px 15px;
+            font-size: 0.85rem;
+            border-radius: 8px;
+        }
+        
+        .system-health {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+        
+        .health-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .health-item:last-child {
+            border-bottom: none;
+        }
+        
+        .health-status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+        
+        .status-good {
+            background: rgba(75, 181, 67, 0.15);
+            color: #4bb543;
+        }
+        
+        .status-warning {
+            background: rgba(249, 199, 79, 0.15);
+            color: #f9c74f;
+        }
+        
+        .status-danger {
+            background: rgba(249, 65, 68, 0.15);
+            color: #f94144;
+        }
+        
+        .log-entry {
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-right: 4px solid #2a087c;
+            font-size: 0.9rem;
+        }
+        
+        .log-time {
+            color: #666;
+            font-size: 0.8rem;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <!-- ناوبری ادمین -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, #2a087c 0%, #1a054d 100%);">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="fas fa-user-shield me-2"></i>
+                پنل مدیریت سیستم SMART FIT
+            </a>
+            <div class="navbar-nav ms-auto">
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                        <div class="me-2">
+                            <strong>مدیر ارشد</strong>
+                            <small class="d-block opacity-75">admin@smartfit.ir</small>
+                        </div>
+                        <div class="admin-avatar">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">
+                            <i class="fas fa-cog me-2"></i>تنظیمات سیستم
+                        </a></li>
+                        <li><a class="dropdown-item" href="#">
+                            <i class="fas fa-user-cog me-2"></i>پروفایل مدیر
+                        </a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="login.html">
+                            <i class="fas fa-sign-out-alt me-2"></i>خروج از سیستم
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="admin-dashboard container-fluid">
+        <!-- هدر ادمین -->
+        <div class="admin-header">
+            <div class="admin-badge">
+                <i class="fas fa-shield-alt me-2"></i>دسترسی سطح مدیریت
+            </div>
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="fw-bold mb-3">
+                        <i class="fas fa-tachometer-alt me-3"></i>
+                        داشبورد مدیریت مرکزی
+                    </h1>
+                    <p class="opacity-90 mb-0">
+                        نظارت کامل بر سیستم، کاربران، امنیت و عملکرد SMART FIT
+                    </p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <div class="text-white-50">
+                        <small>آخرین بروزرسانی:</small>
+                        <div id="last-update">لحظاتی پیش</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- آمار کلی -->
+        <div class="row mb-4">
+            <div class="col-xl-3 col-md-6">
+                <div class="stat-card">
+                    <div class="card-body">
+                        <div class="stat-icon" style="background: rgba(67, 97, 238, 0.15); color: #4361ee;">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h2 class="mb-2" id="total-users">۲,۸۴۷</h2>
+                        <p class="text-muted mb-2">کاربران ثبت‌نام‌شده</p>
+                        <div class="d-flex justify-content-between">
+                            <small class="text-success">
+                                <i class="fas fa-arrow-up me-1"></i>۱۲٫۵٪ افزایش
+                            </small>
+                            <small class="text-muted">امروز: +۳۴</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-md-6">
+                <div class="stat-card">
+                    <div class="card-body">
+                        <div class="stat-icon" style="background: rgba(75, 181, 67, 0.15); color: #4bb543;">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <h2 class="mb-2" id="total-coaches">۴۸</h2>
+                        <p class="text-muted mb-2">مربیان فعال</p>
+                        <div class="d-flex justify-content-between">
+                            <small class="text-success">
+                                <i class="fas fa-arrow-up me-1"></i>۵٫۲٪ افزایش
+                            </small>
+                            <small class="text-muted">امروز: +۲</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-md-6">
+                <div class="stat-card">
+                    <div class="card-body">
+                        <div class="stat-icon" style="background: rgba(249, 199, 79, 0.15); color: #f9c74f;">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <h2 class="mb-2" id="active-workouts">۱۲,۵۴۷</h2>
+                        <p class="text-muted mb-2">جلسه تمرین فعال</p>
+                        <div class="d-flex justify-content-between">
+                            <small class="text-success">
+                                <i class="fas fa-arrow-up me-1"></i>۸٫۷٪ افزایش
+                            </small>
+                            <small class="text-muted">امروز: +۲۳۴</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-md-6">
+                <div class="stat-card">
+                    <div class="card-body">
+                        <div class="stat-icon" style="background: rgba(249, 65, 68, 0.15); color: #f94144;">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <h2 class="mb-2">۹۹٫۸٪</h2>
+                        <p class="text-muted mb-2">آپ‌تایم سیستم</p>
+                        <div class="d-flex justify-content-between">
+                            <small class="text-success">
+                                <i class="fas fa-check-circle me-1"></i>پایدار
+                            </small>
+                            <small class="text-muted">۳۰ روز گذشته</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- نمودارها و مدیریت کاربران -->
+        <div class="row mb-4">
+            <div class="col-lg-8">
+                <div class="user-table-container">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="mb-0">
+                            <i class="fas fa-user-cog me-2"></i>
+                            مدیریت کاربران
+                        </h5>
+                        <div>
+                            <button class="btn btn-primary me-2">
+                                <i class="fas fa-plus me-1"></i>کاربر جدید
+                            </button>
+                            <button class="btn btn-outline-secondary">
+                                <i class="fas fa-download me-1"></i>خروجی گزارش
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="users-table">
+                            <thead>
+                                <tr>
+                                    <th>نام کاربر</th>
+                                    <th>ایمیل</th>
+                                    <th>نقش</th>
+                                    <th>تاریخ عضویت</th>
+                                    <th>وضعیت</th>
+                                    <th>عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-list">
+                                <!-- کاربران به صورت داینامیک لود می‌شن -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <small class="text-muted">
+                            نمایش ۱۰ مورد از ۲,۸۴۷ کاربر
+                        </small>
+                        <nav>
+                            <ul class="pagination pagination-sm mb-0">
+                                <li class="page-item disabled"><a class="page-link" href="#">قبلی</a></li>
+                                <li class="page-item active"><a class="page-link" href="#">۱</a></li>
+                                <li class="page-item"><a class="page-link" href="#">۲</a></li>
+                                <li class="page-item"><a class="page-link" href="#">۳</a></li>
+                                <li class="page-item"><a class="page-link" href="#">بعدی</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="system-health">
+                    <h5 class="mb-4">
+                        <i class="fas fa-heartbeat me-2 text-danger"></i>
+                        سلامت سیستم
+                    </h5>
+                    
+                    <div class="health-item">
+                        <div>
+                            <div class="fw-bold">سرور برنامه</div>
+                            <small class="text-muted">API و منطق کسب‌وکار</small>
+                        </div>
+                        <span class="health-status status-good">
+                            <i class="fas fa-check-circle me-1"></i>عالی
+                        </span>
+                    </div>
+                    
+                    <div class="health-item">
+                        <div>
+                            <div class="fw-bold">پایگاه داده</div>
+                            <small class="text-muted">MySQL - پردازش کوئری‌ها</small>
+                        </div>
+                        <span class="health-status status-good">
+                            <i class="fas fa-check-circle me-1"></i>پایدار
+                        </span>
+                    </div>
+                    
+                    <div class="health-item">
+                        <div>
+                            <div class="fw-bold">فضای ذخیره‌سازی</div>
+                            <small class="text-muted">۸۷٪ استفاده شده</small>
+                        </div>
+                        <span class="health-status status-warning">
+                            <i class="fas fa-exclamation-triangle me-1"></i>هشدار
+                        </span>
+                    </div>
+                    
+                    <div class="health-item">
+                        <div>
+                            <div class="fw-bold">امنیت سیستم</div>
+                            <small class="text-muted">فایروال و لاگین</small>
+                        </div>
+                        <span class="health-status status-good">
+                            <i class="fas fa-shield-alt me-1"></i>فعال
+                        </span>
+                    </div>
+                    
+                    <div class="health-item">
+                        <div>
+                            <div class="fw-bold">پهنای باند</div>
+                            <small class="text-muted">مصرف ماهانه</small>
+                        </div>
+                        <span class="health-status status-good">
+                            <i class="fas fa-chart-line me-1"></i>نرمال
+                        </span>
+                    </div>
+                    
+                    <button class="btn btn-outline-primary w-100 mt-4">
+                        <i class="fas fa-redo me-1"></i>بررسی سلامت کامل
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- نمودارها و لاگ‌ها -->
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">
+                            <i class="fas fa-chart-bar me-2"></i>
+                            آمار ثبت‌نام کاربران
+                        </h5>
+                        <canvas id="registrations-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">
+                            <i class="fas fa-clipboard-list me-2"></i>
+                            لاگ فعالیت‌های اخیر
+                        </h5>
+                        <div id="activity-logs">
+                            <!-- لاگ‌های سیستم -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- فوتر ادمین -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6 class="fw-bold">
+                        <i class="fas fa-user-shield me-2"></i>
+                        SMART FIT Admin Panel
+                    </h6>
+                    <small class="opacity-75">
+                        نسخه ۲.۴.۱ | آخرین بروزرسانی: دی ۱۴۰۲
+                    </small>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <small class="opacity-75">
+                        <i class="fas fa-lock me-1"></i>
+                        تمامی فعالیت‌ها لاگ و مانیتور می‌شوند
+                    </small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- اسکریپت‌ها -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/script.js"></script>
+    <!-- چت بات هوشمند -->
+    <script src="../assets/js/chatbot.js"></script>
+    
+    <script>
+        // داده‌های نمونه برای ادمین
+        const adminData = {
+            users: [
+                { id: 1, name: 'علی محمدی', email: 'ali@example.com', role: 'ورزشکار', joinDate: '۱۴۰۲/۱۰/۱۵', status: 'فعال' },
+                { id: 2, name: 'مریم کریمی', email: 'maryam@example.com', role: 'ورزشکار', joinDate: '۱۴۰۲/۱۰/۱۰', status: 'فعال' },
+                { id: 3, name: 'رضا احمدی', email: 'reza@example.com', role: 'مربی', joinDate: '۱۴۰۲/۰۹/۲۰', status: 'فعال' },
+                { id: 4, name: 'سارا حسینی', email: 'sara@example.com', role: 'ورزشکار', joinDate: '۱۴۰۲/۰۹/۱۵', status: 'غیرفعال' },
+                { id: 5, name: 'امید جعفری', email: 'omid@example.com', role: 'ورزشکار', joinDate: '۱۴۰۲/۰۹/۰۵', status: 'فعال' },
+                { id: 6, name: 'نازنین رضایی', email: 'nazanin@example.com', role: 'ورزشکار', joinDate: '۱۴۰۲/۰۸/۲۸', status: 'فعال' },
+                { id: 7, name: 'محمد رضوی', email: 'mohammad@example.com', role: 'مربی', joinDate: '۱۴۰۲/۰۸/۲۰', status: 'فعال' },
+                { id: 8, name: 'فاطمه امینی', email: 'fatemeh@example.com', role: 'ورزشکار', joinDate: '۱۴۰۲/۰۸/۱۵', status: 'معلق' },
+                { id: 9, name: 'حسین نوروزی', email: 'hossein@example.com', role: 'ورزشکار', joinDate: '۱۴۰۲/۰۸/۱۰', status: 'فعال' },
+                { id: 10, name: 'لیلا محمدی', email: 'leila@example.com', role: 'ورزشکار', joinDate: '۱۴۰۲/۰۸/۰۵', status: 'فعال' }
+            ],
+            activityLogs: [
+                { time: '۱۰:۴۵:۲۳', action: 'ورود موفق مدیر', user: 'admin', ip: '192.168.1.100' },
+                { time: '۱۰:۳۰:۱۵', action: 'ایجاد کاربر جدید', user: 'admin', ip: '192.168.1.100' },
+                { time: '۱۰:۱۵:۴۲', action: 'به‌روزرسانی برنامه ورزشی', user: 'مربی رضا', ip: '192.168.1.105' },
+                { time: '۰۹:۵۵:۱۸', action: 'ثبت‌نام کاربر جدید', user: 'سیستم', ip: '85.185.25.34' },
+                { time: '۰۹:۴۰:۳۳', action: 'لاگین ناموفق', user: 'نامشخص', ip: '45.76.89.123' },
+                { time: '۰۹:۲۵:۰۷', action: 'پشتیبان‌گیری اتوماتیک', user: 'سیستم', ip: 'localhost' },
+                { time: '۰۹:۱۰:۵۵', action: 'ارسال نوتیفیکیشن', user: 'سیستم', ip: 'localhost' }
+            ]
+        };
+
+        // راه‌اندازی داشبورد ادمین
+        document.addEventListener('DOMContentLoaded', function() {
+            // چک کردن دسترسی ادمین
+            if (!localStorage.getItem('smartfit_admin')) {
+                window.location.href = 'login-admin.html';
+                return;
+            }
+            
+            // لود کاربران
+            loadUsers();
+            
+            // لود لاگ‌های فعالیت
+            loadActivityLogs();
+            
+            // ایجاد نمودارها
+            createCharts();
+            
+            // بروزرسانی زمان
+            updateLastUpdateTime();
+            
+            // شروع تایمر بروزرسانی
+            setInterval(updateLastUpdateTime, 60000); // هر دقیقه
+        });
+
+        function loadUsers() {
+            const container = document.getElementById('users-list');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            adminData.users.forEach(user => {
+                const statusClass = user.status === 'فعال' ? 'success' :
+                                  user.status === 'غیرفعال' ? 'secondary' : 'warning';
+                
+                const roleClass = user.role === 'مربی' ? 'info' : 'primary';
+                
+                const userHTML = `
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-sm me-3" style="width: 36px; height: 36px; background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                                    ${user.name.charAt(0)}
+                                </div>
+                                <div>
+                                    <div class="fw-bold">${user.name}</div>
+                                    <small class="text-muted">ID: ${user.id.toString().padStart(4, '0')}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${user.email}</td>
+                        <td>
+                            <span class="badge bg-${roleClass}">
+                                ${user.role}
+                            </span>
+                        </td>
+                        <td>${user.joinDate}</td>
+                        <td>
+                            <span class="badge bg-${statusClass}">
+                                ${user.status}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-outline-primary btn-sm me-1" title="ویرایش">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-outline-${user.status === 'فعال' ? 'warning' : 'success'} btn-sm me-1" 
+                                        title="${user.status === 'فعال' ? 'غیرفعال کردن' : 'فعال کردن'}">
+                                    <i class="fas fa-${user.status === 'فعال' ? 'ban' : 'check'}"></i>
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm" title="حذف">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                
+                container.insertAdjacentHTML('beforeend', userHTML);
+            });
+        }
+
+        function loadActivityLogs() {
+            const container = document.getElementById('activity-logs');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            adminData.activityLogs.forEach(log => {
+                const logHTML = `
+                    <div class="log-entry">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <strong>${log.action}</strong>
+                                <div class="text-muted small">
+                                    کاربر: ${log.user} | IP: ${log.ip}
+                                </div>
+                            </div>
+                            <div class="log-time">${log.time}</div>
+                        </div>
+                    </div>
+                `;
+                
+                container.insertAdjacentHTML('beforeend', logHTML);
+            });
+        }
+
+        function createCharts() {
+            // نمودار ثبت‌نام‌ها
+            const regCtx = document.getElementById('registrations-chart');
+            if (regCtx) {
+                new Chart(regCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['دی ۱۴۰۱', 'بهمن', 'اسفند', 'فروردین ۱۴۰۲', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر'],
+                        datasets: [{
+                            label: 'تعداد ثبت‌نام',
+                            data: [120, 135, 148, 165, 180, 195, 210, 230, 250, 270, 285, 300],
+                            borderColor: '#4361ee',
+                            backgroundColor: 'rgba(67, 97, 238, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                rtl: true,
+                                labels: {
+                                    font: {
+                                        family: 'Vazirmatn'
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        function updateLastUpdateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('fa-IR');
+            const dateString = now.toLocaleDateString('fa-IR');
+            
+            document.getElementById('last-update').textContent = 
+                `${dateString} - ${timeString}`;
+        }
+
+        // شبیه‌سازی بروزرسانی زنده آمار
+        function simulateLiveUpdates() {
+            setInterval(() => {
+                // افزایش تصادفی تعداد کاربران
+                const totalUsers = document.getElementById('total-users');
+                const current = parseInt(totalUsers.textContent.replace(/,/g, ''));
+                const increase = Math.floor(Math.random() * 5);
+                totalUsers.textContent = (current + increase).toLocaleString('fa-IR');
+                
+                // افزایش تصادفی مربیان
+                const totalCoaches = document.getElementById('total-coaches');
+                const currentCoaches = parseInt(totalCoaches.textContent);
+                if (Math.random() > 0.7) {
+                    totalCoaches.textContent = (currentCoaches + 1).toLocaleString('fa-IR');
+                }
+            }, 10000); // هر ۱۰ ثانیه
+        }
+
+        // شروع شبیه‌سازی
+        simulateLiveUpdates();
+    </script>
+</body>
+</html>

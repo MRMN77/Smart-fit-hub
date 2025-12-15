@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قیمت‌گذاری - SMART FIT</title>
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- استایل اختصاصی -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    
+    <style>
+        .pricing-page {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e3e9f7 100%);
+            min-height: 100vh;
+            padding: 40px 0;
+        }
+        
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .pricing-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            height: 100%;
+            border: 2px solid transparent;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+        }
+        
+        .pricing-card.popular {
+            border-color: #4361ee;
+            position: relative;
+            transform: scale(1.05);
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            color: white;
+            padding: 8px 30px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        .pricing-card-header {
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+        }
+        
+        .pricing-card-body {
+            padding: 40px 30px;
+        }
+        
+        .price-amount {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+        
+        .price-period {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 30px 0;
+        }
+        
+        .feature-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .feature-included .feature-icon {
+            background: rgba(75, 181, 67, 0.15);
+            color: #4bb543;
+        }
+        
+        .feature-excluded .feature-icon {
+            background: rgba(233, 236, 239, 0.5);
+            color: #adb5bd;
+        }
+        
+        .comparison-table {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 60px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+        }
+        
+        .faq-section {
+            margin-top: 80px;
+        }
+        
+        .faq-item {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-right: 4px solid #4361ee;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <!-- ناوبری -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="../index.html">
+                <i class="fas fa-dumbbell me-2"></i>
+                SMART FIT
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="../index.html">صفحه اصلی</a>
+                <a class="nav-link active" href="pricing.html">قیمت‌ها</a>
+                <a class="nav-link" href="login.html">ورود</a>
+                <a class="nav-link" href="register.html">ثبت‌نام</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="pricing-page">
+        <div class="container">
+            <!-- هدر صفحه -->
+            <div class="pricing-header">
+                <h1 class="display-4 fw-bold mb-3">طرح‌های عضویت <span class="text-primary">SMART FIT</span></h1>
+                <p class="lead text-muted mb-4">طرح مناسب خود را انتخاب کنید و به خانواده SMART FIT بپیوندید</p>
+                
+                <div class="d-flex justify-content-center align-items-center gap-3">
+                    <span class="text-muted">صورتحساب ماهانه</span>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="yearly-billing" style="width: 3em; height: 1.5em;">
+                        <label class="form-check-label fw-bold" for="yearly-billing">
+                            صورتحساب سالانه (ذخیره ۲۰٪)
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- کارت‌های قیمت‌گذاری -->
+            <div class="row g-4 align-items-stretch">
+                <!-- طرح اقتصادی -->
+                <div class="col-lg-4">
+                    <div class="pricing-card">
+                        <div class="pricing-card-header" style="background: linear-gradient(135deg, #6c757d 0%, #495057 100%);">
+                            <h3 class="fw-bold mb-3">اقتصادی</h3>
+                            <p class="opacity-90 mb-4">مناسب برای شروع</p>
+                            <div class="price-amount">۱۹۰,۰۰۰</div>
+                            <div class="price-period">تومان / ماه</div>
+                            <small class="opacity-75 d-block mt-2">با صورتحساب سالانه: ۱۵۲,۰۰۰ تومان</small>
+                        </div>
+                        
+                        <div class="pricing-card-body">
+                            <ul class="feature-list">
+                                <li class="feature-included">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    برنامه تمرینی پایه
+                                </li>
+                                <li class="feature-included">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    ردیابی پیشرفت ساده
+                                </li>
+                                <li class="feature-included">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    دسترسی به اپ موبایل
+                                </li>
+                                <li class="feature-excluded">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-times"></i>
+                                    </div>
+                                    مربی اختصاصی
+                                </li>
+                                <li class="feature-excluded">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-times"></i>
+                                    </div>
+                                    جلسات ویدیویی
+                                </li>
+                                <li class="feature-excluded">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-times"></i>
+                                    </div>
+                                    برنامه غذایی شخصی
+                                </li>
+                            </ul>
+                            
+                            <button class="btn btn-outline-secondary w-100 py-3 fw-bold">
+                                انتخاب این طرح
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- طرح حرفه‌ای (پرطرفدار) -->
+                <div class="col-lg-4">
+                    <div class="pricing-card popular">
+                        <div class="popular-badge">پیشنهاد ویژه</div>
+                        
+                        <div class="pricing-card-header" style="background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);">
+                            <h3 class="fw-bold mb-3">حرفه‌ای</h3>
+                            <p class="opacity-90 mb-4">محبوب کاربران</p>
+                            <div class="price-amount">۳۹۰,۰۰۰</div>
+                            <div class="price-period">تومان / ماه</div>
+                            <small class="opacity-75 d-block mt-2">با صورتحساب سالانه: ۳۱۲,۰۰۰ تومان</small>
+                        </div>
+                        
+                        <div class="pricing-card-body">
+                            <ul class="feature-list">
+                                <li class="feature-included">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    تمام امکانات اقتصادی
+                                </li>
+                                <li class="feature-included">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    مربی اختصاصی
+                                </li>
+                                <li class="feature-included">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    ۴ جلسه ویدیویی ماهانه
+                                </li>
+                                <li class="feature-included">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    برنامه غذایی شخصی
+                                </li>
+                                <li class="feature-included">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    تحلیل پیشرفت حرفه‌ای
+                                </li>
+                                <li class="feature-excluded">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-times"></i>
+                                    </div>
+                                    پشتیبانی ۲۴/۷
+                                </li>
+                            </ul>
+                            
+                            <button class="btn btn-primary w-100 py-3 fw-bold" style="background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);">
+                                <i class="fas fa-crown me-2"></i>انتخاب این طرح
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- طرح VIP -->
+                <div class="col-lg-4">
+                    <div class="pricing-card">
+                        <div class="pricing-card-header" style="background: linear-gradient(135deg, #2a087c 0%, #1a054d 100%);">
+                            <h3 class="fw-bold mb-3">VIP</h3>
+                            <p class="opacity-90 mb-4">کامل و بدون محدودیت</p>
+                            <div class="price-amount">۶۵۰,۰۰۰</div>
+                            <div class="price-period">تومان / ماه</div>
+                            <small class="opacity-75 d-block mt-2">با صورتحساب سالانه: ۵۲۰,۰۰۰ تومان</small>
+                        </div>
+                        
+                        <div class="pricing-card-body">
+                            <ul class="feature-list">
+                                <li class="feature-included">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    تمام امکانات حرفه‌ای
+                                </li>
+                                <li class="feature-included">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    پشتیبانی ۲۴/۷
+                                </li>
+                                <li class="feature-included">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    جلسات ویدیویی نامحدود
+                                </li>
+                                <li class="feature-included">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    برنامه‌ریزی هفتگی
+                                </li>
+                                <li class="feature-included">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    مشاوره تغذیه تخصصی
+                                </li>
+                                <li class="feature-included">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    دسترسی زودهنگام به ویژگی‌های جدید
+                                </li>
+                            </ul>
+                            
+                            <button class="btn btn-dark w-100 py-3 fw-bold">
+                                <i class="fas fa-gem me-2"></i>انتخاب این طرح
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- جدول مقایسه -->
+            <div class="comparison-table">
+                <h3 class="text-center mb-4 fw-bold">مقایسه کامل طرح‌ها</h3>
+                
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ویژگی</th>
+                                <th class="text-center">اقتصادی</th>
+                                <th class="text-center">حرفه‌ای</th>
+                                <th class="text-center">VIP</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>برنامه تمرینی شخصی</td>
+                                <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                            </tr>
+                            <tr>
+                                <td>مربی اختصاصی</td>
+                                <td class="text-center"><i class="fas fa-times text-muted"></i></td>
+                                <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                            </tr>
+                            <tr>
+                                <td>جلسات ویدیویی ماهانه</td>
+                                <td class="text-center">-</td>
+                                <td class="text-center">۴ جلسه</td>
+                                <td class="text-center">نامحدود</td>
+                            </tr>
+                            <tr>
+                                <td>برنامه غذایی</td>
+                                <td class="text-center">پایه</td>
+                                <td class="text-center">شخصی‌سازی شده</td>
+                                <td class="text-center">تخصصی + پیگیری</td>
+                            </tr>
+                            <tr>
+                                <td>پشتیبانی</td>
+                                <td class="text-center">ایمیل</td>
+                                <td class="text-center">چت + تلفن</td>
+                                <td class="text-center">۲۴/۷ VIP</td>
+                            </tr>
+                            <tr>
+                                <td>گزارش‌های پیشرفت</td>
+                                <td class="text-center">هفتگی</td>
+                                <td class="text-center">روزانه</td>
+                                <td class="text-center">زنده + تحلیل</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- سوالات متداول -->
+            <div class="faq-section">
+                <h3 class="text-center mb-5 fw-bold">سوالات متداول</h3>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="faq-item">
+                            <h5 class="fw-bold mb-3">آیا می‌توانم طرح را بعداً تغییر دهم؟</h5>
+                            <p class="text-muted mb-0">بله، در هر زمان می‌توانید طرح خود را ارتقا دهید. مابه‌تفاوت برای باقی‌مانده دوره محاسبه می‌شود.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="faq-item">
+                            <h5 class="fw-bold mb-3">ضمانت بازگشت وجه دارید؟</h5>
+                            <p class="text-muted mb-0">بله، ۱۴ روز ضمانت بازگشت کامل وجه داریم. اگر راضی نبودید، تمام مبلغ بازگردانده می‌شود.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="faq-item">
+                            <h5 class="fw-bold mb-3">آیا برای مربیان تخفیف دارید؟</h5>
+                            <p class="text-muted mb-0">بله، مربیان با ارائه مدارک می‌توانند از ۳۰٪ تخفیف ویژه بهره‌مند شوند.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="faq-item">
+                            <h5 class="fw-bold mb-3">چند ورزشکار می‌توانم اضافه کنم؟</h5>
+                            <p class="text-muted mb-0">در طرح حرفه‌ای تا ۱۰ ورزشکار و در طرح VIP تا ۵۰ ورزشکار می‌توانید مدیریت کنید.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- اسکریپت‌ها -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/script.js"></script>
+    <!-- چت بات هوشمند -->
+    <script src="../assets/js/chatbot.js"></script>
+    
+    <script>
+        // مدیریت صورتحساب سالانه/ماهانه
+        document.getElementById('yearly-billing').addEventListener('change', function() {
+            const isYearly = this.checked;
+            const prices = document.querySelectorAll('.price-amount');
+            const periods = document.querySelectorAll('.price-period');
+            
+            if (isYearly) {
+                // قیمت‌های سالانه
+                prices[0].textContent = '۱۵۲,۰۰۰';
+                prices[1].textContent = '۳۱۲,۰۰۰';
+                prices[2].textContent = '۵۲۰,۰۰۰';
+                
+                periods.forEach(period => {
+                    period.textContent = 'تومان / سال';
+                });
+            } else {
+                // قیمت‌های ماهانه
+                prices[0].textContent = '۱۹۰,۰۰۰';
+                prices[1].textContent = '۳۹۰,۰۰۰';
+                prices[2].textContent = '۶۵۰,۰۰۰';
+                
+                periods.forEach(period => {
+                    period.textContent = 'تومان / ماه';
+                });
+            }
+        });
+        
+        // شبیه‌سازی انتخاب طرح
+        document.querySelectorAll('.pricing-card button').forEach(button => {
+            button.addEventListener('click', function() {
+                const planName = this.closest('.pricing-card').querySelector('h3').textContent;
+                alert(`طرح ${planName} انتخاب شد! به صفحه پرداخت هدایت می‌شوید.`);
+            });
+        });
+    </script>
+</body>
+</html>
