@@ -13,298 +13,139 @@
     <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* استایل چت بات */
-.chatbot-container {
-    position: fixed;
-    bottom: 100px;
-    left: 30px;
-    width: 350px;
-    height: 500px;
-    background-color: white;
-    border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    border: 3px solid var(--gold);
-    display: flex;
-    flex-direction: column;
-    z-index: 1000;
-    display: none;
-}
-
-.chatbot-container.active {
-    display: flex;
-}
-
-.chatbot-header {
-    background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
-    color: white;
-    padding: 15px 20px;
-    border-radius: 17px 17px 0 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.chatbot-avatar {
-    width: 40px;
-    height: 40px;
-    background-color: var(--gold);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.3rem;
-}
-
-.btn-close-chat {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.2rem;
-    cursor: pointer;
-}
-
-.chatbot-messages {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-    background-color: #f9f9f9;
-}
-
-.message {
-    margin-bottom: 15px;
-    display: flex;
-    flex-direction: column;
-}
-
-.message.bot {
-    align-items: flex-start;
-}
-
-.message.user {
-    align-items: flex-end;
-}
-
-.message-content {
-    max-width: 80%;
-    padding: 12px 18px;
-    border-radius: 18px;
+        /* استایل بخش دانلود اپلیکیشن */
+.app-download-section {
+    background: linear-gradient(135deg, rgba(255, 235, 238, 0.3), rgba(255, 215, 0, 0.1));
+    border-radius: 30px;
     position: relative;
+    overflow: hidden;
+    margin: 60px 0;
 }
 
-.message.bot .message-content {
-    background-color: white;
-    border: 2px solid var(--light-red);
-    color: var(--black);
-    border-bottom-right-radius: 5px;
-}
-
-.message.user .message-content {
-    background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
-    color: white;
-    border-bottom-left-radius: 5px;
-}
-
-.message-time {
-    font-size: 0.7rem;
-    color: #888;
-    margin-top: 5px;
-}
-
-.chatbot-input {
-    padding: 15px;
-    border-top: 2px solid #eee;
-    background-color: white;
-    border-radius: 0 0 17px 17px;
-}
-
-.chatbot-toggle {
-    position: fixed;
-    bottom: 30px;
-    left: 30px;
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
-    color: white;
-    border: none;
-    border-radius: 50%;
-    font-size: 1.5rem;
-    cursor: pointer;
-    box-shadow: 0 5px 20px rgba(211, 47, 47, 0.4);
-    z-index: 999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s;
-    animation: chatbot-pulse 2s infinite;
-}
-
-.chatbot-toggle:hover {
-    transform: scale(1.1);
-    box-shadow: 0 8px 25px rgba(211, 47, 47, 0.6);
-}
-
-.notification-badge {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background-color: var(--gold);
-    color: var(--black);
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    font-size: 0.7rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-}
-
-/* انیمیشن برای دکمه چت */
-@keyframes chatbot-pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
-/* ریسپانسیو */
-@media (max-width: 768px) {
-    .chatbot-container {
-        width: 300px;
-        height: 450px;
-        left: 20px;
-        bottom: 90px;
-    }
-    
-    .chatbot-toggle {
-        left: 20px;
-        bottom: 20px;
-    }
-}
-        /* استایل راست‌چین برای لیست قیمت‌ها */
-.list-unstyled.text-start {
-    text-align: right !important;
-    padding-right: 15px !important;
-}
-
-.list-unstyled.text-start li {
-    text-align: right !important;
-    direction: rtl !important;
-}
-
-/* راست‌چین کردن قیمت‌ها */
-.price-display {
-    direction: ltr;
-    text-align: center;
-}
-
-/* راست‌چین شدن آیتم‌های لیست در بخش مزایا */
-.benefit-item {
-    text-align: right !important;
-    direction: rtl !important;
-}
-
-.benefit-item h5 {
-    text-align: right !important;
-}
-
-.benefit-item p {
-    text-align: right !important;
-}
-        
-        /* استایل جملات انگیزشی متحرک */
-.motivational-slider {
-    position: relative;
-    min-height: 200px;
-}
-
-.motivational-text {
-    font-size: 1.8rem;
-    color: var(--dark-red);
-    font-weight: 700;
-    text-align: center;
-    margin: 0 auto;
-    padding: 30px;
-    background-color: var(--white);
-    border-radius: 15px;
-    border-right: 5px solid var(--gold);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    width: 90%;
-    max-width: 800px;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 1s ease, transform 1s ease;
+.app-download-section:before {
+    content: '';
     position: absolute;
     top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    right: 0;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(211, 47, 47, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
 }
 
-.motivational-text.active {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
+.app-features-card {
+    background-color: var(--white);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
 }
 
-.slider-controls {
+.feature-item {
+    transition: all 0.3s;
+}
+
+.feature-item:hover {
+    transform: translateX(-5px);
+}
+
+/* موبایل مکتاپ */
+.phone-mockup {
+    width: 280px;
+    height: 560px;
+    background: linear-gradient(135deg, #2c3e50, #1a1a2e);
+    border-radius: 40px;
+    position: relative;
+    margin: 0 auto;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    border: 8px solid #111;
+}
+
+.phone-screen {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    background-color: #1e1e2e;
+    border-radius: 25px;
+    overflow: hidden;
+    color: white;
+}
+
+.screen-content {
+    height: 100%;
+    font-family: 'Almarai', sans-serif;
+}
+
+.phone-home-button {
     position: absolute;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 10;
+    width: 50px;
+    height: 50px;
+    background-color: #333;
+    border-radius: 50%;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-.slider-dot {
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 50%;
-    margin: 0 5px;
-    cursor: pointer;
+/* دکمه‌های دانلود */
+.btn-download-store {
+    display: block;
+    background: white;
+    border-radius: 15px;
+    text-decoration: none;
+    transition: all 0.3s;
+    min-width: 280px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border: 2px solid transparent;
+    margin-bottom: 10px;
+}
+
+.btn-download-store:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    border-color: var(--gold);
+    text-decoration: none;
+}
+
+.store-content {
     transition: all 0.3s;
 }
 
-.slider-dot.active {
-    background-color: var(--gold);
-    transform: scale(1.3);
+/* QR کد */
+.qr-code-placeholder {
+    background: white;
+    transition: all 0.3s;
+    cursor: pointer;
 }
 
-.benefit-item {
-    padding: 15px;
-    border-right: 3px solid var(--gold);
-    background-color: rgba(255, 215, 0, 0.05);
-    border-radius: 8px;
+.qr-code-placeholder:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
-.text-gold {
-    color: var(--gold) !important;
+/* شمارنده دانلود */
+.download-counter {
+    background: white;
+    animation: pulseCounter 2s infinite;
 }
 
-.stats-box {
-    background-color: rgba(255, 255, 255, 0.9);
+@keyframes pulseCounter {
+    0% { box-shadow: 0 5px 15px rgba(218, 165, 32, 0.2); }
+    50% { box-shadow: 0 5px 20px rgba(218, 165, 32, 0.4); }
+    100% { box-shadow: 0 5px 15px rgba(218, 165, 32, 0.2); }
 }
-        /* استایل برای بخش قیمت‌گذاری */
-        .price-display {
-            direction: ltr;
-            text-align: center;
-        }
 
-        .price-amount {
-            font-family: 'Almarai', sans-serif;
-        }
-
-        .pricing-card {
-            transition: all 0.3s ease;
-        }
-
-        .pricing-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .badge {
-            font-family: 'Almarai', sans-serif;
-        }
-
+/* ریسپانسیو */
+@media (max-width: 768px) {
+    .phone-mockup {
+        width: 250px;
+        height: 500px;
+    }
+    
+    .btn-download-store {
+        min-width: 100%;
+    }
+}
         :root {
             --primary-red: #d32f2f;
             --dark-red: #b71c1c;
@@ -327,9 +168,6 @@
         }
 
         /* نوار ناوبری */
-        <li class="nav-item">
-    <a class="nav-link" href="pages/pricing.html">قیمت‌ها و طرح‌ها</a>
-</li>
         .navbar-custom {
             background-color: var(--white) !important;
             border-bottom: 3px solid var(--primary-red);
@@ -549,6 +387,304 @@
             transform: translateY(-5px);
         }
 
+        /* استایل راست‌چین برای لیست قیمت‌ها */
+        .list-unstyled.text-start {
+            text-align: right !important;
+            padding-right: 15px !important;
+        }
+
+        .list-unstyled.text-start li {
+            text-align: right !important;
+            direction: rtl !important;
+        }
+
+        /* راست‌چین کردن قیمت‌ها */
+        .price-display {
+            direction: ltr;
+            text-align: center;
+        }
+
+        .price-amount {
+            font-family: 'Almarai', sans-serif;
+        }
+
+        .pricing-card {
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .badge {
+            font-family: 'Almarai', sans-serif;
+        }
+
+        /* استایل جملات انگیزشی متحرک */
+        .motivational-slider {
+            position: relative;
+            min-height: 200px;
+        }
+
+        .slider-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .slider-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .slider-dot.active {
+            background-color: var(--gold);
+            transform: scale(1.3);
+        }
+
+        .benefit-item {
+            padding: 15px;
+            border-right: 3px solid var(--gold);
+            background-color: rgba(255, 215, 0, 0.05);
+            border-radius: 8px;
+            text-align: right !important;
+            direction: rtl !important;
+        }
+
+        .benefit-item h5 {
+            text-align: right !important;
+        }
+
+        .benefit-item p {
+            text-align: right !important;
+        }
+
+        .text-gold {
+            color: var(--gold) !important;
+        }
+
+        .stats-box {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* استایل چت بات */
+        .chatbot-container {
+            position: fixed;
+            bottom: 100px;
+            left: 30px;
+            width: 350px;
+            height: 500px;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            border: 3px solid var(--gold);
+            display: flex;
+            flex-direction: column;
+            z-index: 10000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.5s ease;
+            display: none;
+        }
+
+        .chatbot-container.active {
+            transform: translateY(0);
+            opacity: 1;
+            display: flex;
+        }
+
+        .chatbot-header {
+            background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
+            color: white;
+            padding: 15px 20px;
+            border-radius: 17px 17px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .btn-close-chat {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message.bot {
+            align-items: flex-start;
+        }
+
+        .message.user {
+            align-items: flex-end;
+        }
+
+        .message-content {
+            max-width: 80%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            position: relative;
+        }
+
+        .message.bot .message-content {
+            background-color: white;
+            border: 2px solid var(--light-red);
+            color: var(--black);
+            border-bottom-right-radius: 5px;
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
+            color: white;
+            border-bottom-left-radius: 5px;
+        }
+
+        .message-time {
+            font-size: 0.7rem;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .chatbot-input {
+            padding: 15px;
+            border-top: 2px solid #eee;
+            background-color: white;
+            border-radius: 0 0 17px 17px;
+        }
+
+        .quick-questions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .quick-btn {
+            background-color: var(--light-red);
+            border: 2px solid var(--gold);
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 0.85rem;
+            color: var(--dark-red);
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+            min-width: calc(50% - 10px);
+        }
+
+        .quick-btn:hover {
+            background-color: var(--gold);
+            transform: translateY(-2px);
+        }
+
+        .input-group {
+            display: flex;
+        }
+
+        #chatbot-input {
+            border: 2px solid var(--gold);
+            border-radius: 25px 0 0 25px;
+            padding-right: 20px;
+            border-left: none;
+            flex: 1;
+        }
+
+        .btn-chat-send {
+            background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
+            color: white;
+            border: none;
+            border-radius: 0 25px 25px 0;
+            width: 60px;
+            transition: all 0.3s;
+        }
+
+        .btn-chat-send:hover {
+            background: linear-gradient(135deg, var(--dark-red), #8b0000);
+        }
+
+        .chatbot-toggle {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(211, 47, 47, 0.4);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            animation: chatbot-pulse 2s infinite;
+        }
+
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(211, 47, 47, 0.6);
+            animation: none;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--gold);
+            color: var(--black);
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* انیمیشن برای دکمه چت */
+        @keyframes chatbot-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
         /* ریسپانسیو */
         @media (max-width: 768px) {
             .hero-title {
@@ -561,6 +697,18 @@
 
             .motivational-text {
                 font-size: 1.2rem;
+            }
+
+            .chatbot-container {
+                width: 300px;
+                height: 450px;
+                left: 20px;
+                bottom: 90px;
+            }
+            
+            .chatbot-toggle {
+                left: 20px;
+                bottom: 20px;
             }
         }
     </style>
@@ -583,6 +731,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#features">امکانات</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/pricing.html">قیمت‌ها و طرح‌ها</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#gallery">گالری</a>
@@ -672,12 +823,9 @@
                         <li class="mb-2"><i class="fas fa-times-circle text-secondary me-2"></i> <span class="text-muted">برنامه تمرینی پیشرفته</span></li>
                         <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> پشتیبانی آنلاین</li>
                     </ul>
-                    <!-- در هر دکمه انتخاب طرح این تغییر را اعمال کنید -->
-<button class="btn btn-custom-red w-100 py-3" onclick="window.location.href='pages/login.html?plan=pro'">
-    انتخاب این طرح
-</button>
-                    
-
+                    <button class="btn btn-custom-red w-100 py-3" onclick="window.location.href='pages/login.html?plan=basic'">
+                        انتخاب این طرح
+                    </button>
                     <p class="text-muted small mt-2">💵 <strong>پرداخت سالانه:</strong> ۳,۲۸۹,۰۰۰ تومان (15% تخفیف)</p>
                 </div>
             </div>
@@ -688,7 +836,6 @@
             <div class="gold-border-box text-center h-100 position-relative pricing-card" style="border-width: 4px; border-color: var(--gold) !important;">
                 <div class="position-absolute top-0 start-50 translate-middle mt-3">
                     <span class="badge bg-danger py-2 px-3" style="font-size: 1rem;">پرفروش‌ترین</span>
-                    
                 </div>
                 <div class="p-4 mt-4">
                     <h3 class="mb-3" style="color: var(--dark-red);">طرح حرفه‌ای</h3>
@@ -710,9 +857,8 @@
                         <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> پشتیبانی VIP</li>
                     </ul>
                     <button class="btn btn-custom-red w-100 py-3" onclick="window.location.href='pages/login.html?plan=pro'">
-    انتخاب این طرح
-</button>
-
+                        انتخاب این طرح
+                    </button>
                     <p class="text-success small mt-2">🎁 <strong>پرداخت سالانه:</strong> ۶,۵۸۹,۰۰۰ تومان (20% تخفیف = ۱,۱۹۹,۰۰۰ تومان صرفه‌جویی)</p>
                 </div>
             </div>
@@ -741,18 +887,16 @@
                         <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> پشتیبانی ۲۴/۷ اختصاصی</li>
                         <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> جلسات روانشناسی ورزشی ماهانه</li>
                     </ul>
-                    <button class="btn btn-custom-red w-100 py-3" onclick="window.location.href='pages/login.html?plan=pro'">
-    انتخاب این طرح
-</button>
-<button class="btn btn-custom-gold w-100 py-3" onclick="window.location.href='pages/login.html?plan=vip'">
-    دریافت مشاوره رایگان
-</button>
+                    <button class="btn btn-custom-gold w-100 py-3" onclick="window.location.href='pages/login.html?plan=vip'">
+                        دریافت مشاوره رایگان
+                    </button>
                     <p class="text-muted small mt-2">🏆 <strong>پرداخت سالانه:</strong> ۱۳,۱۸۹,۰۰۰ تومان (25% تخفیف)</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
    <!-- مزایای SMART FIT -->
 <section class="container my-5">
     <div class="row align-items-center gold-border-box p-5">
@@ -803,9 +947,10 @@
         </div>
     </div>
 </section>
+
     <!-- گالری تصاویر -->
     <section class="container" id="gallery">
-
+        <h2 class="section-title">گالری تصاویر</h2>
         <div class="row">
             <div class="col-md-4">
                 <div class="gallery-container">
@@ -831,10 +976,10 @@
 <!-- متن‌های انگیزشی متحرک -->
 <section class="motivational-section" id="motivation">
     <div class="container">
-                <p class="text-center mb-4" style="color: var(--white); opacity: 0.9;">
-            هر ۵ ثانیه یک جمله جدید انگیزشی برای شما
-        </p>
+      
+        <p class="text-center mb-4" style="color: var(--white); opacity: 0.9;">
         
+        </p>        
         <div class="motivational-slider">
             <div id="motivationalText" class="motivational-text active">
                 <!-- اینجا متن‌ها به صورت خودکار تغییر می‌کنند -->
@@ -857,25 +1002,265 @@
 </section>
 
     <!-- اپلیکیشن موبایل -->
-    <section class="container my-5">
-        <div class="row align-items-center gold-border-box">
-            <div class="col-md-6">
-                <h3 class="mb-3" style="color: var(--dark-red);">اپلیکیشن موبایل SMART FIT</h3>
-                <p>همراه شما در هر زمان و مکان! برنامه تمرینی، رژیم غذایی و ردیابی پیشرفت در جیب شما.</p>
-                <div class="mt-4">
-                    <button class="btn btn-custom-red me-3">
-                        <i class="fab fa-google-play"></i> Google Play
-                    </button>
-                    <button class="btn btn-custom-gold">
-                        <i class="fab fa-apple"></i> App Store
-                    </button>
+    <!-- بخش دانلود اپلیکیشن حرفه‌ای -->
+<section class="app-download-section my-5 py-5" id="app-download">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <div class="app-features-card gold-border-box p-4 p-md-5">
+                    <h2 class="mb-4" style="color: var(--dark-red); font-size: 2.3rem;">
+                        📱 اپلیکیشن <span class="text-gold">SMART FIT</span>
+                    </h2>
+                    <p class="mb-4" style="font-size: 1.1rem; line-height: 1.8;">
+                        <strong>همراه شما در هر لحظه، در هر مکان!</strong><br>
+                        برنامه تمرینی، رژیم غذایی، ردیابی پیشرفت و ارتباط با مربی - همه در جیب شما
+                    </p>
+                    
+                    <!-- امتیاز و آمار -->
+                    <div class="app-stats mb-4">
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <div class="stat-number" style="color: var(--primary-red); font-size: 2rem; font-weight: 800;">۴.۸</div>
+                                <p class="mb-0 small"><i class="fas fa-star text-warning"></i> امتیاز</p>
+                            </div>
+                            <div class="col-4">
+                                <div class="stat-number" style="color: var(--primary-red); font-size: 2rem; font-weight: 800;">۵۰K+</div>
+                                <p class="mb-0 small"><i class="fas fa-download text-info"></i> دانلود</p>
+                            </div>
+                            <div class="col-4">
+                                <div class="stat-number" style="color: var(--primary-red); font-size: 2rem; font-weight: 800;">۹۸%</div>
+                                <p class="mb-0 small"><i class="fas fa-smile text-success"></i> رضایت</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- ویژگی‌های اپلیکیشن -->
+                    <div class="app-features-list mb-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="feature-item mb-3 d-flex align-items-center">
+                                    <div class="feature-icon me-3">
+                                        <i class="fas fa-bell text-gold fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <strong>یادآور تمرین و تغذیه</strong>
+                                        <p class="mb-0 small text-muted">یادآوری خودکار جلسات</p>
+                                    </div>
+                                </div>
+                                <div class="feature-item mb-3 d-flex align-items-center">
+                                    <div class="feature-icon me-3">
+                                        <i class="fas fa-video text-gold fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <strong>ویدیوهای آموزشی</strong>
+                                        <p class="mb-0 small text-muted">حرکات با توضیح کامل</p>
+                                    </div>
+                                </div>
+                                <div class="feature-item mb-3 d-flex align-items-center">
+                                    <div class="feature-icon me-3">
+                                        <i class="fas fa-heartbeat text-gold fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <strong>اتصال به گجت‌ها</strong>
+                                        <p class="mb-0 small text-muted">ساعت هوشمند و فیت‌بیت</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="feature-item mb-3 d-flex align-items-center">
+                                    <div class="feature-icon me-3">
+                                        <i class="fas fa-chart-pie text-gold fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <strong>آنالیز پیشرفت</strong>
+                                        <p class="mb-0 small text-muted">نمودارهای تعاملی</p>
+                                    </div>
+                                </div>
+                                <div class="feature-item mb-3 d-flex align-items-center">
+                                    <div class="feature-icon me-3">
+                                        <i class="fas fa-comments text-gold fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <strong>چت با مربی</strong>
+                                        <p class="mb-0 small text-muted">مشاوره مستقیم</p>
+                                    </div>
+                                </div>
+                                <div class="feature-item mb-3 d-flex align-items-center">
+                                    <div class="feature-icon me-3">
+                                        <i class="fas fa-cloud-download-alt text-gold fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <strong>محتوای آفلاین</strong>
+                                        <p class="mb-0 small text-muted">بدون نیاز به اینترنت</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- QR Code برای دانلود سریع -->
+                    <div class="qr-section text-center mt-4">
+                        <p class="mb-2"><i class="fas fa-qrcode text-gold me-2"></i> <strong>اسکن کنید و دانلود کنید</strong></p>
+                        <div class="qr-code-placeholder d-inline-block p-3 gold-border-box">
+                            <i class="fas fa-qrcode fa-4x" style="color: var(--dark-red);"></i>
+                        </div>
+                        <p class="small text-muted mt-2">دوربین خود را روی کد بگیرید</p>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-6 text-center">
-                <i class="fas fa-mobile-alt" style="font-size: 8rem; color: var(--primary-red);"></i>
+            
+            <div class="col-lg-6">
+                <!-- موبایل مکتاپ -->
+                <div class="phone-mockup-container text-center position-relative">
+                    <div class="phone-mockup">
+                        <div class="phone-screen">
+                            <div class="screen-content">
+                                <!-- هدر اپ -->
+                                <div class="app-header" style="background: linear-gradient(135deg, var(--primary-red), var(--dark-red)); color: white; padding: 15px; border-radius: 25px 25px 0 0;">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="app-time">۱۴:۳۰</div>
+                                        <div class="app-battery">۸۴٪ <i class="fas fa-battery-three-quarters"></i></div>
+                                    </div>
+                                    <h5 class="mt-3 mb-2">🏋️ SMART FIT</h5>
+                                </div>
+                                
+                                <!-- محتوای اپ -->
+                                <div class="app-content p-3">
+                                    <!-- تمرین امروز -->
+                                    <div class="app-today-workout mb-3 p-3" style="background: rgba(255, 255, 255, 0.1); border-radius: 15px;">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <h6 class="mb-0">تمرین امروز</h6>
+                                            <span class="badge bg-warning">در حال انجام</span>
+                                        </div>
+                                        <p class="mb-2"><i class="fas fa-dumbbell me-2"></i> پرس سینه: ۴ ست × ۱۲ تکرار</p>
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar bg-danger" style="width: 75%"></div>
+                                        </div>
+                                        <small class="d-block mt-1">۷۵% تکمیل شده</small>
+                                    </div>
+                                    
+                                    <!-- وعده غذایی بعدی -->
+                                    <div class="app-next-meal mb-3 p-3" style="background: rgba(255, 255, 255, 0.1); border-radius: 15px;">
+                                        <h6 class="mb-2">🍗 وعده بعدی (۱۶:۰۰)</h6>
+                                        <p class="mb-1">سینه مرغ + برنج قهوه‌ای</p>
+                                        <p class="mb-0 small">۴۵۰ کالری | ۴۰ گرم پروتئین</p>
+                                    </div>
+                                    
+                                    <!-- آمار روزانه -->
+                                    <div class="app-stats p-3" style="background: rgba(255, 255, 255, 0.1); border-radius: 15px;">
+                                        <h6 class="mb-3 text-center">📊 آمار امروز</h6>
+                                        <div class="row text-center">
+                                            <div class="col-4">
+                                                <div class="stat-value" style="color: var(--gold); font-size: 1.5rem; font-weight: 800;">۱,۲۴۰</div>
+                                                <div class="stat-label small">کالری</div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="stat-value" style="color: var(--gold); font-size: 1.5rem; font-weight: 800;">۹۸</div>
+                                                <div class="stat-label small">گرم پروتئین</div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="stat-value" style="color: var(--gold); font-size: 1.5rem; font-weight: 800;">۲,۵۰۰</div>
+                                                <div class="stat-label small">قدم</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="phone-home-button"></div>
+                    </div>
+                    
+                    <!-- دکمه‌های دانلود -->
+                    <div class="download-buttons mt-5">
+                        <h3 class="mb-4" style="color: var(--dark-red);">همین حالا دانلود کنید</h3>
+                        <div class="d-flex flex-wrap justify-content-center gap-3 mb-4">
+                            <!-- گوگل پلی -->
+                            <a href="#" class="btn-download-store" style="text-decoration: none;">
+                                <div class="store-content d-flex align-items-center p-3">
+                                    <div class="store-icon me-3">
+                                        <i class="fab fa-google-play fa-2x" style="color: #00C853;"></i>
+                                    </div>
+                                    <div class="store-info text-start">
+                                        <div class="store-label" style="font-size: 0.8rem; color: #666;">دریافت از</div>
+                                        <div class="store-name" style="font-weight: 700; font-size: 1.2rem;">Google Play</div>
+                                    </div>
+                                    <div class="store-arrow ms-3">
+                                        <i class="fas fa-arrow-left" style="color: var(--primary-red);"></i>
+                                    </div>
+                                </div>
+                            </a>
+                            
+                            <!-- اپ استور -->
+                            <a href="#" class="btn-download-store" style="text-decoration: none;">
+                                <div class="store-content d-flex align-items-center p-3">
+                                    <div class="store-icon me-3">
+                                        <i class="fab fa-apple fa-2x" style="color: #000;"></i>
+                                    </div>
+                                    <div class="store-info text-start">
+                                        <div class="store-label" style="font-size: 0.8rem; color: #666;">دریافت از</div>
+                                        <div class="store-name" style="font-weight: 700; font-size: 1.2rem;">App Store</div>
+                                    </div>
+                                    <div class="store-arrow ms-3">
+                                        <i class="fas fa-arrow-left" style="color: var(--primary-red);"></i>
+                                    </div>
+                                </div>
+                            </a>
+                            
+                            <!-- دانلود مستقیم -->
+                            <a href="#" class="btn-download-store" style="text-decoration: none;">
+                                <div class="store-content d-flex align-items-center p-3">
+                                    <div class="store-icon me-3">
+                                        <i class="fas fa-download fa-2x" style="color: var(--primary-red);"></i>
+                                    </div>
+                                    <div class="store-info text-start">
+                                        <div class="store-label" style="font-size: 0.8rem; color: #666;">دانلود مستقیم</div>
+                                        <div class="store-name" style="font-weight: 700; font-size: 1.2rem;">APK فایل</div>
+                                    </div>
+                                    <div class="store-arrow ms-3">
+                                        <i class="fas fa-arrow-left" style="color: var(--primary-red);"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        <!-- اطلاعات اضافی -->
+                        <div class="app-info mt-4">
+                            <div class="row text-center">
+                                <div class="col-md-4 mb-3">
+                                    <div class="info-item">
+                                        <i class="fas fa-shield-alt fa-lg text-gold mb-2"></i>
+                                        <p class="mb-0 small">۱۰۰% امن</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="info-item">
+                                        <i class="fas fa-mobile-alt fa-lg text-gold mb-2"></i>
+                                        <p class="mb-0 small">حجم: ۴۵ مگابایت</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="info-item">
+                                        <i class="fas fa-globe fa-lg text-gold mb-2"></i>
+                                        <p class="mb-0 small">نسخه فارسی</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- شمارنده دانلود -->
+                        <div class="download-counter mt-4 p-3 gold-border-box">
+                            <p class="mb-2"><i class="fas fa-bolt text-gold me-2"></i> <strong>۴۸۲ نفر</strong> در ۲۴ ساعت گذشته دانلود کرده‌اند</p>
+                            <div class="progress" style="height: 10px;">
+                                <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated" style="width: 65%"></div>
+                            </div>
+                            <small class="text-muted d-block mt-1">ظرفیت باقی‌مانده برای دانلود رایگان</small>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- فوتر -->
     <footer class="footer-custom" id="contact">
@@ -894,10 +1279,10 @@
                 <div class="col-md-4 mb-4">
                     <h4 class="footer-title">لینک‌های مفید</h4>
                     <ul class="list-unstyled">
+                        <li><a href="pages/pricing.html" class="text-light text-decoration-none">قیمت‌ها و طرح‌ها</a></li>
+                        <li><a href="pages/login.html" class="text-light text-decoration-none">ورود / ثبت‌نام</a></li>
                         <li><a href="#" class="text-light text-decoration-none">درباره ما</a></li>
                         <li><a href="#" class="text-light text-decoration-none">تماس با ما</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">حریم خصوصی</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">شرایط استفاده</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4 mb-4">
@@ -914,28 +1299,71 @@
         </div>
     </footer>
 
+    <!-- چت بات هوشمند -->
+    <div id="chatbot-container" class="chatbot-container">
+        <div class="chatbot-header">
+            <div class="d-flex align-items-center">
+                <div class="chatbot-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="ms-3">
+                    <h6 class="mb-0">دستیار هوشمند SMART FIT</h6>
+                    <small class="text-success"><i class="fas fa-circle"></i> آنلاین</small>
+                </div>
+            </div>
+            <button class="btn-close-chat" onclick="closeChatbot()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="chatbot-messages" id="chatbot-messages">
+            <div class="message bot">
+                <div class="message-content">
+                    سلام! 👋 من دستیار هوشمند SMART FIT هستم. 
+                    <br>می‌تونم در مورد قیمت‌ها، ثبت‌نام، برنامه‌های تمرینی و تغذیه کمکتون کنم.
+                </div>
+                <div class="message-time">هم اکنون</div>
+            </div>
+        </div>
+        
+        <div class="chatbot-input">
+            <!-- سوالات سریع -->
+            <div class="quick-questions mb-3">
+                <button class="quick-btn" data-question="قیمت‌ها چقدره؟">💰 قیمت‌ها</button>
+                <button class="quick-btn" data-question="چطور ثبت‌نام کنم؟">📝 ثبت‌نام</button>
+                <button class="quick-btn" data-question="برنامه تمرینی دارید؟">🏋️ برنامه تمرینی</button>
+                <button class="quick-btn" data-question="برنامه غذایی">🥗 تغذیه</button>
+            </div>
+            
+            <!-- فیلد ورودی -->
+            <div class="input-group">
+                <input type="text" id="chatbot-input" class="form-control" placeholder="سوال خود را بپرسید..." 
+                       dir="rtl" onkeypress="if(event.key === 'Enter') sendChatbotMessage()">
+                <button class="btn btn-chat-send" onclick="sendChatbotMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <button class="chatbot-toggle" onclick="toggleChatbot()">
+        <i class="fas fa-comment-dots"></i>
+        <span class="notification-badge">AI</span>
+    </button>
+
     <!-- اسکریپت‌ها -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script>
         // فعال کردن لینک‌های ناوبری
-        <
-
-        a class = "navbar-brand"
-        href = "#" >
-            <
-            img src = "assets/images/logo.png"
-        alt = "SMART FIT Logo"
-        height = "40"
-        class = "d-inline-block align-text-top me-2" >
-            SMART FIT <
-            /a>
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                if (targetId.startsWith('#')) {
+                if(this.getAttribute('href').startsWith('#')) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
                     const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
+                    
+                    if(targetElement) {
                         window.scrollTo({
                             top: targetElement.offsetTop - 70,
                             behavior: 'smooth'
@@ -943,185 +1371,189 @@
                     }
                 }
             });
-        }); <
-        li class = "nav-item" >
-            <
-            a class = "nav-link"
-        href = "#pricing" > قیمت‌ها < /a> <
-            /li>
-        // انیمیشن برای متن‌های انگیزشی
-        document.addEventListener('DOMContentLoaded', function() {
-            const motivationalTexts = document.querySelectorAll('.motivational-text');
-            motivationalTexts.forEach((text, index) => {
+        });
+        
+        // جملات انگیزشی متحرک
+        const motivationalSentences = [
+            "امروز روزی است که دیروز نگرانش بودی. از فرصت‌هایت استفاده کن!",
+            "بدن تو قوی‌تر از آن است که فکر می‌کنی، فقط باید تصمیم بگیری!",
+            "موفقیت روزانه است، نه یک اتفاق تصادفی. امروز را بساز!",
+            "هر قدم کوچک، تو را به هدفت نزدیک‌تر می‌کند. ادامه بده!",
+            "دشوارترین قسمت، شروع است. بقیه راه با انگیزه طی می‌شود!",
+            "قدرتمندترین عضله تو، اراده توست. آن را تقویت کن!",
+            "امروز کاری کن که فردا به خودت بابت آن افتخار کنی!",
+            "هیچ محدودیتی جز آنهایی که خودمان می‌سازیم وجود ندارد!",
+            "پیروزی از آن کسانی است که هرگز تسلیم نمی‌شوند!",
+            "تنها راه شکست، توقف است. تا زمانی که ادامه می‌دهی، برنده‌ای!"
+        ];
+        
+        let currentSentenceIndex = 0;
+        const motivationalElement = document.getElementById('motivationalText');
+        const dots = document.querySelectorAll('.slider-dot');
+        
+        if(motivationalElement) {
+            function changeMotivationalSentence() {
+                motivationalElement.classList.remove('active');
+                if(dots[currentSentenceIndex]) {
+                    dots[currentSentenceIndex].classList.remove('active');
+                }
+                
+                currentSentenceIndex = (currentSentenceIndex + 1) % motivationalSentences.length;
+                
                 setTimeout(() => {
-                    text.style.opacity = '1';
-                    text.style.transform = 'translateY(0)';
-                }, index * 300);
+                    motivationalElement.textContent = motivationalSentences[currentSentenceIndex];
+                    motivationalElement.classList.add('active');
+                    if(dots[currentSentenceIndex]) {
+                        dots[currentSentenceIndex].classList.add('active');
+                    }
+                }, 500);
+            }
+            
+            // شروع تایمر
+            let sentenceInterval = setInterval(changeMotivationalSentence, 5000);
+            
+            // کلیک روی نقاط
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    clearInterval(sentenceInterval);
+                    
+                    motivationalElement.classList.remove('active');
+                    if(dots[currentSentenceIndex]) {
+                        dots[currentSentenceIndex].classList.remove('active');
+                    }
+                    
+                    currentSentenceIndex = index;
+                    
+                    setTimeout(() => {
+                        motivationalElement.textContent = motivationalSentences[currentSentenceIndex];
+                        motivationalElement.classList.add('active');
+                        if(dots[currentSentenceIndex]) {
+                            dots[currentSentenceIndex].classList.add('active');
+                        }
+                    }, 500);
+                    
+                    sentenceInterval = setInterval(changeMotivationalSentence, 5000);
+                });
+            });
+            
+            // نمایش جمله اول
+            motivationalElement.textContent = motivationalSentences[0];
+            setTimeout(() => {
+                motivationalElement.classList.add('active');
+            }, 100);
+        }
+        
+        // پایگاه داده پاسخ‌های هوشمند چت بات
+        const chatbotResponses = {
+            "قیمت": [
+                "ما سه طرح داریم: 🥉 ورزشکار (۲۹۹,۰۰۰ تومان)، 🥈 حرفه‌ای (۵۹۹,۰۰۰ تومان)، 🥇 VIP (۱,۱۹۹,۰۰۰ تومان)",
+                "قیمت‌ها از ۲۹۹,۰۰۰ تا ۱,۱۹۹,۰۰۰ تومان متغیر است. برای جزئیات به صفحه قیمت‌ها مراجعه کنید.",
+                "طرح‌های ماهانه ما: پایه ۲۹۹,۰۰۰، حرفه‌ای ۵۹۹,۰۰۰، VIP ۱,۱۹۹,۰۰۰ تومان"
+            ],
+            "ثبت‌نام": [
+                "برای ثبت‌نام روی دکمه 'ورود/ثبت‌نام' در منو کلیک کنید. کمتر از ۲ دقیقه طول می‌کشد!",
+                "ثبت‌نام رایگان است. فقط ایمیل و رمز عبور نیاز دارید.",
+                "می‌تونید از طریق صفحه login ثبت‌نام کنید. نیاز به کارت اعتباری ندارید."
+            ],
+            "برنامه تمرینی": [
+                "برنامه‌های تمرینی کاملاً شخصی‌سازی شده براساس هدف (چربی‌سوزی، عضله‌سازی، تناسب)",
+                "هر برنامه شامل ویدیوی آموزشی، تعداد ست‌ها و تکرارها، و ردیابی پیشرفت است.",
+                "برنامه تمرینی ۴-۶ روز در هفته با توجه به سطح شما طراحی می‌شه."
+            ],
+            "تغذیه": [
+                "برنامه‌های غذایی با کالری شماری دقیق و درشتمغذی‌ها (پروتئین، چربی، کربوهیدرات)",
+                "رژیم غذایی براساس ترجیحات شما (گیاهخواری، بدون گلوتن، etc.) تنظیم می‌شه.",
+                "برنامه غذایی روزانه با لیست خرید و دستور پخت ارائه می‌شه."
+            ],
+            "تخفیف": [
+                "دانشجویان ۳۰٪ تخفیف دارند! کارت دانشجویی لازم است.",
+                "برای پرداخت سالانه ۱۵-۲۵٪ تخفیف داریم.",
+                "تا پایان ماه فرصت دارید از تخفیف ۲۰٪ ثبت‌نام استفاده کنید."
+            ],
+            "مربی": [
+                "مربیان ما دارای مدارک بین‌المللی NASM و ACE هستند.",
+                "مربی اختصاصی در طرح VIP، مشاوره هفتگی در طرح حرفه‌ای.",
+                "مربیان ۲۴/۷ در دسترس برای پاسخ به سوالات شما."
+            ],
+            "سلام": ["سلام! خوش آمدید. 😊", "سلام عزیز! چطور می‌تونم کمکتون کنم؟", "درود! به SMART FIT خوش آمدید."],
+            "تشکر": ["خوشحالم که مفید بودم! 😊", "قابلی نداشت! برای سوالات بعدی در خدمتم.", "ممنون از شما! موفق باشید."],
+            "خداحافظ": ["موفق باشید! 💪", "خدانگهدار! برای سوالات بعدی در خدمتم.", "به امید دیدار!"]
+        };
+        
+        // توابع چت بات
+        function toggleChatbot() {
+            const chat = document.getElementById('chatbot-container');
+            if (chat.classList.contains('active')) {
+                chat.classList.remove('active');
+            } else {
+                chat.classList.add('active');
+                document.getElementById('chatbot-input').focus();
+            }
+        }
+        
+        function closeChatbot() {
+            document.getElementById('chatbot-container').classList.remove('active');
+        }
+        
+        function sendChatbotMessage() {
+            const input = document.getElementById('chatbot-input');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            addMessageToChat(message, 'user');
+            input.value = '';
+            
+            setTimeout(() => {
+                const response = getBotResponse(message);
+                addMessageToChat(response, 'bot');
+            }, 800);
+        }
+        
+        function addMessageToChat(text, sender) {
+            const messagesDiv = document.getElementById('chatbot-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const now = new Date();
+            const time = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+            
+            messageDiv.innerHTML = `
+                <div class="message-content">${text}</div>
+                <div class="message-time">${time}</div>
+            `;
+            
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+        
+        function getBotResponse(userMessage) {
+            let response = "متاسفانه سوال شما رو متوجه نشدم. می‌تونید درباره برنامه‌های تمرینی، تغذیه یا قیمت‌ها سوال بپرسید.";
+            
+            userMessage = userMessage.toLowerCase();
+            for (const [keyword, responses] of Object.entries(chatbotResponses)) {
+                if (userMessage.includes(keyword.toLowerCase())) {
+                    return responses[Math.floor(Math.random() * responses.length)];
+                }
+            }
+            
+            return response;
+        }
+        
+        // سوالات سریع
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.quick-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const question = this.getAttribute('data-question');
+                    addMessageToChat(question, 'user');
+                    
+                    setTimeout(() => {
+                        const response = getBotResponse(question);
+                        addMessageToChat(response, 'bot');
+                    }, 800);
+                });
             });
         });
     </script>
-<script>
-    // جملات انگیزشی (10 جمله)
-    const motivationalSentences = [
-        "امروز روزی است که دیروز نگرانش بودی. از فرصت‌هایت استفاده کن!",
-        "بدن تو قوی‌تر از آن است که فکر می‌کنی، فقط باید تصمیم بگیری!",
-        "موفقیت روزانه است، نه یک اتفاق تصادفی. امروز را بساز!",
-        "هر قدم کوچک، تو را به هدفت نزدیک‌تر می‌کند. ادامه بده!",
-        "دشوارترین قسمت، شروع است. بقیه راه با انگیزه طی می‌شود!",
-        "قدرتمندترین عضله تو، اراده توست. آن را تقویت کن!",
-        "امروز کاری کن که فردا به خودت بابت آن افتخار کنی!",
-        "هیچ محدودیتی جز آنهایی که خودمان می‌سازیم وجود ندارد!",
-        "پیروزی از آن کسانی است که هرگز تسلیم نمی‌شوند!",
-        "تنها راه شکست، توقف است. تا زمانی که ادامه می‌دهی، برنده‌ای!"
-    ];
-    
-    let currentSentenceIndex = 0;
-    const motivationalElement = document.getElementById('motivationalText');
-    const dots = document.querySelectorAll('.slider-dot');
-    
-    // تابع برای تغییر جمله انگیزشی
-    function changeMotivationalSentence() {
-        // غیرفعال کردن جمله و نقطه فعلی
-        motivationalElement.classList.remove('active');
-        dots[currentSentenceIndex].classList.remove('active');
-        
-        // افزایش ایندکس با حلقه
-        currentSentenceIndex = (currentSentenceIndex + 1) % motivationalSentences.length;
-        
-        // تأخیر برای انیمیشن
-        setTimeout(() => {
-            motivationalElement.textContent = motivationalSentences[currentSentenceIndex];
-            motivationalElement.classList.add('active');
-            dots[currentSentenceIndex].classList.add('active');
-        }, 500);
-    }
-    
-    // شروع تایمر برای تغییر خودکار هر 5 ثانیه
-    let sentenceInterval = setInterval(changeMotivationalSentence, 5000);
-    
-    // کلیک روی نقاط برای تغییر دستی
-    dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-            clearInterval(sentenceInterval);
-            
-            motivationalElement.classList.remove('active');
-            dots[currentSentenceIndex].classList.remove('active');
-            
-            currentSentenceIndex = index;
-            
-            setTimeout(() => {
-                motivationalElement.textContent = motivationalSentences[currentSentenceIndex];
-                motivationalElement.classList.add('active');
-                dots[currentSentenceIndex].classList.add('active');
-            }, 500);
-            
-            // راه‌اندازی مجدد تایمر
-            sentenceInterval = setInterval(changeMotivationalSentence, 5000);
-        });
-    });
-    
-    // نمایش جمله اول
-    motivationalElement.textContent = motivationalSentences[0];
-    setTimeout(() => {
-        motivationalElement.classList.add('active');
-    }, 100);
-</script>
-  <!-- لینک به فایل chatbot.js شما -->
-<script src="../assets/js/chatbot.js"></script>
-<!-- ساختار پایه چت بات -->
-<div id="chatbot-container" class="chatbot-container">
-    <div class="chatbot-header">
-        <div class="d-flex align-items-center">
-            <div class="chatbot-avatar">
-                <i class="fas fa-robot"></i>
-            </div>
-            <div class="ms-3">
-                <h6 class="mb-0">دستیار هوشمند</h6>
-                <small class="text-success"><i class="fas fa-circle"></i> آنلاین</small>
-            </div>
-        </div>
-        <button class="btn-close-chat" onclick="closeChatbot()">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
-    
-    <div class="chatbot-messages" id="chatbot-messages">
-        <div class="message bot">
-            <div class="message-content">
-                سلام! من دستیار هوشمند SMART FIT هستم. چطور می‌تونم کمک کنم؟
-            </div>
-            <div class="message-time">هم اکنون</div>
-        </div>
-    </div>
-    
-    <div class="chatbot-input">
-        <div class="input-group">
-            <input type="text" id="chatbot-input" class="form-control" placeholder="سوال خود را بپرسید..." 
-                   dir="rtl">
-            <button class="btn btn-chat-send" onclick="sendChatbotMessage()">
-                <i class="fas fa-paper-plane"></i>
-            </button>
-        </div>
-    </div>
-</div>
-
-<button class="chatbot-toggle" onclick="toggleChatbot()">
-    <i class="fas fa-comment-dots"></i>
-    <span class="notification-badge">AI</span>
-</button>
-
-<script>
-// توابع ساده برای چت بات
-function toggleChatbot() {
-    const chat = document.getElementById('chatbot-container');
-    if (chat.classList.contains('active')) {
-        chat.classList.remove('active');
-    } else {
-        chat.classList.add('active');
-    }
-}
-
-function closeChatbot() {
-    document.getElementById('chatbot-container').classList.remove('active');
-}
-
-function sendChatbotMessage() {
-    const input = document.getElementById('chatbot-input');
-    const message = input.value.trim();
-    
-    if (message) {
-        // نمایش پیام کاربر
-        const messagesDiv = document.getElementById('chatbot-messages');
-        const userMessage = document.createElement('div');
-        userMessage.className = 'message user';
-        userMessage.innerHTML = `
-            <div class="message-content">${message}</div>
-            <div class="message-time">هم اکنون</div>
-        `;
-        messagesDiv.appendChild(userMessage);
-        
-        // پاک کردن فیلد
-        input.value = '';
-        
-        // اسکرول به پایین
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        
-        // پاسخ ربات (ساده)
-        setTimeout(() => {
-            const botResponse = document.createElement('div');
-            botResponse.className = 'message bot';
-            botResponse.innerHTML = `
-                <div class="message-content">متوجه شدم! برای پاسخ دقیق‌تر، لطفاً با پشتیبانی تماس بگیرید.</div>
-                <div class="message-time">هم اکنون</div>
-            `;
-            messagesDiv.appendChild(botResponse);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }, 1000);
-    }
-}
-</script>
-
-
 </body>
-
 </html>
