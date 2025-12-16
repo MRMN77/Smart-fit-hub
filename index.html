@@ -4,1058 +4,1124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMART FIT | برنامه هوشمند تناسب اندام</title>
-
+    <title>SMART FIT - سیستم هوشمند مدیریت ورزش</title>
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- استایل اختصاصی -->
-    <link rel="stylesheet" href="assets/css/main.css">
-
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        /* استایل‌های اضافی برای صفحه اصلی */
+        /* استایل چت بات */
+.chatbot-container {
+    position: fixed;
+    bottom: 100px;
+    left: 30px;
+    width: 350px;
+    height: 500px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    border: 3px solid var(--gold);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    display: none;
+}
+
+.chatbot-container.active {
+    display: flex;
+}
+
+.chatbot-header {
+    background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
+    color: white;
+    padding: 15px 20px;
+    border-radius: 17px 17px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chatbot-avatar {
+    width: 40px;
+    height: 40px;
+    background-color: var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+}
+
+.btn-close-chat {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.chatbot-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+}
+
+.message {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.message.bot {
+    align-items: flex-start;
+}
+
+.message.user {
+    align-items: flex-end;
+}
+
+.message-content {
+    max-width: 80%;
+    padding: 12px 18px;
+    border-radius: 18px;
+    position: relative;
+}
+
+.message.bot .message-content {
+    background-color: white;
+    border: 2px solid var(--light-red);
+    color: var(--black);
+    border-bottom-right-radius: 5px;
+}
+
+.message.user .message-content {
+    background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
+    color: white;
+    border-bottom-left-radius: 5px;
+}
+
+.message-time {
+    font-size: 0.7rem;
+    color: #888;
+    margin-top: 5px;
+}
+
+.chatbot-input {
+    padding: 15px;
+    border-top: 2px solid #eee;
+    background-color: white;
+    border-radius: 0 0 17px 17px;
+}
+
+.chatbot-toggle {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(211, 47, 47, 0.4);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    animation: chatbot-pulse 2s infinite;
+}
+
+.chatbot-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(211, 47, 47, 0.6);
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: var(--gold);
+    color: var(--black);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* انیمیشن برای دکمه چت */
+@keyframes chatbot-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* ریسپانسیو */
+@media (max-width: 768px) {
+    .chatbot-container {
+        width: 300px;
+        height: 450px;
+        left: 20px;
+        bottom: 90px;
+    }
+    
+    .chatbot-toggle {
+        left: 20px;
+        bottom: 20px;
+    }
+}
+        /* استایل راست‌چین برای لیست قیمت‌ها */
+.list-unstyled.text-start {
+    text-align: right !important;
+    padding-right: 15px !important;
+}
+
+.list-unstyled.text-start li {
+    text-align: right !important;
+    direction: rtl !important;
+}
+
+/* راست‌چین کردن قیمت‌ها */
+.price-display {
+    direction: ltr;
+    text-align: center;
+}
+
+/* راست‌چین شدن آیتم‌های لیست در بخش مزایا */
+.benefit-item {
+    text-align: right !important;
+    direction: rtl !important;
+}
+
+.benefit-item h5 {
+    text-align: right !important;
+}
+
+.benefit-item p {
+    text-align: right !important;
+}
+        
+        /* استایل جملات انگیزشی متحرک */
+.motivational-slider {
+    position: relative;
+    min-height: 200px;
+}
+
+.motivational-text {
+    font-size: 1.8rem;
+    color: var(--dark-red);
+    font-weight: 700;
+    text-align: center;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: var(--white);
+    border-radius: 15px;
+    border-right: 5px solid var(--gold);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    width: 90%;
+    max-width: 800px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease, transform 1s ease;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.motivational-text.active {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.slider-controls {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+.slider-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.slider-dot.active {
+    background-color: var(--gold);
+    transform: scale(1.3);
+}
+
+.benefit-item {
+    padding: 15px;
+    border-right: 3px solid var(--gold);
+    background-color: rgba(255, 215, 0, 0.05);
+    border-radius: 8px;
+}
+
+.text-gold {
+    color: var(--gold) !important;
+}
+
+.stats-box {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+        /* استایل برای بخش قیمت‌گذاری */
+        .price-display {
+            direction: ltr;
+            text-align: center;
+        }
+
+        .price-amount {
+            font-family: 'Almarai', sans-serif;
+        }
+
+        .pricing-card {
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .badge {
+            font-family: 'Almarai', sans-serif;
+        }
+
+        :root {
+            --primary-red: #d32f2f;
+            --dark-red: #b71c1c;
+            --light-red: #ffebee;
+            --gold: #ffd700;
+            --dark-gold: #daa520;
+            --black: #212121;
+            --white: #ffffff;
+            --gray: #f5f5f5;
+        }
+
+        * {
+            font-family: 'Almarai', sans-serif;
+        }
+
+        body {
+            background-color: var(--white);
+            color: var(--black);
+            padding-top: 56px;
+        }
+
+        /* نوار ناوبری */
+        <li class="nav-item">
+    <a class="nav-link" href="pages/pricing.html">قیمت‌ها و طرح‌ها</a>
+</li>
+        .navbar-custom {
+            background-color: var(--white) !important;
+            border-bottom: 3px solid var(--primary-red);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            color: var(--primary-red) !important;
+            font-weight: 800;
+            font-size: 1.8rem;
+        }
+
+        .nav-link {
+            color: var(--black) !important;
+            font-weight: 500;
+            margin: 0 8px;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-red) !important;
+            transform: translateY(-2px);
+        }
+
+        /* هیرو بخش */
         .hero-section {
-            background: linear-gradient(135deg, rgba(67, 97, 238, 0.9) 0%, rgba(58, 12, 163, 0.9) 100%),
-                url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 235, 238, 0.8)),
+                url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
             background-size: cover;
             background-position: center;
-            color: white;
-            padding: 120px 0;
-            border-radius: 0 0 40px 40px;
-            margin-bottom: 60px;
+            padding: 100px 0;
+            text-align: center;
+            border-bottom: 5px solid var(--gold);
         }
 
         .hero-title {
+            color: var(--dark-red);
+            font-weight: 800;
             font-size: 3.5rem;
-            font-weight: 700;
             margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .hero-subtitle {
+            color: var(--black);
             font-size: 1.3rem;
             margin-bottom: 30px;
-            opacity: 0.9;
+            max-width: 700px;
+            margin-right: auto;
+            margin-left: auto;
         }
 
-        .feature-icon-box {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-        }
-
-        .feature-icon-box i {
-            font-size: 2.5rem;
-            color: white;
-        }
-
-        .testimonial-card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            margin: 20px 0;
-            border-right: 5px solid #4361ee;
-        }
-
-        .stats-box {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
-            transition: all 0.3s;
-        }
-
-        .stats-box:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-        }
-
-        .stats-number {
-            font-size: 3rem;
+        /* دکمه‌ها */
+        .btn-custom-red {
+            background-color: var(--primary-red);
+            color: var(--white);
+            padding: 12px 35px;
+            border-radius: 50px;
             font-weight: 700;
-            color: #4361ee;
-            margin-bottom: 10px;
-        }
-
-        .cta-section {
-            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
-            color: white;
-            padding: 80px 0;
-            border-radius: 30px;
-            margin: 60px 0;
-        }
-    </style>
-</head>
-
-<body>
-
-    <!-- ناوبری اصلی -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="#">
-                <i class="fas fa-dumbbell me-2"></i>
-                SMART FIT
-            </a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">صفحه اصلی</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="pages/pricing.html">قیمت‌ها</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="pages/dashboard.html">داشبورد</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#features">ویژگی‌ها</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#about">درباره ما</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contact">تماس با ما</a>
-                    </li>
-                </ul>
-
-                <div class="d-flex gap-2 ms-lg-3 mt-3 mt-lg-0">
-                    <a href="pages/login.html" class="btn btn-outline-light">
-                        <i class="fas fa-sign-in-alt me-1"></i> ورود
-                    </a>
-                    <a href="pages/register.html" class="btn btn-light text-primary fw-bold">
-                        <i class="fas fa-user-plus me-1"></i> ثبت‌نام رایگان
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- بخش Hero -->
-    <section class="hero-section">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-7">
-                    <h1 class="hero-title">رسیدن به اندام ایده‌آل با <span class="text-warning">SMART FIT</span></h1>
-                    <p class="hero-subtitle">
-                        برنامه‌ای هوشمند برای طراحی تمرینات شخصی، ردیابی پیشرفت و مدیریت تغذیه.
-                        هزاران کاربر به کمک SMART FIT به اهداف تناسب اندام خود رسیده‌اند.
-                    </p>
-                    <div class="d-flex flex-wrap gap-3">
-                        <a href="pages/register.html" class="btn btn-warning btn-lg fw-bold px-5 py-3">
-                            <i class="fas fa-rocket me-2"></i> شروع رایگان
-                        </a>
-                        <a href="#features" class="btn btn-outline-light btn-lg px-5 py-3">
-                            <i class="fas fa-play-circle me-2"></i> معرفی برنامه
-                        </a>
-                    </div>
-                </div>
-                <!-- گالری متحرک و جملات انگیزشی -->
-                <section class="py-5" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
-                    <div class="container">
-                        <!-- عنوان بخش -->
-                        <div class="text-center mb-5">
-                            <h2 class="display-6 fw-bold">فضای ورزشی <span class="text-primary">SMART FIT</span></h2>
-                            <p class="text-muted lead">بهترین محیط برای رسیدن به بهترین حالت شما</p>
-                        </div>
-
-                        <!-- گالری عکس‌های متحرک -->
-                        <!-- عکس 1: تمرین قدرتی -->
-                        <img src="https://images.pexels.com/photos/2294361/pexels-photo-2294361.jpeg?auto=compress&cs=tinysrgb&w=600" alt="تمرین قدرتی" class="gallery-img">
-
-                        <!-- عکس 2: کاردیو -->
-                        <img src="https://images.pexels.com/photos/3768916/pexels-photo-3768916.jpeg?auto=compress&cs=tinysrgb&w=600" alt="تمرین کاردیو" class="gallery-img">
-
-                        <!-- عکس 3: یوگا -->
-                        <img src="https://images.pexels.com/photos/4056723/pexels-photo-4056723.jpeg?auto=compress&cs=tinysrgb&w=600" alt="یوگا" class="gallery-img">
-
-                        <!-- عکس 4: تغذیه -->
-                        <img src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=600" alt="تغذیه سالم" class="gallery-img">
-
-                        <!-- عکس 5: گروهی -->
-                        <img src="https://images.pexels.com/photos/866021/pexels-photo-866021.jpeg?auto=compress&cs=tinysrgb&w=600" alt="کلاس گروهی" class="gallery-img">
-
-                        <!-- جملات انگیزشی -->
-                        <div class="motivation-section text-center">
-                            <div class="motivation-card p-5 rounded-4">
-                                <i class="fas fa-quote-left fa-2x text-primary mb-4"></i>
-                                <h4 class="fw-bold mb-4" id="motivation-text">تنها راه رسیدن به غیرممکن، باور به امکان‌پذیری آن است</h4>
-                                <i class="fas fa-quote-right fa-2x text-primary"></i>
-                                <div class="mt-3">
-                                    <button class="btn btn-outline-primary btn-sm" id="next-motivation">
-                                        <i class="fas fa-redo me-1"></i>جمله بعدی
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- استایل گالری -->
-                <style>
-                    .gallery-container {
-                        overflow: hidden;
-                        position: relative;
-                        height: 280px;
-                        border-radius: 20px;
-                        margin: 0 auto;
-                        max-width: 1200px;
-                    }
-
-                    .gallery-track {
-                        display: flex;
-                        animation: slideGallery 35s linear infinite;
-                        width: max-content;
-                        gap: 20px;
-                    }
-
-                    .gallery-item {
-                        width: 250px;
-                        flex-shrink: 0;
-                        position: relative;
-                        border-radius: 15px;
-                        overflow: hidden;
-                        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-                        transition: transform 0.3s;
-                    }
-
-                    .gallery-item:hover {
-                        transform: translateY(-10px);
-                    }
-
-                    .gallery-img {
-                        width: 100%;
-                        height: 200px;
-                        object-fit: cover;
-                        transition: transform 0.5s;
-                    }
-
-                    .gallery-item:hover .gallery-img {
-                        transform: scale(1.1);
-                    }
-
-                    .gallery-caption {
-                        position: absolute;
-                        bottom: 0;
-                        left: 0;
-                        right: 0;
-                        background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-                        color: white;
-                        padding: 15px;
-                        text-align: center;
-                        font-weight: 600;
-                        font-size: 1.1rem;
-                    }
-
-                    @keyframes slideGallery {
-                        0% {
-                            transform: translateX(0);
-                        }
-
-                        100% {
-                            transform: translateX(-50%);
-                        }
-                    }
-
-                    .motivation-card {
-                        background: white;
-                        border: 2px solid #e0e0e0;
-                        border-left: 5px solid #4361ee;
-                        max-width: 800px;
-                        margin: 0 auto;
-                        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-                    }
-
-                    #motivation-text {
-                        line-height: 1.8;
-                        min-height: 60px;
-                        transition: opacity 0.5s;
-                    }
-                </style>
-
-                <!-- اسکریپت گالری -->
-                <script>
-                    // جملات انگیزشی
-                    const motivationQuotes = [
-                        "تنها راه رسیدن به غیرممکن، باور به امکان‌پذیری آن است",
-                        "امروز کاری کن که دیروز نمی‌توانستی",
-                        "قدرت تو در مقاومتت نهفته است، نه در راحتی‌ات",
-                        "هر صبح فرصتی تازه برای ساختن خودت است",
-                        "بهترین پروژه‌ای که روی آن کار می‌کنی، خودت هستی",
-                        "کوچک‌ترین تلاش‌ها، بزرگ‌ترین نتایج را می‌سازند",
-                        "اراده قوی‌تر از هر مانعی است",
-                        "هر روز یک قدم به هدفت نزدیک‌تر می‌شوی",
-                        "تو توانایی رسیدن به هر هدفی را داری",
-                        "موفقیت، مجموعه‌ای از تلاش‌های کوچک روزانه است"
-                    ];
-
-                    // تغییر جمله انگیزشی
-                    let currentQuoteIndex = 0;
-                    const motivationText = document.getElementById('motivation-text');
-                    const nextBtn = document.getElementById('next-motivation');
-
-                    function showNextQuote() {
-                        motivationText.style.opacity = 0;
-
-                        setTimeout(() => {
-                            currentQuoteIndex = (currentQuoteIndex + 1) % motivationQuotes.length;
-                            motivationText.textContent = motivationQuotes[currentQuoteIndex];
-                            motivationText.style.opacity = 1;
-                        }, 300);
-                    }
-
-                    // کلیک روی دکمه
-                    nextBtn.addEventListener('click', showNextQuote);
-
-                    // تغییر خودکار هر 15 ثانیه
-                    setInterval(showNextQuote, 15000);
-
-                    // توقف گالری موقع هاور
-                    const galleryTrack = document.getElementById('gallery-track');
-
-                    galleryTrack.addEventListener('mouseenter', () => {
-                        galleryTrack.style.animationPlayState = 'paused';
-                    });
-
-                    galleryTrack.addEventListener('mouseleave', () => {
-                        galleryTrack.style.animationPlayState = 'running';
-                    });
-                </script>
-                <div class="col-lg-5 mt-5 mt-lg-0">
-                    <div class="stats-box">
-                        <div class="stats-number">۵,۰۰۰+</div>
-                        <h5>کاربر فعال</h5>
-                        <p class="text-muted">در سراسر ایران</p>
-                    </div>
-                    <div class="stats-box mt-4">
-                        <div class="stats-number">۹۸٪</div>
-                        <h5>رضایت‌مندی</h5>
-                        <p class="text-muted">از کاربران برنامه</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- بخش ویژگی‌ها -->
-    <section id="features" class="py-5">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="display-5 fw-bold mb-3">ویژگی‌های منحصربفرد <span class="text-primary">SMART FIT</span></h2>
-                <p class="text-muted lead">هر آنچه برای رسیدن به تناسب اندام نیاز دارید در یک برنامه</p>
-            </div>
-
-            <div class="row g-4">
-                <!-- ویژگی ۱ -->
-                <div class="col-md-4">
-                    <div class="feature-card text-center p-4 h-100">
-                        <div class="feature-icon-box">
-                            <i class="fas fa-dumbbell"></i>
-                        </div>
-                        <h4 class="mt-3 mb-3">برنامه تمرینی هوشمند</h4>
-                        <p class="text-muted">
-                            طراحی برنامه تمرینی متناسب با وزن، قد، سطح آمادگی و اهداف شما توسط هوش مصنوعی
-                        </p>
-                    </div>
-                </div>
-
-                <!-- ویژگی ۲ -->
-                <div class="col-md-4">
-                    <div class="feature-card text-center p-4 h-100">
-                        <div class="feature-icon-box">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <h4 class="mt-3 mb-3">ردیابی پیشرفت</h4>
-                        <p class="text-muted">
-                            نمودارهای پیشرفت، آمار دقیق و گزارش‌های هفتگی از وضعیت بهبود بدنی شما
-                        </p>
-                    </div>
-                </div>
-
-                <!-- ویژگی ۳ -->
-                <div class="col-md-4">
-                    <div class="feature-card text-center p-4 h-100">
-                        <div class="feature-icon-box">
-                            <i class="fas fa-apple-alt"></i>
-                        </div>
-                        <h4 class="mt-3 mb-3">برنامه غذایی</h4>
-                        <p class="text-muted">
-                            طراحی رژیم غذایی شخصی‌سازی شده با محاسبه کالری، پروتئین و درشتمغذی‌ها
-                        </p>
-                    </div>
-                </div>
-
-                <!-- ویژگی ۴ -->
-                <div class="col-md-4 mt-4">
-                    <div class="feature-card text-center p-4 h-100">
-                        <div class="feature-icon-box">
-                            <i class="fas fa-video"></i>
-                        </div>
-                        <h4 class="mt-3 mb-3">ویدیوهای آموزشی</h4>
-                        <p class="text-muted">
-                            آموزش تصویری حرکات ورزشی با توضیح کامل تکنیک اجرا توسط مربیان حرفه‌ای
-                        </p>
-                    </div>
-                </div>
-
-                <!-- ویژگی ۵ -->
-                <div class="col-md-4 mt-4">
-                    <div class="feature-card text-center p-4 h-100">
-                        <div class="feature-icon-box">
-                            <i class="fas fa-user-md"></i>
-                        </div>
-                        <h4 class="mt-3 mb-3">مشاوره آنلاین</h4>
-                        <p class="text-muted">
-                            ارتباط مستقیم با مربیان و متخصصان تغذیه برای پاسخگویی به سوالات شما
-                        </p>
-                    </div>
-                </div>
-
-                <!-- ویژگی ۶ -->
-                <div class="col-md-4 mt-4">
-                    <div class="feature-card text-center p-4 h-100">
-                        <div class="feature-icon-box">
-                            <i class="fas fa-mobile-alt"></i>
-                        </div>
-                        <h4 class="mt-3 mb-3">دسترسی همه‌جا</h4>
-                        <p class="text-muted">
-                            استفاده از برنامه در موبایل، تبلت و کامپیوتر بدون نیاز به نصب نرم‌افزار اضافی
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- ویژگی ۶ -->
-    <div class="col-md-4 mt-4">
-        <div class="feature-card text-center p-4 h-100">
-            <div class="feature-icon-box">
-                <i class="fas fa-mobile-alt"></i>
-            </div>
-            <h4 class="mt-3 mb-3">دسترسی همه‌جا</h4>
-            <p class="text-muted">
-                استفاده از برنامه در موبایل، تبلت و کامپیوتر بدون نیاز به نصب نرم‌افزار اضافی
-            </p>
-        </div>
-    </div>
-    </div>
-    </div>
-    </section>
-    <!-- بخش CTA -->
-    <section class="cta-section">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-8">
-                    <h2 class="display-6 fw-bold mb-3">آماده شروع تغییر هستی؟</h2>
-                    <p class="lead mb-4 opacity-90">
-                        همین امروز به خانواده SMART FIT بپیوندید و ۱۴ روز به صورت رایگان از تمامی امکانات برنامه استفاده کنید.
-                    </p>
-                </div>
-                <div class="col-lg-4 text-lg-end text-center">
-                    <a href="pages/register.html" class="btn btn-light btn-lg px-5 py-3 fw-bold" style="color: #4361ee;">
-                        <i class="fas fa-gem me-2"></i> شروع دوره آزمایشی
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- تبلیغ دانلود اپ -->
-    <img src="https://images.pexels.com/photos/799443/pexels-photo-799443.jpeg?auto=compress&cs=tinysrgb&w=600" alt="اپلیکیشن SMART FIT" class="w-100 h-100 object-fit-cover">
-    <section class="py-5 bg-dark text-white">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <h2 class="display-5 fw-bold mb-4">اپلیکیشن <span class="text-warning">SMART FIT</span></h2>
-                    <p class="lead mb-4">
-                        همه امکانات SMART FIT در جیب شما! برنامه تمرینی، ردیابی پیشرفت،
-                        ارتباط با مربی و همه چیز در یک اپلیکیشن.
-                    </p>
-
-                    <div class="d-flex flex-wrap gap-3">
-                        <a href="#" class="btn btn-light btn-lg px-4 py-3">
-                            <i class="fab fa-apple fa-2x me-2"></i>
-                            <div>
-                                <small>دانلود از</small><br>
-                                <strong>App Store</strong>
-                            </div>
-                        </a>
-
-                        <a href="#" class="btn btn-light btn-lg px-4 py-3">
-                            <i class="fab fa-google-play fa-2x me-2"></i>
-                            <div>
-                                <small>دانلود از</small><br>
-                                <strong>Google Play</strong>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="col-lg-6 text-center">
-                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="img-fluid rounded-3 shadow-lg" alt="اپلیکیشن موبایل">
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- تبلیغ دانلود اپلیکیشن -->
-    <section class="py-5" style="background: linear-gradient(135deg, #2a087c 0%, #1a054d 100%);">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 text-center text-lg-start mb-4 mb-lg-0">
-                    <!-- تصویر موبایل -->
-                    <div class="phone-mockup position-relative" style="max-width: 300px; margin: 0 auto;">
-                        <div class="phone-screen position-absolute" style="top: 12px; left: 12px; right: 12px; bottom: 12px; border-radius: 25px; overflow: hidden;">
-                            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="اپلیکیشن SMART FIT" class="w-100 h-100 object-fit-cover">
-                        </div>
-                        <svg width="324" height="658" viewBox="0 0 324 658" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2H312C318.627 2 324 7.37258 324 14V644C324 650.627 318.627 656 312 656H12C5.37258 656 0 650.627 0 644V14C0 7.37258 5.37258 2 12 2Z" fill="white" />
-                            <path d="M162 8C165.314 8 168 10.6863 168 14C168 17.3137 165.314 20 162 20C158.686 20 156 17.3137 156 14C156 10.6863 158.686 8 162 8Z" fill="#E0E0E0" />
-                            <rect x="8" y="40" width="308" height="578" rx="8" fill="white" stroke="#E0E0E0" stroke-width="2" />
-                        </svg>
-                    </div>
-                </div>
-
-                <div class="col-lg-6 text-white">
-                    <h2 class="display-5 fw-bold mb-4">
-                        <i class="fas fa-mobile-alt me-3 text-warning"></i>
-                        اپلیکیشن <span class="text-warning">SMART FIT</span>
-                    </h2>
-
-                    <p class="lead mb-4 opacity-90">
-                        تمام قدرت SMART FIT در جیب شما! برنامه تمرینی شخصی، ردیابی پیشرفت،
-                        ارتباط مستقیم با مربی و مدیریت کامل تغذیه - همه در یک اپ ساده و کاربردی.
-                    </p>
-
-                    <div class="features-list mb-5">
-                        <div class="row">
-                            <div class="col-6 mb-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="feature-icon-small me-3">
-                                        <i class="fas fa-dumbbell"></i>
-                                    </div>
-                                    <span>برنامه تمرینی هوشمند</span>
-                                </div>
-                            </div>
-                            <div class="col-6 mb-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="feature-icon-small me-3">
-                                        <i class="fas fa-chart-line"></i>
-                                    </div>
-                                    <span>ردیابی پیشرفت زنده</span>
-                                </div>
-                            </div>
-                            <div class="col-6 mb-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="feature-icon-small me-3">
-                                        <i class="fas fa-apple-alt"></i>
-                                    </div>
-                                    <span>مدیریت تغذیه</span>
-                                </div>
-                            </div>
-                            <div class="col-6 mb-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="feature-icon-small me-3">
-                                        <i class="fas fa-comments"></i>
-                                    </div>
-                                    <span>چت با مربی</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- دکمه‌های دانلود -->
-                    <div class="download-buttons">
-                        <h5 class="mb-3 opacity-90">همین حالا دانلود کنید:</h5>
-
-                        <div class="d-flex flex-wrap gap-3">
-                            <!-- اپل استور -->
-                            <a href="https://www.apple.com/app-store/" target="_blank" class="btn btn-light btn-lg px-4 py-3 rounded-pill download-btn">
-                                <div class="d-flex align-items-center">
-                                    <div class="me-3">
-                                        <i class="fab fa-apple fa-2x"></i>
-                                    </div>
-                                    <div class="text-start">
-                                        <small class="d-block opacity-75">دانلود از</small>
-                                        <strong class="fs-5">App Store</strong>
-                                    </div>
-                                </div>
-                            </a>
-
-                            <!-- گوگل پلی -->
-                            <a href="https://play.google.com/store" target="_blank" class="btn btn-light btn-lg px-4 py-3 rounded-pill download-btn">
-                                <div class="d-flex align-items-center">
-                                    <div class="me-3">
-                                        <i class="fab fa-google-play fa-2x"></i>
-                                    </div>
-                                    <div class="text-start">
-                                        <small class="d-block opacity-75">دانلود از</small>
-                                        <strong class="fs-5">Google Play</strong>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-
-                        <!-- QR کد -->
-                        <div class="mt-4">
-                            <div class="d-inline-block bg-white p-3 rounded-3">
-                                <div class="text-center">
-                                    <div class="qr-code mb-2">
-                                        <!-- شبیه‌سازی QR Code -->
-                                        <div style="width: 120px; height: 120px; background: #f8f9fa; border: 2px dashed #ccc; 
-                                         display: flex; align-items: center; justify-content: center; margin: 0 auto;">
-                                            <i class="fas fa-qrcode fa-3x text-muted"></i>
-                                        </div>
-                                    </div>
-                                    <small class="text-dark">اسکن کنید برای دانلود مستقیم</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- استایل تبلیغ اپ -->
-    <style>
-        .phone-mockup {
-            filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.3));
-        }
-
-        .feature-icon-small {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .download-btn {
+            border: none;
             transition: all 0.3s;
-            border: 2px solid transparent;
-            min-width: 200px;
+            margin: 5px;
         }
 
-        .download-btn:hover {
-            transform: translateY(-5px);
-            border-color: #ffd166;
-            box-shadow: 0 15px 30px rgba(255, 209, 102, 0.2);
+        .btn-custom-red:hover {
+            background-color: var(--dark-red);
+            color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(211, 47, 47, 0.3);
         }
 
-        .download-btn.apple:hover {
-            background: #f2f2f7;
+        .btn-custom-gold {
+            background-color: transparent;
+            color: var(--black);
+            padding: 12px 35px;
+            border-radius: 50px;
+            font-weight: 700;
+            border: 3px solid var(--gold);
+            transition: all 0.3s;
+            margin: 5px;
         }
 
-        .download-btn.google:hover {
-            background: #f8f9fa;
+        .btn-custom-gold:hover {
+            background-color: var(--gold);
+            color: var(--black);
+            transform: translateY(-3px);
+            border-color: var(--dark-gold);
         }
 
-        .qr-code {
-            transition: transform 0.3s;
-        }
-
-        .qr-code:hover {
-            transform: scale(1.05);
-        }
-
-        @media (max-width: 768px) {
-            .phone-mockup {
-                max-width: 250px;
-            }
-
-            .download-btn {
-                min-width: 100%;
-            }
-        }
-    </style>
-
-    <!-- اسکریپت شمارش کاربران اپ -->
-    <script>
-        // شمارنده کاربران اپ (شبیه‌سازی)
-        document.addEventListener('DOMContentLoaded', function() {
-            const userCount = 12547;
-            const countElement = document.createElement('div');
-            countElement.className = 'mt-4 text-center';
-            countElement.innerHTML = `
-            <div class="bg-warning text-dark d-inline-block px-4 py-2 rounded-pill">
-                <i class="fas fa-users me-2"></i>
-                <strong>${userCount.toLocaleString('fa-IR')}+</strong> کاربر فعال در اپ
-            </div>
-        `;
-
-            document.querySelector('.download-buttons').appendChild(countElement);
-
-            // انیمیشن افزایش شمارنده
-            let currentCount = 12000;
-            const targetCount = 12547;
-            const interval = setInterval(() => {
-                currentCount += Math.floor(Math.random() * 10) + 1;
-                if (currentCount >= targetCount) {
-                    currentCount = targetCount;
-                    clearInterval(interval);
-                }
-                countElement.querySelector('strong').textContent =
-                    currentCount.toLocaleString('fa-IR') + '+';
-            }, 50);
-        });
-    </script>
-    <!-- فوتر -->
-    <footer class="bg-dark text-white py-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 mb-4 mb-lg-0">
-                    <h4 class="fw-bold mb-3">
-                        <i class="fas fa-dumbbell me-2"></i> SMART FIT
-                    </h4>
-                    <p class="opacity-75">
-                        پلتفرم هوشمند تناسب اندام و سلامتی با هدف ارتقای کیفیت زندگی ایرانیان
-                    </p>
-                    <div class="d-flex gap-3 mt-4">
-                        <a href="#" class="text-white fs-5"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-white fs-5"><i class="fab fa-telegram"></i></a>
-                        <a href="#" class="text-white fs-5"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-white fs-5"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-
-                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
-                    <h5 class="mb-3">دسترسی سریع</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">صفحه اصلی</a></li>
-                        <li class="mb-2"><a href="pages/dashboard.html" class="text-white-50 text-decoration-none">داشبورد</a></li>
-                        <li class="mb-2"><a href="#features" class="text-white-50 text-decoration-none">ویژگی‌ها</a></li>
-                        <li class="mb-2"><a href="#about" class="text-white-50 text-decoration-none">درباره ما</a></li>
-                    </ul>
-                </div>
-
-                <div class="col-lg-3 col-md-4 mb-4 mb-md-0">
-                    <h5 class="mb-3">حساب کاربری</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="pages/login.html" class="text-white-50 text-decoration-none">ورود به حساب</a></li>
-                        <li class="mb-2"><a href="pages/register.html" class="text-white-50 text-decoration-none">ثبت‌نام جدید</a></li>
-                        <li class="mb-2"><a href="pages/profile.html" class="text-white-50 text-decoration-none">پروفایل من</a></li>
-                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">قیمت‌ها</a></li>
-                    </ul>
-                </div>
-
-                <div class="col-lg-3 col-md-4">
-                    <h5 class="mb-3">تماس با ما</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2">
-                            <i class="fas fa-map-marker-alt me-2"></i>
-                            تهران، خیابان ولیعصر
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-phone me-2"></i>
-                            ۰۲۱-۱۲۳۴۵۶۷۸
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-envelope me-2"></i>
-                            info@smartfit.ir
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <hr class="my-4 opacity-25">
-
-            <div class="text-center pt-3">
-                <p class="mb-0 opacity-75">
-                    © ۲۰۲۴ SMART FIT. تمامی حقوق محفوظ است.
-                    <span class="d-block d-md-inline mt-2 mt-md-0">این پروژه برای درس دانشگاهی طراحی شده است.</span>
-                </p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- اسکریپت‌ها -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/script.js"></script>
-
-    <script>
-        // اسکریپت ساده برای صفحه اصلی
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('SMART FIT صفحه اصلی بارگذاری شد');
-
-            // انیمیشن اسکرول نرم
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
-
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-        });
-    </script>
-    <!-- گالری متحرک -->
-    <section class="py-5 bg-light">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="display-6 fw-bold">فضای ورزشی <span class="text-primary">SMART FIT</span></h2>
-                <p class="text-muted">بهترین محیط برای رسیدن به بهترین حالت شما</p>
-            </div>
-
-            <div class="gallery-slider">
-                <div class="gallery-track" id="gallery-track">
-                    <div class="gallery-slide">
-                        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="تمرین قدرتی">
-                        <div class="gallery-caption">تمرینات قدرتی</div>
-                    </div>
-                    <div class="gallery-slide">
-                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="تمرین کاردیو">
-                        <div class="gallery-caption">تمرینات کاردیو</div>
-                    </div>
-                    <div class="gallery-slide">
-                        <img src="https://images.unsplash.com/photo-1576678927484-cc907957088c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="یوگا">
-                        <div class="gallery-caption">یوگا و مدیتیشن</div>
-                    </div>
-                    <div class="gallery-slide">
-                        <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="تغذیه سالم">
-                        <div class="gallery-caption">تغذیه سالم</div>
-                    </div>
-                    <div class="gallery-slide">
-                        <img src="https://images.unsplash.com/photo-1549060279-7e168fce7090?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="گروه ورزشی">
-                        <div class="gallery-caption">کلاس‌های گروهی</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- جملات انگیزشی -->
-            <div class="mt-5 text-center">
-                <div class="motivation-quote">
-                    <i class="fas fa-quote-left text-primary fs-1"></i>
-                    <h4 class="my-4 fst-italic" id="motivation-text">تنها راه رسیدن به غیرممکن، باور به امکان‌پذیری آن است</h4>
-                    <i class="fas fa-quote-right text-primary fs-1"></i>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <style>
-        .gallery-slider {
-            overflow: hidden;
+        /* بخش‌ها */
+        .section-title {
+            color: var(--dark-red);
+            font-weight: 800;
+            font-size: 2.5rem;
+            text-align: center;
+            margin: 60px 0 40px;
             position: relative;
-            height: 350px;
-            border-radius: 20px;
         }
 
-        .gallery-track {
-            display: flex;
-            animation: slide 30s linear infinite;
-            width: max-content;
+        .section-title:after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 4px;
+            background-color: var(--gold);
+            bottom: -15px;
+            right: 50%;
+            transform: translateX(50%);
         }
 
-        .gallery-slide {
-            width: 300px;
-            margin: 0 15px;
-            position: relative;
+        /* کارت‌ها */
+        .feature-card {
+            background: var(--white);
             border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            flex-shrink: 0;
+            padding: 30px;
+            height: 100%;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            border-top: 5px solid var(--primary-red);
+            transition: all 0.3s;
+            text-align: center;
         }
 
-        .gallery-slide img {
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-card i {
+            font-size: 3rem;
+            color: var(--primary-red);
+            margin-bottom: 20px;
+        }
+
+        .feature-card h4 {
+            color: var(--dark-red);
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        /* کادر طلایی */
+        .gold-border-box {
+            border: 3px solid var(--gold);
+            border-radius: 15px;
+            padding: 25px;
+            background-color: var(--white);
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(218, 165, 32, 0.2);
+        }
+
+        /* متن‌های انگیزشی */
+        .motivational-section {
+            background-color: var(--light-red);
+            padding: 80px 0;
+            margin: 60px 0;
+            border-top: 5px solid var(--gold);
+            border-bottom: 5px solid var(--gold);
+        }
+
+        .motivational-text {
+            font-size: 1.5rem;
+            color: var(--dark-red);
+            font-weight: 700;
+            text-align: center;
+            margin: 25px 0;
+            padding: 20px;
+            background-color: var(--white);
+            border-radius: 10px;
+            border-right: 5px solid var(--gold);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        /* گالری */
+        .gallery-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border: 3px solid var(--gold);
+        }
+
+        .gallery-container img {
             width: 100%;
             height: 250px;
             object-fit: cover;
             transition: transform 0.5s;
         }
 
-        .gallery-slide:hover img {
-            transform: scale(1.1);
+        .gallery-container:hover img {
+            transform: scale(1.05);
         }
 
-        .gallery-caption {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-weight: 600;
+        /* فوتر */
+        .footer-custom {
+            background-color: var(--black);
+            color: var(--white);
+            padding: 50px 0 20px;
+            margin-top: 80px;
         }
 
-        @keyframes slide {
-            0% {
-                transform: translateX(0);
+        .footer-title {
+            color: var(--gold);
+            font-weight: 700;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .social-icons a {
+            color: var(--white);
+            font-size: 1.3rem;
+            margin-left: 15px;
+            transition: all 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: var(--gold);
+            transform: translateY(-5px);
+        }
+
+        /* ریسپانسیو */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
             }
 
-            100% {
-                transform: translateX(-50%);
+            .section-title {
+                font-size: 2rem;
             }
-        }
 
-        .motivation-quote {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            padding: 40px;
-            border-radius: 20px;
-            border-right: 5px solid #4361ee;
+            .motivational-text {
+                font-size: 1.2rem;
+            }
         }
     </style>
+</head>
 
+<body>
+    <!-- نوار ناوبری -->
+    <nav class="navbar navbar-expand-lg navbar-light navbar-custom fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-dumbbell"></i> SMART FIT
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">خانه</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">امکانات</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#gallery">گالری</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#motivation">انگیزشی</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">تماس</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a href="pages/login.html" class="btn btn-custom-red">ورود / ثبت‌نام</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- بخش اصلی -->
+    <section class="hero-section" id="home">
+        <div class="container">
+            <h1 class="hero-title">رسیدن به بهترین فرم بدنی خود</h1>
+            <p class="hero-subtitle">
+                با SMART FIT، برنامه تمرینی و تغذیه شخصی‌سازی شده خود را دریافت کنید.
+                پیشرفت خود را دنبال کرده و با انگیزه بمانید.
+            </p>
+            <div class="mt-4">
+                <a href="#features" class="btn btn-custom-red">شروع کنید <i class="fas fa-arrow-left"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- امکانات -->
+    <section class="container" id="features">
+        <h2 class="section-title">امکانات SMART FIT</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="feature-card gold-border-box">
+                    <i class="fas fa-dumbbell"></i>
+                    <h4>برنامه تمرینی هوشمند</h4>
+                    <p>برنامه‌های تمرینی متناسب با اهداف، سطح آمادگی و زمان شما</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-card gold-border-box">
+                    <i class="fas fa-utensils"></i>
+                    <h4>برنامه غذایی شخصی</h4>
+                    <p>طراحی رژیم غذایی براساس نیازهای کالریکی و ترجیحات شما</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-card gold-border-box">
+                    <i class="fas fa-chart-line"></i>
+                    <h4>ردیابی پیشرفت</h4>
+                    <p>نمودارهای پیشرفت، آمار تمرین و موفقیت‌های شما</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- بخش قیمت‌گذاری -->
+<section class="container my-5" id="pricing">
+    <h2 class="section-title">طرح‌های اشتراک حرفه‌ای SMART FIT</h2>
+    <p class="text-center mb-5" style="color: var(--black); font-size: 1.1rem; max-width: 800px; margin: 0 auto;">
+        💪 <strong>سرمایه‌گذاری روی سلامتی خودتان</strong> - با کمتر از هزینه یک وعده غذای رستوران در ماه، به مربی شخصی و برنامه‌ریز غذایی اختصاصی دسترسی پیدا کنید
+    </p>
+    
+    <div class="row">
+        <!-- طرح پایه -->
+        <div class="col-md-4 mb-4">
+            <div class="gold-border-box text-center h-100 pricing-card">
+                <div class="p-4">
+                    <h3 class="mb-3" style="color: var(--dark-red);">طرح ورزشکار</h3>
+                    <div class="price-display mb-3">
+                        <span class="price-currency" style="color: var(--gold); font-size: 1.5rem;">تومان</span>
+                        <span class="price-amount" style="color: var(--primary-red); font-size: 3rem; font-weight: 800;">۲۹۹,۰۰۰</span>
+                        <span class="price-period" style="color: var(--black);">/ ماهانه</span>
+                    </div>
+                    <div class="mb-3">
+                        <span class="badge bg-warning text-dark py-2">مناسب شروع ورزش</span>
+                    </div>
+                    <ul class="list-unstyled text-start mb-4">
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> برنامه تمرینی 4 روز در هفته</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> برنامه غذایی کالری‌شمار</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> ردیابی پیشرفت با نمودار</li>
+                        <li class="mb-2"><i class="fas fa-times-circle text-secondary me-2"></i> <span class="text-muted">مشاوره مربی خصوصی</span></li>
+                        <li class="mb-2"><i class="fas fa-times-circle text-secondary me-2"></i> <span class="text-muted">برنامه تمرینی پیشرفته</span></li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> پشتیبانی آنلاین</li>
+                    </ul>
+                    <!-- در هر دکمه انتخاب طرح این تغییر را اعمال کنید -->
+<button class="btn btn-custom-red w-100 py-3" onclick="window.location.href='pages/login.html?plan=pro'">
+    انتخاب این طرح
+</button>
+                    
+
+                    <p class="text-muted small mt-2">💵 <strong>پرداخت سالانه:</strong> ۳,۲۸۹,۰۰۰ تومان (15% تخفیف)</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- طرح حرفه‌ای (پیشنهادی) -->
+        <div class="col-md-4 mb-4">
+            <div class="gold-border-box text-center h-100 position-relative pricing-card" style="border-width: 4px; border-color: var(--gold) !important;">
+                <div class="position-absolute top-0 start-50 translate-middle mt-3">
+                    <span class="badge bg-danger py-2 px-3" style="font-size: 1rem;">پرفروش‌ترین</span>
+                    
+                </div>
+                <div class="p-4 mt-4">
+                    <h3 class="mb-3" style="color: var(--dark-red);">طرح حرفه‌ای</h3>
+                    <div class="price-display mb-3">
+                        <span class="price-currency" style="color: var(--gold); font-size: 1.5rem;">تومان</span>
+                        <span class="price-amount" style="color: var(--primary-red); font-size: 3.5rem; font-weight: 800;">۵۹۹,۰۰۰</span>
+                        <span class="price-period" style="color: var(--black);">/ ماهانه</span>
+                    </div>
+                    <div class="mb-3">
+                        <span class="badge bg-success text-white py-2">توصیه تیم SMART FIT</span>
+                    </div>
+                    <ul class="list-unstyled text-start mb-4">
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> برنامه تمرینی 6 روز در هفته</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> برنامه غذایی دقیق با درشتمغذی‌ها</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> ردیابی پیشرفت لحظه‌ای</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> 8 جلسه مشاوره ماهانه با مربی</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> برنامه تمرینی دوره‌بندی شده</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> آنالیز فرم حرکات</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> پشتیبانی VIP</li>
+                    </ul>
+                    <button class="btn btn-custom-red w-100 py-3" onclick="window.location.href='pages/login.html?plan=pro'">
+    انتخاب این طرح
+</button>
+
+                    <p class="text-success small mt-2">🎁 <strong>پرداخت سالانه:</strong> ۶,۵۸۹,۰۰۰ تومان (20% تخفیف = ۱,۱۹۹,۰۰۰ تومان صرفه‌جویی)</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- طرح VIP -->
+        <div class="col-md-4 mb-4">
+            <div class="gold-border-box text-center h-100 pricing-card">
+                <div class="p-4">
+                    <h3 class="mb-3" style="color: var(--dark-red);">طرح VIP جامع</h3>
+                    <div class="price-display mb-3">
+                        <span class="price-currency" style="color: var(--gold); font-size: 1.5rem;">تومان</span>
+                        <span class="price-amount" style="color: var(--primary-red); font-size: 3rem; font-weight: 800;">۱,۱۹۹,۰۰۰</span>
+                        <span class="price-period" style="color: var(--black);">/ ماهانه</span>
+                    </div>
+                    <div class="mb-3">
+                        <span class="badge bg-dark text-white py-2">خدمات تمام وقت</span>
+                    </div>
+                    <ul class="list-unstyled text-start mb-4">
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> برنامه تمرینی کاملاً شخصی‌سازی</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> برنامه غذایی روزانه تنظیم‌شده</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> ردیابی لحظه‌ای با اپلیکیشن اختصاصی</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> <strong>جلسات نامحدود</strong> با مربی اختصاصی</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> آنالیز ویدیویی حرفه‌ای حرکات</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> برنامه دوره‌بندی شده قهرمانی</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> پشتیبانی ۲۴/۷ اختصاصی</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> جلسات روانشناسی ورزشی ماهانه</li>
+                    </ul>
+                    <button class="btn btn-custom-red w-100 py-3" onclick="window.location.href='pages/login.html?plan=pro'">
+    انتخاب این طرح
+</button>
+<button class="btn btn-custom-gold w-100 py-3" onclick="window.location.href='pages/login.html?plan=vip'">
+    دریافت مشاوره رایگان
+</button>
+                    <p class="text-muted small mt-2">🏆 <strong>پرداخت سالانه:</strong> ۱۳,۱۸۹,۰۰۰ تومان (25% تخفیف)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+   <!-- مزایای SMART FIT -->
+<section class="container my-5">
+    <div class="row align-items-center gold-border-box p-5">
+        <div class="col-md-6">
+            <h2 class="mb-4" style="color: var(--dark-red);">📊 چرا SMART FIT انتخاب هزاران ورزشکار است؟</h2>
+            
+            <div class="benefit-item mb-4">
+                <h5><i class="fas fa-chart-line text-gold me-2"></i> <span style="color: var(--dark-red);">نتایج قابل اندازه‌گیری</span></h5>
+                <p>با سیستم ردیابی پیشرفت هوشمند ما، هر گرم عضله و هر کیلوگرم چربی سوزانده شده ثبت می‌شود. نمودارهای تعاملی نشان می‌دهند چقدر نزدیک به هدفتان هستید.</p>
+            </div>
+            
+            <div class="benefit-item mb-4">
+                <h5><i class="fas fa-user-md text-gold me-2"></i> <span style="color: var(--dark-red);">مربیان دارای مدرک بین‌المللی</span></h5>
+                <p>تیم مربیان ما دارای مدارک NASM، ACE و ISSA هستند و به طور مستمر آموزش می‌بینند تا با جدیدترین متدهای علم ورزش شما را همراهی کنند.</p>
+            </div>
+            
+            <div class="benefit-item mb-4">
+                <h5><i class="fas fa-mobile-alt text-gold me-2"></i> <span style="color: var(--dark-red);">همراه شما در هر مکان</span></h5>
+                <p>اپلیکیشن موبایل SMART FIT به شما اجازه می‌دهد در باشگاه، خانه، مسافرت یا هر جای دیگر برنامه خود را دنبال کنید و نتایج را ثبت نمایید.</p>
+            </div>
+        </div>
+        
+        <div class="col-md-6 text-center">
+            <div class="stats-box p-4 gold-border-box">
+                <h4 class="mb-4" style="color: var(--dark-red);">📈 آمار موفقیت SMART FIT</h4>
+                
+                <div class="row text-center">
+                    <div class="col-6 mb-4">
+                        <div class="stat-number" style="color: var(--primary-red); font-size: 2.5rem; font-weight: 800;">۹۴%</div>
+                        <p class="mb-0">رضایت کاربران</p>
+                    </div>
+                    <div class="col-6 mb-4">
+                        <div class="stat-number" style="color: var(--primary-red); font-size: 2.5rem; font-weight: 800;">۱۲,۵۰۰+</div>
+                        <p class="mb-0">ورزشکار فعال</p>
+                    </div>
+                    <div class="col-6 mb-4">
+                        <div class="stat-number" style="color: var(--primary-red); font-size: 2.5rem; font-weight: 800;">۸۵%</div>
+                        <p class="mb-0">دستیابی به هدف</p>
+                    </div>
+                    <div class="col-6 mb-4">
+                        <div class="stat-number" style="color: var(--primary-red); font-size: 2.5rem; font-weight: 800;">۴.۹/۵</div>
+                        <p class="mb-0">امتیاز در نظرسنجی</p>
+                    </div>
+                </div>
+                
+                <p class="mt-3 small text-muted">براساس نظرسنجی‌های سه ماهه از کاربران فعال</p>
+            </div>
+        </div>
+    </div>
+</section>
+    <!-- گالری تصاویر -->
+    <section class="container" id="gallery">
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="gallery-container">
+                    <img src="assets/images/workout.jpg" alt="تمرین ورزشی" class="img-fluid" onerror="this.src='https://images.unsplash.com/photo-1534367507877-0edd93bd013b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80'">
+                </div>
+                <p class="text-center mt-2"><strong>تمرین اصولی</strong></p>
+            </div>
+            <div class="col-md-4">
+                <div class="gallery-container">
+                    <img src="assets/images/nutrition.jpg" alt="تغذیه سالم" class="img-fluid" onerror="this.src='https://images.unsplash.com/photo-1549060279-7e168fce7090?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80'">
+                </div>
+                <p class="text-center mt-2"><strong>تغذیه سالم</strong></p>
+            </div>
+            <div class="col-md-4">
+                <div class="gallery-container">
+                    <img src="assets/images/success.jpg" alt="پیشرفت ورزشی" class="img-fluid" onerror="this.src='https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80'">
+                </div>
+                <p class="text-center mt-2"><strong>دستیابی به هدف</strong></p>
+            </div>
+        </div>
+    </section>
+
+<!-- متن‌های انگیزشی متحرک -->
+<section class="motivational-section" id="motivation">
+    <div class="container">
+                <p class="text-center mb-4" style="color: var(--white); opacity: 0.9;">
+            هر ۵ ثانیه یک جمله جدید انگیزشی برای شما
+        </p>
+        
+        <div class="motivational-slider">
+            <div id="motivationalText" class="motivational-text active">
+                <!-- اینجا متن‌ها به صورت خودکار تغییر می‌کنند -->
+                امروز روزی است که دیروز نگرانش بودی. از فرصت‌هایت استفاده کن!
+            </div>
+            <div class="slider-controls text-center mt-4">
+                <span class="slider-dot active" data-index="0"></span>
+                <span class="slider-dot" data-index="1"></span>
+                <span class="slider-dot" data-index="2"></span>
+                <span class="slider-dot" data-index="3"></span>
+                <span class="slider-dot" data-index="4"></span>
+                <span class="slider-dot" data-index="5"></span>
+                <span class="slider-dot" data-index="6"></span>
+                <span class="slider-dot" data-index="7"></span>
+                <span class="slider-dot" data-index="8"></span>
+                <span class="slider-dot" data-index="9"></span>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- اپلیکیشن موبایل -->
+    <section class="container my-5">
+        <div class="row align-items-center gold-border-box">
+            <div class="col-md-6">
+                <h3 class="mb-3" style="color: var(--dark-red);">اپلیکیشن موبایل SMART FIT</h3>
+                <p>همراه شما در هر زمان و مکان! برنامه تمرینی، رژیم غذایی و ردیابی پیشرفت در جیب شما.</p>
+                <div class="mt-4">
+                    <button class="btn btn-custom-red me-3">
+                        <i class="fab fa-google-play"></i> Google Play
+                    </button>
+                    <button class="btn btn-custom-gold">
+                        <i class="fab fa-apple"></i> App Store
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6 text-center">
+                <i class="fas fa-mobile-alt" style="font-size: 8rem; color: var(--primary-red);"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- فوتر -->
+    <footer class="footer-custom" id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h4 class="footer-title">SMART FIT</h4>
+                    <p>سیستم هوشمند مدیریت ورزش و تناسب اندام</p>
+                    <div class="social-icons mt-3">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h4 class="footer-title">لینک‌های مفید</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light text-decoration-none">درباره ما</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">تماس با ما</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">حریم خصوصی</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">شرایط استفاده</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h4 class="footer-title">تماس با ما</h4>
+                    <p><i class="fas fa-phone me-2"></i> ۰۲۱-۱۲۳۴۵۶۷۸</p>
+                    <p><i class="fas fa-envelope me-2"></i> info@smartfit.ir</p>
+                    <p><i class="fas fa-map-marker-alt me-2"></i> تهران، خیابان نمونه</p>
+                </div>
+            </div>
+            <hr class="bg-light">
+            <div class="text-center pt-3">
+                <p>© ۲۰۲۴ SMART FIT. تمامی حقوق محفوظ است.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- اسکریپت‌ها -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // جملات انگیزشی
-        const motivations = [
-            "تنها راه رسیدن به غیرممکن، باور به امکان‌پذیری آن است",
-            "امروز کاری کن که دیروز نمی‌توانستی",
-            "قدرت تو در مقاومتت نهفته است",
-            "هر صبح فرصتی تازه برای ساختن خودت است",
-            "بهترین پروژه‌ای که روی آن کار می‌کنی، خودت هستی"
-        ];
+        // فعال کردن لینک‌های ناوبری
+        <
 
-        // تغییر جمله هر 10 ثانیه
-        let currentIndex = 0;
-        const textElement = document.getElementById('motivation-text');
-
-        function changeMotivation() {
-            textElement.style.opacity = 0;
-            setTimeout(() => {
-                currentIndex = (currentIndex + 1) % motivations.length;
-                textElement.textContent = motivations[currentIndex];
-                textElement.style.opacity = 1;
-            }, 500);
-        }
-
-        setInterval(changeMotivation, 10000);
+        a class = "navbar-brand"
+        href = "#" >
+            <
+            img src = "assets/images/logo.png"
+        alt = "SMART FIT Logo"
+        height = "40"
+        class = "d-inline-block align-text-top me-2" >
+            SMART FIT <
+            /a>
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId.startsWith('#')) {
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 70,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        }); <
+        li class = "nav-item" >
+            <
+            a class = "nav-link"
+        href = "#pricing" > قیمت‌ها < /a> <
+            /li>
+        // انیمیشن برای متن‌های انگیزشی
+        document.addEventListener('DOMContentLoaded', function() {
+            const motivationalTexts = document.querySelectorAll('.motivational-text');
+            motivationalTexts.forEach((text, index) => {
+                setTimeout(() => {
+                    text.style.opacity = '1';
+                    text.style.transform = 'translateY(0)';
+                }, index * 300);
+            });
+        });
     </script>
-    <!-- چت بات هوشمند -->
-    <script src="assets/js/chatbot.js"></script>
-    <script>
-    // لیست جملات انگیزشی
-    const motivationQuotes = [
-        "بدن شما قهرمان زندگی‌تان است، به آن افتخار کنید و از آن مراقبت نمایید!",
-        "سفر هزار کیلومتری با یک قدم آغاز می‌شود. امروز قدم اول را محکم بردار!",
-        "خستگی امروز، افتخار فرداست. به خودت اعتماد کن و ادامه بده!",
-        "هر بار که می‌ایستی و تمرین می‌کنی، به خودت ثابت می‌کنی که می‌توانی!",
-        "هیچ چیز غیرممکن نیست! کلمه‌ی 'نمی‌توانم' را از دایره لغات خود حذف کن.",
-        "هر قطره عرق، داستان قدرت و اراده تو را روایت می‌کند. بنویسش!",
-        "امروز کاری کن که فردا به خودت افتخار کنی! 🏆 پیروزی از آن توست.",
-        "تنها رقیب تو، خود دیروز توست! امروز قوی‌تر باش...",
-        "سلامتی بزرگ‌ترین ثروت است. امروز برای آن سرمایه‌گذاری کن!",
-        "ذهن قوی، بدن قوی می‌سازد. هر دو را پرورش بده!"
+<script>
+    // جملات انگیزشی (10 جمله)
+    const motivationalSentences = [
+        "امروز روزی است که دیروز نگرانش بودی. از فرصت‌هایت استفاده کن!",
+        "بدن تو قوی‌تر از آن است که فکر می‌کنی، فقط باید تصمیم بگیری!",
+        "موفقیت روزانه است، نه یک اتفاق تصادفی. امروز را بساز!",
+        "هر قدم کوچک، تو را به هدفت نزدیک‌تر می‌کند. ادامه بده!",
+        "دشوارترین قسمت، شروع است. بقیه راه با انگیزه طی می‌شود!",
+        "قدرتمندترین عضله تو، اراده توست. آن را تقویت کن!",
+        "امروز کاری کن که فردا به خودت بابت آن افتخار کنی!",
+        "هیچ محدودیتی جز آنهایی که خودمان می‌سازیم وجود ندارد!",
+        "پیروزی از آن کسانی است که هرگز تسلیم نمی‌شوند!",
+        "تنها راه شکست، توقف است. تا زمانی که ادامه می‌دهی، برنده‌ای!"
     ];
     
-    let quoteHistory = ["اولین قدم مهم‌ترین قدم است", "پیشرفت تدریجی، نتایج فوق‌العاده"];
+    let currentSentenceIndex = 0;
+    const motivationalElement = document.getElementById('motivationalText');
+    const dots = document.querySelectorAll('.slider-dot');
     
-    // تابع دریافت جمله جدید
-    function newMotivation() {
-        const motivationElement = document.getElementById('motivationText');
-        const historyList = document.getElementById('historyList');
+    // تابع برای تغییر جمله انگیزشی
+    function changeMotivationalSentence() {
+        // غیرفعال کردن جمله و نقطه فعلی
+        motivationalElement.classList.remove('active');
+        dots[currentSentenceIndex].classList.remove('active');
         
-        // جمله فعلی را به تاریخچه اضافه کن
-        const currentText = motivationElement.textContent.replace(/["«»]/g, '').trim();
-        if (!quoteHistory.includes(currentText)) {
-            quoteHistory.unshift(currentText);
-            if (quoteHistory.length > 5) quoteHistory.pop();
-        }
+        // افزایش ایندکس با حلقه
+        currentSentenceIndex = (currentSentenceIndex + 1) % motivationalSentences.length;
         
-        // جمله جدید تصادفی
-        let newIndex;
-        do {
-            newIndex = Math.floor(Math.random() * motivationQuotes.length);
-        } while (motivationQuotes[newIndex] === currentText && motivationQuotes.length > 1);
-        
-        const newQuote = motivationQuotes[newIndex];
-        
-        // افکت fade
-        motivationElement.style.opacity = '0.5';
-        motivationElement.style.transform = 'translateY(10px)';
-        
+        // تأخیر برای انیمیشن
         setTimeout(() => {
-            motivationElement.innerHTML = `
-                <i class="fas fa-quote-right" style="color: #FFD700; margin-left: 10px;"></i>
-                "${newQuote}"
-                <i class="fas fa-quote-left" style="color: #FFD700; margin-right: 10px;"></i>
-            `;
-            motivationElement.style.opacity = '1';
-            motivationElement.style.transform = 'translateY(0)';
+            motivationalElement.textContent = motivationalSentences[currentSentenceIndex];
+            motivationalElement.classList.add('active');
+            dots[currentSentenceIndex].classList.add('active');
+        }, 500);
+    }
+    
+    // شروع تایمر برای تغییر خودکار هر 5 ثانیه
+    let sentenceInterval = setInterval(changeMotivationalSentence, 5000);
+    
+    // کلیک روی نقاط برای تغییر دستی
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            clearInterval(sentenceInterval);
             
-            // آپدیت تاریخچه
-            updateHistoryList();
+            motivationalElement.classList.remove('active');
+            dots[currentSentenceIndex].classList.remove('active');
             
-            // افکت دکمه
-            const btn = event.target;
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-check"></i> دریافت شد!';
-            btn.style.background = 'linear-gradient(45deg, #4CAF50, #2E7D32)';
+            currentSentenceIndex = index;
             
             setTimeout(() => {
-                btn.innerHTML = originalHTML;
-                btn.style.background = 'linear-gradient(45deg, #FFD700, #FFC107)';
-            }, 1500);
-        }, 300);
-    }
-    
-    // آپدیت لیست تاریخچه
-    function updateHistoryList() {
-        const historyList = document.getElementById('historyList');
-        if (historyList) {
-            historyList.innerHTML = '';
-            quoteHistory.slice(0, 3).forEach(quote => {
-                const li = document.createElement('li');
-                li.textContent = quote.length > 50 ? quote.substring(0, 50) + '...' : quote;
-                historyList.appendChild(li);
-            });
-        }
-    }
-    
-    // اشتراک‌گذاری
-    function shareMotivation() {
-        const currentQuote = document.getElementById('motivationText').textContent;
-        const shareText = `انگیزه ورزشی از Smart Fit Hub:\n\n${currentQuote}\n\n`;
-        
-        if (navigator.share) {
-            navigator.share({
-                title: 'انگیزه ورزشی',
-                text: shareText,
-                url: window.location.href
-            });
-        } else {
-            navigator.clipboard.writeText(shareText)
-                .then(() => {
-                    alert('✅ متن انگیزشی کپی شد!');
-                })
-                .catch(() => {
-                    prompt('متن انگیزشی را کپی کنید:', shareText);
-                });
-        }
-    }
-    
-    // بارگذاری اولیه
-    document.addEventListener('DOMContentLoaded', function() {
-        updateHistoryList();
+                motivationalElement.textContent = motivationalSentences[currentSentenceIndex];
+                motivationalElement.classList.add('active');
+                dots[currentSentenceIndex].classList.add('active');
+            }, 500);
+            
+            // راه‌اندازی مجدد تایمر
+            sentenceInterval = setInterval(changeMotivationalSentence, 5000);
+        });
     });
+    
+    // نمایش جمله اول
+    motivationalElement.textContent = motivationalSentences[0];
+    setTimeout(() => {
+        motivationalElement.classList.add('active');
+    }, 100);
 </script>
- </body>
+  <!-- لینک به فایل chatbot.js شما -->
+<script src="../assets/js/chatbot.js"></script>
+<!-- ساختار پایه چت بات -->
+<div id="chatbot-container" class="chatbot-container">
+    <div class="chatbot-header">
+        <div class="d-flex align-items-center">
+            <div class="chatbot-avatar">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="ms-3">
+                <h6 class="mb-0">دستیار هوشمند</h6>
+                <small class="text-success"><i class="fas fa-circle"></i> آنلاین</small>
+            </div>
+        </div>
+        <button class="btn-close-chat" onclick="closeChatbot()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    
+    <div class="chatbot-messages" id="chatbot-messages">
+        <div class="message bot">
+            <div class="message-content">
+                سلام! من دستیار هوشمند SMART FIT هستم. چطور می‌تونم کمک کنم؟
+            </div>
+            <div class="message-time">هم اکنون</div>
+        </div>
+    </div>
+    
+    <div class="chatbot-input">
+        <div class="input-group">
+            <input type="text" id="chatbot-input" class="form-control" placeholder="سوال خود را بپرسید..." 
+                   dir="rtl">
+            <button class="btn btn-chat-send" onclick="sendChatbotMessage()">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<button class="chatbot-toggle" onclick="toggleChatbot()">
+    <i class="fas fa-comment-dots"></i>
+    <span class="notification-badge">AI</span>
+</button>
+
+<script>
+// توابع ساده برای چت بات
+function toggleChatbot() {
+    const chat = document.getElementById('chatbot-container');
+    if (chat.classList.contains('active')) {
+        chat.classList.remove('active');
+    } else {
+        chat.classList.add('active');
+    }
+}
+
+function closeChatbot() {
+    document.getElementById('chatbot-container').classList.remove('active');
+}
+
+function sendChatbotMessage() {
+    const input = document.getElementById('chatbot-input');
+    const message = input.value.trim();
+    
+    if (message) {
+        // نمایش پیام کاربر
+        const messagesDiv = document.getElementById('chatbot-messages');
+        const userMessage = document.createElement('div');
+        userMessage.className = 'message user';
+        userMessage.innerHTML = `
+            <div class="message-content">${message}</div>
+            <div class="message-time">هم اکنون</div>
+        `;
+        messagesDiv.appendChild(userMessage);
+        
+        // پاک کردن فیلد
+        input.value = '';
+        
+        // اسکرول به پایین
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        
+        // پاسخ ربات (ساده)
+        setTimeout(() => {
+            const botResponse = document.createElement('div');
+            botResponse.className = 'message bot';
+            botResponse.innerHTML = `
+                <div class="message-content">متوجه شدم! برای پاسخ دقیق‌تر، لطفاً با پشتیبانی تماس بگیرید.</div>
+                <div class="message-time">هم اکنون</div>
+            `;
+            messagesDiv.appendChild(botResponse);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }, 1000);
+    }
+}
+</script>
+
+
+</body>
 
 </html>
