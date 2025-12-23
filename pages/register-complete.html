@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ثبت‌نام کامل - SMART FIT</title>
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS پروژه -->
+    <link href="../assets/css/styles.css" rel="stylesheet">
+    
+    <style>
+        /* فقط آیکون چت‌بات کوچک */
+        .chatbot-widget {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 9999;
+        }
+        
+        .chatbot-toggle {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #4e54c8, #8f94fb);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(78, 84, 200, 0.4);
+            font-size: 24px;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(78, 84, 200, 0.6);
+        }
+        
+        .chatbot-notification {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            background: #ff4757;
+            border-radius: 50%;
+            font-size: 12px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* پاپ‌آپ چت (فقط وقتی باز شود) */
+        .chatbot-popup {
+            position: absolute;
+            bottom: 80px;
+            left: 0;
+            width: 350px;
+            height: 450px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            border: 2px solid #4e54c8;
+        }
+        
+        .chatbot-popup-header {
+            background: linear-gradient(90deg, #4e54c8, #8f94fb);
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chatbot-popup-body {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+        
+        .chatbot-popup-footer {
+            padding: 15px;
+            border-top: 1px solid #dee2e6;
+            background: white;
+        }
+        
+        .chatbot-close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+        
+        .chatbot-close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* استایل پیام‌ها */
+        .chat-message {
+            margin-bottom: 10px;
+            padding: 10px 15px;
+            border-radius: 18px;
+            max-width: 80%;
+            clear: both;
+            word-wrap: break-word;
+        }
+        
+        .chat-message.bot {
+            background: white;
+            border: 1px solid #dee2e6;
+            float: right;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .chat-message.user {
+            background: #4e54c8;
+            color: white;
+            float: left;
+            border-bottom-left-radius: 5px;
+        }
+        
+        /* انیمیشن پرش */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .bounce {
+            animation: bounce 0.5s;
+        }
+        
+        /* استایل‌های فرم ثبت‌نام */
+        .registration-wizard {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .wizard-header {
+            background: linear-gradient(90deg, #4e54c8, #8f94fb);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .wizard-steps {
+            display: flex;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            background: #f8f9fa;
+        }
+        
+        .wizard-step {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            position: relative;
+        }
+        
+        .wizard-step.active {
+            background: #4e54c8;
+            color: white;
+        }
+        
+        .wizard-step.completed {
+            background: #28a745;
+            color: white;
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 35px;
+            height: 35px;
+            line-height: 35px;
+            border-radius: 50%;
+            background: #dee2e6;
+            margin-bottom: 8px;
+        }
+        
+        .active .step-number {
+            background: white;
+            color: #4e54c8;
+        }
+        
+        .wizard-body {
+            padding: 40px;
+        }
+        
+        .step-content {
+            display: none;
+        }
+        
+        .step-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+            padding: 25px;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            background: #f8fafc;
+        }
+        
+        .form-section h5 {
+            border-bottom: 2px solid #4e54c8;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            color: #4e54c8;
+        }
+        
+        .required-field::after {
+            content: " *";
+            color: #dc3545;
+        }
+        
+        .form-progress {
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4e54c8, #8f94fb);
+            width: 0%;
+            transition: width 0.5s;
+        }
+    </style>
+</head>
+<body style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh;">
+
+    <!-- چت‌بات هوشمند (آیکون کوچک) -->
+    <div class="chatbot-widget">
+        <!-- فقط آیکون - بدون کادر بزرگ -->
+        <div class="chatbot-toggle" id="chatbotToggle" title="راهنمای ثبت‌نام">
+            <i class="fas fa-robot"></i>
+            <span class="chatbot-notification"></span>
+        </div>
+        
+        <!-- کادر چت (فقط وقتی باز شود) -->
+        <div class="chatbot-popup" id="chatbotPopup">
+            <div class="chatbot-popup-header">
+                <div>
+                    <i class="fas fa-robot me-2"></i>
+                    <strong>دستیار ثبت‌نام</strong>
+                </div>
+                <button class="chatbot-close-btn" id="chatbotClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chatbot-popup-body" id="chatbotMessages">
+                <!-- پیام‌ها اینجا نمایش داده می‌شوند -->
+            </div>
+            <div class="chatbot-popup-footer">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="chatbotInput" 
+                           placeholder="سؤال خود را بپرسید...">
+                    <button class="btn btn-primary" id="chatbotSend">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <small class="text-muted mt-2 d-block text-center">
+                    برای ثبت‌نام راهنمایی می‌کنم
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <!-- فرم ثبت‌نام -->
+    <div class="registration-wizard">
+        <div class="wizard-header">
+            <h2><i class="fas fa-user-plus me-2"></i>ثبت‌نام در SMART FIT</h2>
+            <p class="mb-0">لطفاً اطلاعات خود را با دقت وارد کنید</p>
+        </div>
+        
+        <!-- مراحل -->
+        <ul class="wizard-steps" id="wizardSteps">
+            <li class="wizard-step active" data-step="1">
+                <div class="step-number">۱</div>
+                <div>اطلاعات شخصی</div>
+            </li>
+            <li class="wizard-step" data-step="2">
+                <div class="step-number">۲</div>
+                <div>مشخصات بدنی</div>
+            </li>
+            <li class="wizard-step" data-step="3">
+                <div class="step-number">۳</div>
+                <div>انتخاب نقش</div>
+            </li>
+            <li class="wizard-step" data-step="4">
+                <div class="step-number">۴</div>
+                <div>تأیید نهایی</div>
+            </li>
+        </ul>
+        
+        <!-- نوار پیشرفت -->
+        <div class="form-progress">
+            <div class="progress-bar" id="progressBar" style="width: 25%;"></div>
+        </div>
+        
+        <!-- محتوای مراحل -->
+        <div class="wizard-body">
+            <form id="completeRegistrationForm">
+                
+                <!-- مرحله ۱: اطلاعات شخصی -->
+                <div class="step-content active" id="step1">
+                    <div class="form-section">
+                        <h5><i class="fas fa-id-card me-2"></i>اطلاعات هویتی</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="firstName" class="form-label required-field">نام</label>
+                                <input type="text" class="form-control" id="firstName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="lastName" class="form-label required-field">نام خانوادگی</label>
+                                <input type="text" class="form-control" id="lastName" required>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="birthDate" class="form-label required-field">تاریخ تولد</label>
+                                <input type="date" class="form-control" id="birthDate" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label required-field">جنسیت</label>
+                                <div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="genderMale" value="male" required>
+                                        <label class="form-check-label" for="genderMale">مرد</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="genderFemale" value="female">
+                                        <label class="form-check-label" for="genderFemale">زن</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h5><i class="fas fa-envelope me-2"></i>اطلاعات تماس</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label required-field">ایمیل</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="phone" class="form-label required-field">شماره موبایل</label>
+                                <div class="input-group">
+                                   <input type="tel" class="form-control" id="phone" 
+                                           pattern="9[0-9]{9}" placeholder="9123456789" required>
+                                    <span class="input-group-text">+98</span>
+                                    
+                                </div>
+                                <small class="form-text text-muted">کد تأیید به این شماره ارسال می‌شود</small>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label for="address" class="form-label">آدرس</label>
+                                <textarea class="form-control" id="address" rows="2"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary" disabled>قبلی</button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep(2)">مرحله بعد <i class="fas fa-arrow-left ms-2"></i></button>
+                    </div>
+                </div>
+                
+                <!-- مرحله ۲: مشخصات بدنی -->
+                <div class="step-content" id="step2">
+                    <div class="form-section">
+                        <h5><i class="fas fa-heartbeat me-2"></i>مشخصات فیزیکی</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="height" class="form-label required-field">قد (سانتی‌متر)</label>
+                                <input type="number" class="form-control" id="height" min="100" max="250" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="weight" class="form-label required-field">وزن (کیلوگرم)</label>
+                                <input type="number" class="form-control" id="weight" min="30" max="200" step="0.1" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="bloodType" class="form-label">گروه خونی</label>
+                                <select class="form-select" id="bloodType">
+                                    <option value="">انتخاب کنید</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h5><i class="fas fa-dumbbell me-2"></i>اطلاعات ورزشی</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="fitnessLevel" class="form-label required-field">سطح آمادگی جسمانی</label>
+                                <select class="form-select" id="fitnessLevel" required>
+                                    <option value="">انتخاب کنید</option>
+                                    <option value="beginner">تازه‌کار (کمتر از ۳ ماه)</option>
+                                    <option value="intermediate">متوسط (۳ تا ۱۲ ماه)</option>
+                                    <option value="advanced">پیشرفته (بیش از ۱ سال)</option>
+                                    <option value="athlete">ورزشکار حرفه‌ای</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="goal" class="form-label required-field">هدف از ورزش</label>
+                                <select class="form-select" id="goal" required>
+                                    <option value="">انتخاب کنید</option>
+                                    <option value="weight_loss">کاهش وزن</option>
+                                    <option value="muscle_gain">افزایش عضله</option>
+                                    <option value="fitness">تناسب اندام</option>
+                                    <option value="strength">افزایش قدرت</option>
+                                    <option value="endurance">افزایش استقامت</option>
+                                    <option value="health">سلامتی عمومی</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label for="interests" class="form-label">علاقه‌مندی‌های ورزشی</label>
+                                <div class="form-text mb-2">انتخاب یک یا چند مورد:</div>
+                                <div class="row">
+                                    <div class="col-md-3 mb-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="bodybuilding" id="interest1">
+                                            <label class="form-check-label" for="interest1">بدنسازی</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="cardio" id="interest2">
+                                            <label class="form-check-label" for="interest2">کاردیو</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="yoga" id="interest3">
+                                            <label class="form-check-label" for="interest3">یوگا</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="crossfit" id="interest4">
+                                            <label class="form-check-label" for="interest4">کراس فیت</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="swimming" id="interest5">
+                                            <label class="form-check-label" for="interest5">شنا</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="running" id="interest6">
+                                            <label class="form-check-label" for="interest6">دویدن</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="cycling" id="interest7">
+                                            <label class="form-check-label" for="interest7">دوچرخه‌سواری</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="martial_arts" id="interest8">
+                                            <label class="form-check-label" for="interest8">ورزش‌های رزمی</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label for="medicalNotes" class="form-label">ملاحظات پزشکی</label>
+                                <textarea class="form-control" id="medicalNotes" rows="3" 
+                                          placeholder="در صورت داشتن بیماری خاص یا محدودیت پزشکی، اینجا بنویسید"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary" onclick="prevStep(1)"><i class="fas fa-arrow-right me-2"></i>قبلی</button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep(3)">مرحله بعد <i class="fas fa-arrow-left ms-2"></i></button>
+                    </div>
+                </div>
+                
+                <!-- مرحله ۳: انتخاب نقش -->
+                <div class="step-content" id="step3">
+                    <div class="form-section">
+                        <h5><i class="fas fa-user-tag me-2"></i>انتخاب نوع حساب کاربری</h5>
+                        <p class="text-muted mb-4">لطفاً نقش خود را در سیستم انتخاب کنید:</p>
+                        
+                        <div class="row">
+                            <!-- ورزشکار -->
+                            <div class="col-md-4 mb-4">
+                                <div class="card h-100 border-primary role-card" data-role="athlete">
+                                    <div class="card-body text-center">
+                                        <div class="mb-3" style="font-size: 3rem; color: #4e54c8;">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <h5 class="card-title">ورزشکار</h5>
+                                        <p class="card-text text-muted small">
+                                            استفاده از برنامه تمرینی و تغذیه شخصی<br>
+                                            ردیابی پیشرفت<br>
+                                            ارتباط با مربی<br>
+                                            شرکت در چالش‌ها
+                                        </p>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <button type="button" class="btn btn-outline-primary select-role-btn" data-role="athlete">
+                                            انتخاب این نقش
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- مربی -->
+                            <div class="col-md-4 mb-4">
+                                <div class="card h-100 border-success role-card" data-role="coach">
+                                    <div class="card-body text-center">
+                                        <div class="mb-3" style="font-size: 3rem; color: #28a745;">
+                                            <i class="fas fa-dumbbell"></i>
+                                        </div>
+                                        <h5 class="card-title">مربی</h5>
+                                        <p class="card-text text-muted small">
+                                            طراحی برنامه تمرینی<br>
+                                            مدیریت ورزشکاران<br>
+                                            پیگیری پیشرفت<br>
+                                            ارسال پیام و توصیه
+                                        </p>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <button type="button" class="btn btn-outline-success select-role-btn" data-role="coach">
+                                            انتخاب این نقش
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- مدیر -->
+                            <div class="col-md-4 mb-4">
+                                <div class="card h-100 border-danger role-card" data-role="admin">
+                                    <div class="card-body text-center">
+                                        <div class="mb-3" style="font-size: 3rem; color: #dc3545;">
+                                            <i class="fas fa-crown"></i>
+                                        </div>
+                                        <h5 class="card-title">مدیر سیستم</h5>
+                                        <p class="card-text text-muted small">
+                                            مدیریت کاربران<br>
+                                            مشاهده گزارشات<br>
+                                            تنظیمات سیستم<br>
+                                            پشتیبانی و نظارت
+                                        </p>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <button type="button" class="btn btn-outline-danger select-role-btn" data-role="admin">
+                                            انتخاب این نقش
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <input type="hidden" id="selectedRole" name="role" required>
+                        
+                        <div class="alert alert-info mt-4">
+                            <h6><i class="fas fa-info-circle me-2"></i>توجه:</h6>
+                            <ul class="mb-0">
+                                <li>نقش انتخاب شده پس از تأیید مدیریت قابل تغییر است</li>
+                                <li>ورزشکاران دسترسی به امکانات پایه دارند</li>
+                                <li>مربیان نیاز به تأیید مدارک دارند</li>
+                                <li>مدیران توسط تیم فنی تعیین می‌شوند</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary" onclick="prevStep(2)"><i class="fas fa-arrow-right me-2"></i>قبلی</button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep(4)">مرحله بعد <i class="fas fa-arrow-left ms-2"></i></button>
+                    </div>
+                </div>
+                
+                <!-- مرحله ۴: تأیید نهایی -->
+                <div class="step-content" id="step4">
+                    <div class="form-section">
+                        <h5><i class="fas fa-check-circle me-2"></i>مرور و تأیید اطلاعات</h5>
+                        
+                        <div class="alert alert-success">
+                            <h6><i class="fas fa-clipboard-check me-2"></i>اطلاعات وارد شده:</h6>
+                            <div id="reviewData">
+                                <!-- اطلاعات اینجا نمایش داده می‌شود -->
+                            </div>
+                        </div>
+                        
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                            <label class="form-check-label" for="termsCheck">
+                                با <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">قوانین و شرایط</a> استفاده از SMART FIT موافقم
+                            </label>
+                        </div>
+                        
+                        <div class="d-grid gap-3">
+                            <button type="submit" class="btn btn-success btn-lg py-3" id="finalSubmitBtn">
+                                <i class="fas fa-paper-plane me-2"></i>
+                                ثبت‌نام و دریافت کد تأیید
+                            </button>
+                            
+                            <button type="button" class="btn btn-outline-secondary" onclick="prevStep(3)">
+                                <i class="fas fa-edit me-2"></i>
+                                بازگشت و ویرایش اطلاعات
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- مودال قوانین -->
+    <div class="modal fade" id="termsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">قوانین و شرایط استفاده</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- محتوای قوانین -->
+                    <p>متن قوانین و شرایط استفاده...</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- اسکریپت ثبت‌نام -->
+    <script>
+        // ==================== مدیریت مراحل ====================
+        let currentStep = 1;
+        const totalSteps = 4;
+        
+        function nextStep(next) {
+            // اعتبارسنجی مرحله فعلی
+            if (!validateStep(currentStep)) {
+                alert('لطفاً تمام فیلدهای ضروری را پر کنید');
+                return;
+            }
+            
+            // تغییر مرحله
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            document.getElementById(`step${next}`).classList.add('active');
+            
+            // بروزرسانی مراحل
+            document.querySelectorAll('.wizard-step').forEach(step => {
+                step.classList.remove('active');
+                const stepNum = parseInt(step.dataset.step);
+                if (stepNum === next) {
+                    step.classList.add('active');
+                } else if (stepNum < next) {
+                    step.classList.add('completed');
+                }
+            });
+            
+            // بروزرسانی نوار پیشرفت
+            const progress = (next / totalSteps) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            
+            currentStep = next;
+            
+            // بروزرسانی اطلاعات مرور در مرحله ۴
+            if (next === 4) {
+                updateReviewData();
+            }
+        }
+        
+        function prevStep(prev) {
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            document.getElementById(`step${prev}`).classList.add('active');
+            
+            document.querySelectorAll('.wizard-step').forEach(step => {
+                step.classList.remove('active', 'completed');
+                const stepNum = parseInt(step.dataset.step);
+                if (stepNum === prev) {
+                    step.classList.add('active');
+                } else if (stepNum < prev) {
+                    step.classList.add('completed');
+                }
+            });
+            
+            const progress = (prev / totalSteps) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            
+            currentStep = prev;
+        }
+        
+        // ==================== اعتبارسنجی مراحل ====================
+        function validateStep(step) {
+            switch(step) {
+                case 1:
+                    return document.getElementById('firstName').value &&
+                           document.getElementById('lastName').value &&
+                           document.getElementById('birthDate').value &&
+                           document.querySelector('input[name="gender"]:checked') &&
+                           document.getElementById('email').value &&
+                           document.getElementById('phone').value;
+                case 2:
+                    return document.getElementById('height').value &&
+                           document.getElementById('weight').value &&
+                           document.getElementById('fitnessLevel').value &&
+                           document.getElementById('goal').value;
+                case 3:
+                    return document.getElementById('selectedRole').value;
+                case 4:
+                    return document.getElementById('termsCheck').checked;
+                default:
+                    return true;
+            }
+        }
+        
+        // ==================== انتخاب نقش ====================
+        document.querySelectorAll('.select-role-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const role = this.dataset.role;
+                
+                // حذف انتخاب قبلی
+                document.querySelectorAll('.role-card').forEach(card => {
+                    card.classList.remove('border-3');
+                });
+                
+                // انتخاب جدید
+                this.closest('.role-card').classList.add('border-3');
+                document.getElementById('selectedRole').value = role;
+                
+                // فعال کردن دکمه مرحله بعد
+                document.querySelector('[onclick="nextStep(4)"]').disabled = false;
+            });
+        });
+        
+        // ==================== بروزرسانی اطلاعات مرور ====================
+        function updateReviewData() {
+            const data = {
+                نام: document.getElementById('firstName').value,
+                'نام خانوادگی': document.getElementById('lastName').value,
+                'تاریخ تولد': document.getElementById('birthDate').value,
+                جنسیت: document.querySelector('input[name="gender"]:checked')?.nextElementSibling?.textContent,
+                ایمیل: document.getElementById('email').value,
+                'شماره موبایل': '+98' + document.getElementById('phone').value,
+                قد: document.getElementById('height').value + ' سانتی‌متر',
+                وزن: document.getElementById('weight').value + ' کیلوگرم',
+                'سطح آمادگی': document.getElementById('fitnessLevel').options[document.getElementById('fitnessLevel').selectedIndex]?.text,
+                هدف: document.getElementById('goal').options[document.getElementById('goal').selectedIndex]?.text,
+                نقش: document.querySelector('.role-card.border-3 h5.card-title')?.textContent || 'انتخاب نشده'
+            };
+            
+            let html = '<div class="row">';
+            Object.entries(data).forEach(([key, value]) => {
+                html += `
+                    <div class="col-md-6 mb-2">
+                        <strong>${key}:</strong> ${value || 'وارد نشده'}
+                    </div>
+                `;
+            });
+            html += '</div>';
+            
+            document.getElementById('reviewData').innerHTML = html;
+        }
+        
+        // ==================== ارسال فرم ====================
+        document.getElementById('completeRegistrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!validateStep(4)) {
+                alert('لطفاً قوانین را تأیید کنید');
+                return;
+            }
+            
+            // جمع‌آوری اطلاعات
+            const userData = {
+                personal: {
+                    firstName: document.getElementById('firstName').value,
+                    lastName: document.getElementById('lastName').value,
+                    birthDate: document.getElementById('birthDate').value,
+                    gender: document.querySelector('input[name="gender"]:checked')?.value,
+                    email: document.getElementById('email').value,
+                    phone: '+98' + document.getElementById('phone').value,
+                    address: document.getElementById('address').value
+                },
+                physical: {
+                    height: document.getElementById('height').value,
+                    weight: document.getElementById('weight').value,
+                    bloodType: document.getElementById('bloodType').value,
+                    fitnessLevel: document.getElementById('fitnessLevel').value,
+                    goal: document.getElementById('goal').value,
+                    interests: Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value),
+                    medicalNotes: document.getElementById('medicalNotes').value
+                },
+                role: document.getElementById('selectedRole').value,
+                registrationDate: new Date().toISOString()
+            };
+            
+            // ذخیره در localStorage
+            localStorage.setItem('smartfit_complete_user', JSON.stringify(userData));
+            
+            // تولید کد تأیید
+            const verificationCode = '123456'; // در واقعیت از سرور می‌آید
+            localStorage.setItem('sms_code', verificationCode);
+            localStorage.setItem('sms_phone', userData.personal.phone);
+            
+            // نمایش موفقیت
+            const submitBtn = document.getElementById('finalSubmitBtn');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>در حال ثبت...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                // نمایش پیام
+                alert(`✅ ثبت‌نام اولیه با موفقیت انجام شد!\n\n📱 کد تأیید به شماره ${userData.personal.phone} ارسال شد\n🔢 کد: ${verificationCode}\n\n(در حال انتقال به صفحه تأیید کد...)`);
+                
+                // هدایت به صفحه تأیید کد
+                window.location.href = 'verify-2fa.html';
+            }, 1500);
+        });
+        
+        // ==================== چت‌بات ساده ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            // تنظیم حداقل تاریخ تولد (18 سال قبل)
+            const today = new Date();
+            const minDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+            document.getElementById('birthDate').max = minDate.toISOString().split('T')[0];
+            
+            // راه‌اندازی چت‌بات
+            initializeChatbot();
+            
+            console.log('✅ سیستم ثبت‌نام کامل راه‌اندازی شد');
+        });
+        
+        function initializeChatbot() {
+            const chatbotToggle = document.getElementById('chatbotToggle');
+            const chatbotPopup = document.getElementById('chatbotPopup');
+            const chatbotClose = document.getElementById('chatbotClose');
+            const chatbotInput = document.getElementById('chatbotInput');
+            const chatbotSend = document.getElementById('chatbotSend');
+            const chatbotMessages = document.getElementById('chatbotMessages');
+            
+            // راهنمایی‌های پیش‌فرض
+            const helpMessages = [
+                "ثبت‌نام در ۴ مرحله انجام میشه: ۱. اطلاعات شخصی ۲. مشخصات بدنی ۳. انتخاب نقش ۴. تأیید نهایی",
+                "ورزشکار: برنامه تمرینی شخصی، مربی: طراحی برنامه، مدیر: نظارت سیستم",
+                "کد تأیید: ۱۲۳۴۵۶ (برای تست)",
+                "قد: برحسب سانتی‌متر، وزن: برحسب کیلوگرم",
+                "هر سؤالی دارید بپرسید!"
+            ];
+            
+            // باز کردن چت‌بات
+            chatbotToggle.addEventListener('click', function() {
+                chatbotPopup.style.display = 'flex';
+                addBotMessage(helpMessages[0]);
+                chatbotToggle.classList.remove('bounce');
+            });
+            
+            // بستن چت‌بات
+            chatbotClose.addEventListener('click', function() {
+                chatbotPopup.style.display = 'none';
+            });
+            
+            // ارسال پیام
+            chatbotSend.addEventListener('click', sendMessage);
+            chatbotInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') sendMessage();
+            });
+            
+            function sendMessage() {
+                const message = chatbotInput.value.trim();
+                if (!message) return;
+                
+                // اضافه کردن پیام کاربر
+                addUserMessage(message);
+                chatbotInput.value = '';
+                
+                // پاسخ ربات
+                setTimeout(() => {
+                    let response = "می‌تونم در مورد مراحل ثبت‌نام کمک کنم.";
+                    
+                    if (message.includes('سلام')) response = "سلام! 😊 چطور می‌تونم کمک کنم؟";
+                    if (message.includes('مرحله')) response = helpMessages[0];
+                    if (message.includes('ورزشکار') || message.includes('مربی')) response = helpMessages[1];
+                    if (message.includes('کد')) response = helpMessages[2];
+                    if (message.includes('قد') || message.includes('وزن')) response = helpMessages[3];
+                    
+                    addBotMessage(response);
+                }, 800);
+            }
+            
+            function addUserMessage(text) {
+                const div = document.createElement('div');
+                div.className = 'chat-message user';
+                div.textContent = text;
+                chatbotMessages.appendChild(div);
+                scrollToBottom();
+            }
+            
+            function addBotMessage(text) {
+                const div = document.createElement('div');
+                div.className = 'chat-message bot';
+                div.textContent = text;
+                chatbotMessages.appendChild(div);
+                scrollToBottom();
+            }
+            
+            function scrollToBottom() {
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            }
+            
+            // پرش آیکون هر 30 ثانیه (اگر چت باز نشده)
+            setInterval(() => {
+                if (chatbotPopup.style.display !== 'flex') {
+                    chatbotToggle.classList.add('bounce');
+                    setTimeout(() => {
+                        chatbotToggle.classList.remove('bounce');
+                    }, 500);
+                }
+            }, 30000);
+            
+            // پیام خوش‌آمدگویی اولیه
+            setTimeout(() => {
+                addBotMessage("👋 سلام! من دستیار ثبت‌نام SMART FIT هستم. هر سؤالی دارید بپرسید.");
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

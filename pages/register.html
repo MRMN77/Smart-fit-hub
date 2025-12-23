@@ -235,7 +235,7 @@
                         
                         <div class="verification-code-container" id="verification-code-section">
                             <p class="mb-2">کد ۶ رقمی ارسال شده را وارد کنید:</p>
-                            
+
                             <div class="code-inputs">
                                 <input type="text" maxlength="1" class="code-input" data-index="1">
                                 <input type="text" maxlength="1" class="code-input" data-index="2">
@@ -541,5 +541,147 @@
 </div>
     </script>
     <script src="../assets/js/smartfit-navigation.js"></script>
+    // این کد را در فایل register.html قبل از </body> اضافه کن
+<script>
+(function() {
+    // صبر کن تا صفحه کاملاً بارگذاری شود
+    setTimeout(function() {
+        // پیدا کردن تمام دکمه‌ها
+        const allButtons = document.querySelectorAll('button');
+        let sendCodeButton = null;
+        
+        // جستجو برای دکمه ارسال کد
+        allButtons.forEach(btn => {
+            const btnText = btn.textContent || btn.innerText;
+            if (btnText.includes('ارسال کد') || 
+                btnText.includes('تأیید') || 
+                btnText.includes('Send') ||
+                btnText.includes('Verification')) {
+                sendCodeButton = btn;
+            }
+        });
+        
+        // اگر دکمه پیدا شد
+        if (sendCodeButton) {
+            console.log('🎯 دکمه ارسال کد پیدا شد:', sendCodeButton);
+            
+            // حذف event listenerهای قبلی
+            const newButton = sendCodeButton.cloneNode(true);
+            sendCodeButton.parentNode.replaceChild(newButton, sendCodeButton);
+            
+            // اضافه کردن event listener جدید
+            newButton.addEventListener('click', function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                
+                // پیدا کردن شماره تلفن
+                let phoneInput = document.querySelector('input[type="tel"]') || 
+                                document.querySelector('input[name="phone"]') ||
+                                document.querySelector('input[placeholder*="موبایل"]') ||
+                                document.querySelector('input[placeholder*="phone"]');
+                
+                // اگر پیدا نشد، همه inputها را بررسی کن
+                if (!phoneInput) {
+                    document.querySelectorAll('input').forEach(input => {
+                        if (input.type === 'text' && input.value && /09\d{9}/.test(input.value)) {
+                            phoneInput = input;
+                        }
+                    });
+                }
+                
+                // اگر بازهم شماره پیدا نشد
+                if (!phoneInput || !phoneInput.value) {
+                    alert('لطفاً شماره موبایل را وارد کنید');
+                    // نمایش همه inputها
+                    document.querySelectorAll('input').forEach(inp => {
+                        console.log(inp.placeholder, inp.name, inp.value);
+                    });
+                    return;
+                }
+                
+                const phoneNumber = phoneInput.value.replace(/\D/g, '');
+                
+                // بررسی صحت شماره
+                if (phoneNumber.length !== 11 || !phoneNumber.startsWith('09')) {
+                    alert('شماره موبایل باید 11 رقمی و با 09 شروع شود\nمثال: 09123456789');
+                    phoneInput.focus();
+                    return;
+                }
+                
+                // ذخیره شماره
+                localStorage.setItem('user_phone', phoneNumber);
+                
+                // تولید کد (در پروژه واقعی از سرور می‌آید)
+                const smsCode = '123456';
+                localStorage.setItem('sms_code', smsCode);
+                localStorage.setItem('sms_sent_time', new Date().toISOString());
+                
+                // تغییر ظاهر دکمه
+                newButton.innerHTML = '<i class="fas fa-check-circle me-2"></i>کد ارسال شد!';
+                newButton.classList.remove('btn-primary');
+                newButton.classList.add('btn-success');
+                newButton.disabled = true;
+                
+                // نمایش پیام
+                const message = `📱 کد تأیید به شماره ${phoneNumber} ارسال شد\n\n` +
+                              `🔢 کد: ${smsCode}\n\n` +
+                              `⏱️ این کد 2 دقیقه اعتبار دارد\n\n` +
+                              `در حال انتقال به صفحه ورود کد...`;
+                
+                alert(message);
+                
+                // هدایت به صفحه verify-2fa.html
+                setTimeout(() => {
+                    window.location.href = 'verify-2fa.html';
+                }, 1500);
+                
+            });
+            
+            console.log('✅ Event listener به دکمه اضافه شد');
+            
+        } else {
+            console.log('⚠️ دکمه ارسال کد پیدا نشد!');
+            
+            // اگر دکمه پیدا نشد، یکی ایجاد کن
+            const phoneFields = document.querySelectorAll('input[type="tel"], input[name="phone"]');
+            if (phoneFields.length > 0) {
+                phoneFields.forEach(field => {
+                    // دکمه جدید ایجاد کن
+                    const newBtn = document.createElement('button');
+                    newBtn.className = 'btn btn-primary mt-2';
+                    newBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>ارسال کد تأیید';
+                    newBtn.type = 'button';
+                    
+                    // اضافه کردن دکمه بعد از فیلد
+                    field.parentNode.appendChild(newBtn);
+                    
+                    // event listener
+                    newBtn.addEventListener('click', function() {
+                        const phone = field.value.trim();
+                        if (!phone) {
+                            alert('لطفاً شماره موبایل را وارد کنید');
+                            field.focus();
+                            return;
+                        }
+                        
+                        if (!/^09\d{9}$/.test(phone)) {
+                            alert('شماره موبایل نامعتبر است\nمثال: 09123456789');
+                            field.focus();
+                            return;
+                        }
+                        
+                        // ذخیره اطلاعات
+                        localStorage.setItem('temp_phone', phone);
+                        localStorage.setItem('temp_sms_code', '123456');
+                        
+                        alert(`کد تأیید به ${phone} ارسال شد\nکد: 123456`);
+                        window.location.href = 'verify-2fa.html';
+                    });
+                });
+            }
+        }
+    }, 1000); // 1 ثانیه تاخیر برای اطمینان از بارگذاری کامل
+})();
+</script>
 </body>
 </html>

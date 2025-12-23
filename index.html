@@ -746,7 +746,9 @@
                     </li>
                 </ul>
                 <div class="d-flex">
-                    <a href="pages/login.html" class="btn btn-custom-red">ورود / ثبت‌نام</a>
+                   <a href="pages/register-complete.html" class="btn btn-custom-red">
+    <i class="fas fa-user-plus me-2"></i>ورود / ثبت‌نام
+</a>
                 </div>
             </div>
         </div>
@@ -761,7 +763,9 @@
                 پیشرفت خود را دنبال کرده و با انگیزه بمانید.
             </p>
             <div class="mt-4">
-                <a href="#features" class="btn btn-custom-red">شروع کنید <i class="fas fa-arrow-left"></i></a>
+                <a href="pages/register-complete.html" class="btn btn-success btn-lg">
+    <i class="fas fa-rocket me-2"></i>شروع کنید
+</a>
             </div>
         </div>
     </section>
@@ -1556,5 +1560,145 @@
         });
     </script>
    <script src="assets/js/smartfit-navigation.js"></script>
+   <script>
+// فایل: assets/js/auth-status.js
+// تشخیص وضعیت لاگین کاربر و تغییر دکمه‌ها
+
+document.addEventListener('DOMContentLoaded', function() {
+    // بررسی آیا کاربر لاگین کرده؟
+    const userData = JSON.parse(localStorage.getItem('smartfit_user') || '{}');
+    const isLoggedIn = userData.id && userData.isLoggedIn;
+    
+    // اگر کاربر لاگین کرده
+    if (isLoggedIn) {
+        updateUIForLoggedInUser(userData);
+    }
+    
+    // همچنین سیستم را برای تغییرات آینده آماده کن
+    setupAuthListener();
+});
+
+// به‌روزرسانی UI برای کاربر لاگین‌ کرده
+function updateUIForLoggedInUser(userData) {
+    console.log('👤 کاربر وارد شده:', userData.name);
+    
+    // 1. تغییر دکمه‌های اصلی
+    const registerButtons = document.querySelectorAll('a[href*="register"], a:contains("ثبت‌نام")');
+    const loginButtons = document.querySelectorAll('a[href*="login"], a:contains("ورود")');
+    
+    registerButtons.forEach(btn => {
+        // تغییر به پروفایل
+        btn.href = 'pages/profile.html';
+        btn.innerHTML = btn.innerHTML.replace('ثبت‌نام', 'پروفایل')
+                                    .replace('Register', 'Profile')
+                                    .replace('fa-user-plus', 'fa-user');
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-success');
+    });
+    
+    loginButtons.forEach(btn => {
+        // تغییر به خروج
+        btn.href = '#';
+        btn.innerHTML = btn.innerHTML.replace('ورود', 'خروج')
+                                    .replace('Login', 'Logout')
+                                    .replace('fa-sign-in-alt', 'fa-sign-out-alt');
+        btn.classList.remove('btn-outline-primary');
+        btn.classList.add('btn-outline-danger');
+        
+        // اضافه کردن event listener برای خروج
+        btn.onclick = function(e) {
+            e.preventDefault();
+            logoutUser();
+        };
+    });
+    
+    // 2. نمایش نام کاربر در منو (اگر navbar وجود دارد)
+    const navbar = document.querySelector('.navbar-nav, nav');
+    if (navbar) {
+        const userMenu = document.createElement('li');
+        userMenu.className = 'nav-item dropdown';
+        userMenu.innerHTML = `
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                <i class="fas fa-user-circle me-1"></i>
+                ${userData.name || 'کاربر'}
+            </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="pages/profile.html">
+                    <i class="fas fa-user me-2"></i>پروفایل
+                </a></li>
+                <li><a class="dropdown-item" href="pages/dashboard.html">
+                    <i class="fas fa-tachometer-alt me-2"></i>داشبورد
+                </a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item text-danger" href="#" id="logoutLink">
+                    <i class="fas fa-sign-out-alt me-2"></i>خروج
+                </a></li>
+            </ul>
+        `;
+        navbar.appendChild(userMenu);
+        
+        // مدیریت خروج
+        document.getElementById('logoutLink').addEventListener('click', logoutUser);
+    }
+    
+    // 3. تغییر دکمه "شروع کنید" به "داشبورد من"
+    const startButtons = document.querySelectorAll('a:contains("شروع کنید"), a:contains("Get Started")');
+    startButtons.forEach(btn => {
+        btn.href = 'pages/dashboard.html';
+        btn.innerHTML = btn.innerHTML.replace('شروع کنید', 'داشبورد من')
+                                    .replace('Get Started', 'My Dashboard');
+    });
+}
+
+// خروج کاربر
+function logoutUser() {
+    if (confirm('آیا می‌خواهید از حساب خود خارج شوید؟')) {
+        // حذف اطلاعات لاگین
+        const userData = JSON.parse(localStorage.getItem('smartfit_user') || '{}');
+        userData.isLoggedIn = false;
+        localStorage.setItem('smartfit_user', JSON.stringify(userData));
+        
+        // حذف session
+        localStorage.removeItem('current_session');
+        
+        // ریفرش صفحه
+        setTimeout(() => {
+            window.location.reload();
+        }, 500);
+    }
+}
+
+// گوش دادن به تغییرات وضعیت لاگین
+function setupAuthListener() {
+    // گوش دادن به تغییرات در localStorage
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'smartfit_user') {
+            setTimeout(() => {
+                window.location.reload();
+            }, 300);
+        }
+    });
+    
+    // همچنین هنگام لاگین/لاگ‌اوت از صفحات دیگر
+    window.addEventListener('userLoggedIn', function() {
+        setTimeout(() => {
+            window.location.reload();
+        }, 300);
+    });
+    
+    window.addEventListener('userLoggedOut', function() {
+        setTimeout(() => {
+            window.location.reload();
+        }, 300);
+    });
+}
+
+// تابع‌های عمومی برای استفاده در صفحات دیگر
+window.logoutUser = logoutUser;
+window.checkAuthStatus = function() {
+    const userData = JSON.parse(localStorage.getItem('smartfit_user') || '{}');
+    return userData.id && userData.isLoggedIn;
+};
+</script>
 </body>
 </html>
