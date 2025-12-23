@@ -3,481 +3,492 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تایید دو مرحله‌ای - SMART FIT</title>
-    
-    <!-- Bootstrap 5 -->
+    <title>تأیید شماره موبایل - SMART FIT</title>
+    <link href="../assets/css/styles.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- استایل اختصاصی -->
-    <link rel="stylesheet" href="../assets/css/main.css">
-    
     <style>
-        .verify-container {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 20px;
-        }
-        
-        .verify-card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            width: 100%;
-            max-width: 500px;
-        }
-        
-        .verify-header {
-            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-            position: relative;
-        }
-        
-        .verify-header h2 {
-            margin: 0;
-            font-weight: 700;
-        }
-        
-        .verify-icon {
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 2rem;
-        }
-        
-        .verify-body {
+        .sms-verification-card {
+            max-width: 480px;
+            margin: 60px auto;
             padding: 40px;
+            border-radius: 15px;
+            background: white;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
         }
         
-        .otp-container {
-            direction: ltr;
-            text-align: center;
+        .sms-code-inputs {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
             margin: 30px 0;
         }
         
-        .otp-input {
-            width: 50px;
-            height: 60px;
-            font-size: 1.5rem;
+        .sms-code-input {
+            width: 55px;
+            height: 65px;
+            font-size: 28px;
             text-align: center;
-            border: 2px solid #ddd;
+            border: 2px solid #dee2e6;
             border-radius: 10px;
-            margin: 0 5px;
             font-weight: bold;
-            transition: all 0.3s;
         }
         
-        .otp-input:focus {
-            border-color: #4361ee;
-            box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
-            outline: none;
-            transform: scale(1.05);
+        .sms-code-input:focus {
+            border-color: #4a6cf7;
+            box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
         }
         
-        .timer-container {
-            text-align: center;
-            margin: 20px 0;
-        }
-        
-        #resend-timer {
-            font-family: monospace;
-            font-size: 1.2rem;
-            color: #f94144;
-        }
-        
-        .verification-method {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-            border-right: 4px solid #4361ee;
-        }
-        
-        .method-option {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+        .sms-timer {
+            font-size: 18px;
+            color: #4a6cf7;
+            font-weight: bold;
             margin: 15px 0;
-            cursor: pointer;
-            padding: 10px;
+        }
+        
+        .sms-phone-display {
+            background: #f8f9fa;
+            padding: 10px 15px;
             border-radius: 8px;
+            margin: 20px 0;
+            font-size: 18px;
+        }
+        
+        .sms-resend-btn {
             transition: all 0.3s;
         }
         
-        .method-option:hover {
-            background: rgba(67, 97, 238, 0.1);
-        }
-        
-        .method-option.active {
-            background: rgba(67, 97, 238, 0.15);
-            border: 1px solid #4361ee;
-        }
-        
-        .method-icon {
-            width: 40px;
-            height: 40px;
-            background: #4361ee;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .sms-resend-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
     </style>
 </head>
-<body>
-    <div class="verify-container">
-        <div class="verify-card">
-            <div class="verify-header">
-                <div class="verify-icon">
-                    <i class="fas fa-shield-alt"></i>
+<body style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh;">
+
+    <div class="container py-5">
+        <div class="sms-verification-card">
+            <!-- هدر -->
+            <div class="text-center mb-4">
+                <div class="mb-3" style="font-size: 3rem; color: #4a6cf7;">
+                    <i class="fas fa-sms"></i>
                 </div>
-                <h2>تایید دو مرحله‌ای</h2>
-                <p class="mt-2 opacity-90">لطفاً کد تأیید را وارد کنید</p>
+                <h2 class="fw-bold text-primary">تأیید شماره موبایل</h2>
+                <p class="text-muted">کد تأیید ۶ رقمی را وارد کنید</p>
             </div>
-            
-            <div class="verify-body">
-                <div class="text-center mb-4">
-                    <p>کد ۶ رقمی به شماره زیر ارسال شد:</p>
-                    <h4 class="text-primary" id="user-phone">۰۹۱۲••••۳۴۵</h4>
-                    <small class="text-muted">(آخرین ارسال: <span id="last-sent">۲ دقیقه پیش</span>)</small>
+
+            <!-- نمایش شماره تلفن -->
+            <div class="sms-phone-display text-center" id="smsPhoneDisplay">
+                <i class="fas fa-mobile-alt me-2"></i>
+                <span id="displayPhoneNumber">در حال بارگذاری...</span>
+            </div>
+
+            <!-- فرم کد -->
+            <form id="smsVerificationForm">
+                <div class="sms-code-inputs" id="smsCodeContainer">
+                    <!-- کدها با JavaScript پر می‌شوند -->
                 </div>
                 
-                <!-- ورود کد OTP -->
-                <div class="otp-container">
-                    <input type="text" maxlength="1" class="otp-input" data-index="1" autocomplete="off">
-                    <input type="text" maxlength="1" class="otp-input" data-index="2" autocomplete="off">
-                    <input type="text" maxlength="1" class="otp-input" data-index="3" autocomplete="off">
-                    <input type="text" maxlength="1" class="otp-input" data-index="4" autocomplete="off">
-                    <input type="text" maxlength="1" class="otp-input" data-index="5" autocomplete="off">
-                    <input type="text" maxlength="1" class="otp-input" data-index="6" autocomplete="off">
-                </div>
-                
-                <input type="hidden" id="full-otp">
-                
-                <!-- تایمر ارسال مجدد -->
-                <div class="timer-container">
-                    <p class="text-muted">
-                        کد را دریافت نکردید؟
-                        <span id="resend-timer">۰:۶۰</span>
-                    </p>
-                    <button class="btn btn-link text-decoration-none" id="resend-code" disabled>
-                        <i class="fas fa-redo me-1"></i>ارسال مجدد کد
-                    </button>
-                </div>
-                
-                <!-- روش‌های جایگزین -->
-                <div class="verification-method">
-                    <h6 class="mb-3">
-                        <i class="fas fa-mobile-alt me-2"></i>روش‌های دیگر تأیید:
-                    </h6>
-                    
-                    <div class="method-option active" data-method="sms">
-                        <div class="method-icon">
-                            <i class="fas fa-sms"></i>
-                        </div>
-                        <div>
-                            <strong>پیامک (SMS)</strong>
-                            <small class="d-block text-muted">کد به شماره تلفن همراه ارسال می‌شود</small>
-                        </div>
+                <input type="hidden" id="fullSmsCode">
+
+                <!-- تایمر -->
+                <div class="text-center my-4">
+                    <div class="sms-timer">
+                        <i class="fas fa-clock me-2"></i>
+                        <span id="smsCountdown">02:00</span>
                     </div>
-                    
-                    <div class="method-option" data-method="email">
-                        <div class="method-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div>
-                            <strong>ایمیل</strong>
-                            <small class="d-block text-muted">کد به آدرس ایمیل شما ارسال می‌شود</small>
-                        </div>
-                    </div>
-                    
-                    <div class="method-option" data-method="authenticator">
-                        <div class="method-icon">
-                            <i class="fas fa-key"></i>
-                        </div>
-                        <div>
-                            <strong>اپلیکیشن احراز هویت</strong>
-                            <small class="d-block text-muted">کد از طریق Google Authenticator</small>
-                        </div>
-                    </div>
+                    <small class="text-muted">زمان باقی‌مانده تا انقضای کد</small>
                 </div>
-                
+
                 <!-- دکمه‌ها -->
-                <div class="d-flex gap-3 mt-4">
-                    <button class="btn btn-outline-secondary flex-grow-1" id="back-btn">
-                        <i class="fas fa-arrow-right me-1"></i>بازگشت
+                <div class="d-grid gap-3">
+                    <button type="submit" class="btn btn-primary btn-lg py-3" id="smsVerifyBtn" disabled>
+                        <i class="fas fa-check-circle me-2"></i>
+                        تأیید و ادامه به داشبورد
                     </button>
-                    <button class="btn btn-primary flex-grow-1 py-3" id="verify-btn" disabled>
-                        <i class="fas fa-check-circle me-2"></i>تأیید و ورود
+                    
+                    <button type="button" class="btn btn-outline-secondary sms-resend-btn" id="smsResendBtn" disabled>
+                        <i class="fas fa-redo me-2"></i>
+                        <span id="smsResendText">ارسال مجدد (۲:۰۰)</span>
                     </button>
+                    
+                    <div class="text-center mt-3">
+                        <a href="register.html" class="text-decoration-none">
+                            <i class="fas fa-edit me-1"></i>
+                            شماره را اشتباه وارد کردید؟
+                        </a>
+                    </div>
                 </div>
-                
-                <!-- اطلاعات امنیتی -->
-                <div class="alert alert-info mt-4">
-                    <small>
-                        <i class="fas fa-info-circle me-2"></i>
-                        کد تأیید تنها ۵ دقیقه اعتبار دارد. از به اشتراک گذاشتن آن خودداری کنید.
-                    </small>
-                </div>
+            </form>
+            
+            <!-- راهنمای کد آزمایشی (فقط برای دمو) -->
+            <div class="alert alert-warning mt-4">
+                <h6><i class="fas fa-flask me-2"></i>برای تست پروژه:</h6>
+                <p class="mb-0">از کد آزمایشی <strong class="text-danger">۱۲۳۴۵۶</strong> استفاده کنید.</p>
             </div>
         </div>
     </div>
-    
-    <!-- اسکریپت‌ها -->
+
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/script.js"></script>
-    <!-- چت بات هوشمند -->
-    <script src="../assets/js/chatbot.js"></script>
     
     <script>
-        // سیستم احراز هویت دو مرحله‌ای
-        class TwoFactorAuth {
+        // ==================== سیستم تأیید SMS ====================
+        class SmsVerification {
             constructor() {
-                this.otpCode = '';
-                this.generatedAt = null;
-                this.expiresIn = 5 * 60 * 1000; // 5 دقیقه
-                this.resendTimer = 60; // 60 ثانیه
-                this.resendInterval = null;
-                this.currentMethod = 'sms';
+                this.codeLength = 6;
+                this.totalTime = 120; // 2 دقیقه
+                this.timeLeft = this.totalTime;
+                this.timerInterval = null;
+                this.generatedCode = '123456'; // کد ثابت برای دمو
+                
                 this.init();
             }
             
             init() {
-                this.generateOTP();
-                this.setupOTPInputs();
+                this.displayUserPhone();
+                this.createCodeInputs();
+                this.startTimer();
                 this.setupEventListeners();
-                this.startResendTimer();
-                this.updateUserInfo();
             }
             
-            generateOTP() {
-                // تولید کد ۶ رقمی تصادفی
-                this.otpCode = Math.floor(100000 + Math.random() * 900000).toString();
-                this.generatedAt = new Date();
-                
-                console.log('کد OTP تولید شد:', this.otpCode); // در ریل، اینجا به سرور ارسال می‌شه
-                
-                // شبیه‌سازی ارسال کد
-                setTimeout(() => {
-                    this.showNotification(`کد تأیید ${this.otpCode} به ${this.currentMethod === 'sms' ? 'شماره تلفن' : 'ایمیل'} شما ارسال شد.`);
-                }, 1000);
+            // نمایش شماره تلفن کاربر
+            displayUserPhone() {
+                const userData = JSON.parse(localStorage.getItem('smartfit_user') || '{}');
+                const phone = userData.phone || '۰۹۱۲XXXXXXX';
+                document.getElementById('displayPhoneNumber').textContent = 
+                    `کد به شماره ${phone} ارسال شد`;
             }
             
-            setupOTPInputs() {
-                const inputs = document.querySelectorAll('.otp-input');
-                const fullOtpInput = document.getElementById('full-otp');
+            // ایجاد inputهای کد
+            createCodeInputs() {
+                const container = document.getElementById('smsCodeContainer');
+                container.innerHTML = '';
                 
-                inputs.forEach((input, index) => {
-                    // ورود خودکار به خانه بعدی
-                    input.addEventListener('input', (e) => {
-                        if (e.target.value.length === 1) {
-                            if (index < inputs.length - 1) {
-                                inputs[index + 1].focus();
-                            }
-                            this.updateFullOTP();
-                        }
-                    });
+                for (let i = 0; i < this.codeLength; i++) {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.maxLength = 1;
+                    input.className = 'sms-code-input';
+                    input.dataset.index = i;
+                    input.inputMode = 'numeric';
+                    input.pattern = '[0-9]*';
                     
-                    // پاک کردن و رفتن به خانه قبلی با Backspace
-                    input.addEventListener('keydown', (e) => {
-                        if (e.key === 'Backspace' && !e.target.value && index > 0) {
-                            inputs[index - 1].focus();
-                        }
-                    });
+                    // رویدادهای ورود
+                    input.addEventListener('input', (e) => this.handleCodeInput(e, i));
+                    input.addEventListener('keydown', (e) => this.handleCodeNavigation(e, i));
+                    input.addEventListener('paste', (e) => this.handlePaste(e));
                     
-                    // فقط اعداد مجاز
-                    input.addEventListener('keypress', (e) => {
-                        if (!/[0-9]/.test(e.key)) {
-                            e.preventDefault();
-                        }
-                    });
-                });
-            }
-            
-            updateFullOTP() {
-                const inputs = document.querySelectorAll('.otp-input');
-                const fullOtp = Array.from(inputs).map(input => input.value).join('');
-                document.getElementById('full-otp').value = fullOtp;
-                
-                // فعال کردن دکمه تأیید اگر ۶ رقم کامل شد
-                const verifyBtn = document.getElementById('verify-btn');
-                verifyBtn.disabled = fullOtp.length !== 6;
-            }
-            
-            setupEventListeners() {
-                // دکمه تأیید
-                document.getElementById('verify-btn').addEventListener('click', () => {
-                    this.verifyOTP();
-                });
-                
-                // دکمه بازگشت
-                document.getElementById('back-btn').addEventListener('click', () => {
-                    window.location.href = 'login.html';
-                });
-                
-                // دکمه ارسال مجدد
-                document.getElementById('resend-code').addEventListener('click', () => {
-                    this.resendOTP();
-                });
-                
-                // انتخاب روش تأیید
-                document.querySelectorAll('.method-option').forEach(option => {
-                    option.addEventListener('click', (e) => {
-                        document.querySelectorAll('.method-option').forEach(opt => {
-                            opt.classList.remove('active');
-                        });
-                        e.currentTarget.classList.add('active');
-                        this.currentMethod = e.currentTarget.dataset.method;
-                        this.updateUserInfo();
-                        this.generateOTP();
-                    });
-                });
-            }
-            
-            verifyOTP() {
-                const enteredCode = document.getElementById('full-otp').value;
-                const verifyBtn = document.getElementById('verify-btn');
-                
-                // بررسی انقضا
-                const now = new Date();
-                const timeDiff = now - this.generatedAt;
-                
-                if (timeDiff > this.expiresIn) {
-                    this.showNotification('کد تأیید منقضی شده است. لطفاً کد جدید دریافت کنید.', 'error');
-                    this.generateOTP();
-                    return;
+                    container.appendChild(input);
                 }
                 
-                // بررسی تطابق کد
-                if (enteredCode === this.otpCode) {
-                    verifyBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>در حال تأیید...';
-                    verifyBtn.disabled = true;
+                // تمرکز روی اولین input
+                container.firstElementChild?.focus();
+            }
+            
+            // مدیریت ورود کد
+            handleCodeInput(event, index) {
+                const input = event.target;
+                const value = input.value.replace(/[^0-9]/g, '');
+                
+                if (value) {
+                    input.value = value;
                     
-                    // شبیه‌سازی تأیید موفق
-                    setTimeout(() => {
-                        this.showNotification('احراز هویت موفقیت‌آمیز بود! در حال انتقال به داشبورد...', 'success');
-                        
-                        // ذخیره توکن در localStorage
-                        localStorage.setItem('smartfit_token', 'mock_token_' + Date.now());
-                        localStorage.setItem('smartfit_user', JSON.stringify({
-                            name: 'کاربر SMART FIT',
-                            email: 'user@smartfit.ir',
-                            phone: '0912****345'
-                        }));
-                        
-                        setTimeout(() => {
-                            window.location.href = 'dashboard.html';
-                        }, 1500);
-                    }, 1000);
+                    // برو به input بعدی
+                    if (index < this.codeLength - 1) {
+                        const nextInput = document.querySelector(`.sms-code-input[data-index="${index + 1}"]`);
+                        nextInput?.focus();
+                        nextInput?.select();
+                    }
+                    
+                    this.checkCodeCompletion();
                 } else {
-                    this.showNotification('کد تأیید نادرست است. لطفاً مجدداً تلاش کنید.', 'error');
-                    
-                    // پاک کردن ورودی‌ها
-                    document.querySelectorAll('.otp-input').forEach(input => {
-                        input.value = '';
-                        input.classList.add('is-invalid');
+                    input.value = '';
+                }
+            }
+            
+            // مدیریت پیمایش با کیبورد
+            handleCodeNavigation(event, index) {
+                const input = event.target;
+                
+                if (event.key === 'Backspace' && !input.value && index > 0) {
+                    // برو به input قبلی
+                    const prevInput = document.querySelector(`.sms-code-input[data-index="${index - 1}"]`);
+                    prevInput?.focus();
+                    prevInput?.select();
+                }
+                
+                if (event.key === 'ArrowLeft' && index > 0) {
+                    const prevInput = document.querySelector(`.sms-code-input[data-index="${index - 1}"]`);
+                    prevInput?.focus();
+                    prevInput?.select();
+                    event.preventDefault();
+                }
+                
+                if (event.key === 'ArrowRight' && index < this.codeLength - 1) {
+                    const nextInput = document.querySelector(`.sms-code-input[data-index="${index + 1}"]`);
+                    nextInput?.focus();
+                    nextInput?.select();
+                    event.preventDefault();
+                }
+            }
+            
+            // مدیریت paste
+            handlePaste(event) {
+                event.preventDefault();
+                const pastedText = (event.clipboardData || window.clipboardData).getData('text');
+                const numbers = pastedText.replace(/[^0-9]/g, '');
+                
+                if (numbers.length === this.codeLength) {
+                    const inputs = document.querySelectorAll('.sms-code-input');
+                    inputs.forEach((input, index) => {
+                        if (numbers[index]) {
+                            input.value = numbers[index];
+                        }
                     });
                     
+                    this.checkCodeCompletion();
+                    inputs[this.codeLength - 1]?.focus();
+                }
+            }
+            
+            // بررسی کامل شدن کد
+            checkCodeCompletion() {
+                const inputs = document.querySelectorAll('.sms-code-input');
+                let fullCode = '';
+                let allFilled = true;
+                
+                inputs.forEach(input => {
+                    fullCode += input.value;
+                    if (!input.value) allFilled = false;
+                });
+                
+                // ذخیره کد کامل
+                document.getElementById('fullSmsCode').value = fullCode;
+                
+                // فعال/غیرفعال کردن دکمه تأیید
+                document.getElementById('smsVerifyBtn').disabled = !allFilled;
+                
+                // اگر کد کامل شد، بررسی کن
+                if (allFilled && fullCode.length === this.codeLength) {
+                    this.validateCode(fullCode);
+                }
+            }
+            
+            // اعتبارسنجی کد
+            validateCode(enteredCode) {
+                if (enteredCode === this.generatedCode) {
+                    // کد صحیح است
+                    this.onVerificationSuccess();
+                } else {
+                    // کد اشتباه
+                    this.shakeCodeInputs();
+                    this.showError('کد وارد شده اشتباه است. لطفاً مجدداً بررسی کنید.');
+                    
+                    // پاک کردن کد
                     setTimeout(() => {
-                        document.querySelectorAll('.otp-input').forEach(input => {
-                            input.classList.remove('is-invalid');
-                        });
-                        document.querySelector('.otp-input[data-index="1"]').focus();
-                    }, 2000);
+                        const inputs = document.querySelectorAll('.sms-code-input');
+                        inputs.forEach(input => input.value = '');
+                        inputs[0]?.focus();
+                        document.getElementById('smsVerifyBtn').disabled = true;
+                    }, 1000);
                 }
             }
             
-            resendOTP() {
-                const resendBtn = document.getElementById('resend-code');
-                resendBtn.disabled = true;
-                resendBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>در حال ارسال...';
+            // تایمر
+            startTimer() {
+                this.updateTimerDisplay();
                 
-                setTimeout(() => {
-                    this.generateOTP();
-                    this.startResendTimer();
-                    this.showNotification('کد جدید ارسال شد.', 'info');
-                }, 1500);
-            }
-            
-            startResendTimer() {
-                this.resendTimer = 60;
-                const timerElement = document.getElementById('resend-timer');
-                const resendBtn = document.getElementById('resend-code');
-                
-                if (this.resendInterval) {
-                    clearInterval(this.resendInterval);
-                }
-                
-                resendBtn.disabled = true;
-                resendBtn.innerHTML = '<i class="fas fa-redo me-1"></i>ارسال مجدد کد';
-                
-                this.resendInterval = setInterval(() => {
-                    this.resendTimer--;
+                this.timerInterval = setInterval(() => {
+                    this.timeLeft--;
+                    this.updateTimerDisplay();
                     
-                    const minutes = Math.floor(this.resendTimer / 60);
-                    const seconds = this.resendTimer % 60;
-                    
-                    timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-                    
-                    if (this.resendTimer <= 0) {
-                        clearInterval(this.resendInterval);
-                        resendBtn.disabled = false;
-                        timerElement.textContent = 'آماده';
-                        timerElement.style.color = '#4bb543';
+                    if (this.timeLeft <= 0) {
+                        this.onTimerExpired();
                     }
                 }, 1000);
             }
             
-            updateUserInfo() {
-                const userPhone = document.getElementById('user-phone');
-                const user = JSON.parse(localStorage.getItem('smartfit_temp_user') || '{}');
+            updateTimerDisplay() {
+                const minutes = Math.floor(this.timeLeft / 60);
+                const seconds = this.timeLeft % 60;
+                const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
                 
-                if (user.phone) {
-                    // مخفی کردن بخشی از شماره
-                    const maskedPhone = user.phone.replace(/(\d{4})(\d{3})(\d{4})/, '$1***$3');
-                    userPhone.textContent = maskedPhone;
-                }
+                document.getElementById('smsCountdown').textContent = timeString;
+                document.getElementById('smsResendText').textContent = `ارسال مجدد (${timeString})`;
                 
-                if (this.currentMethod === 'email' && user.email) {
-                    const maskedEmail = user.email.replace(/(.{3})(.*)(@.*)/, (match, p1, p2, p3) => 
-                        p1 + '*'.repeat(p2.length) + p3
-                    );
-                    userPhone.textContent = maskedEmail;
-                    userPhone.innerHTML += ' <small>(ایمیل)</small>';
+                // فعال کردن دکمه ارسال مجدد
+                if (this.timeLeft <= 0) {
+                    document.getElementById('smsResendBtn').disabled = false;
+                    document.getElementById('smsResendBtn').classList.remove('btn-outline-secondary');
+                    document.getElementById('smsResendBtn').classList.add('btn-outline-primary');
+                    document.getElementById('smsResendText').textContent = 'ارسال مجدد کد';
                 }
             }
             
-            showNotification(message, type = 'info') {
-                // استفاده از تابع showAlert از script.js
-                if (typeof showAlert === 'function') {
-                    showAlert(message, type === 'error' ? 'danger' : type);
-                } else {
-                    // فال‌بک ساده
-                    alert(message);
-                }
+            // زمان تمام شد
+            onTimerExpired() {
+                clearInterval(this.timerInterval);
+                this.showWarning('کد تأیید منقضی شد. لطفاً کد جدید درخواست کنید.');
+            }
+            
+            // موفقیت آمیز بودن تأیید
+            onVerificationSuccess() {
+                clearInterval(this.timerInterval);
+                
+                // علامت‌گذاری کاربر به عنوان تأیید شده
+                const userData = JSON.parse(localStorage.getItem('smartfit_user') || '{}');
+                userData.phoneVerified = true;
+                userData.verifiedAt = new Date().toISOString();
+                localStorage.setItem('smartfit_user', JSON.stringify(userData));
+                
+                // نمایش موفقیت
+                document.getElementById('smsVerifyBtn').innerHTML = 
+                    '<i class="fas fa-check me-2"></i>تأیید شد! در حال انتقال...';
+                document.getElementById('smsVerifyBtn').classList.remove('btn-primary');
+                document.getElementById('smsVerifyBtn').classList.add('btn-success');
+                document.getElementById('smsVerifyBtn').disabled = true;
+                
+                // انیمیشن موفقیت
+                document.querySelectorAll('.sms-code-input').forEach(input => {
+                    input.style.borderColor = '#28a745';
+                    input.style.backgroundColor = '#f8fff9';
+                });
+                
+                // هدایت به داشبورد پس از 2 ثانیه
+                setTimeout(() => {
+                    const role = userData.role || 'athlete';
+                    const dashboardPages = {
+                        'athlete': 'dashboard.html',
+                        'coach': 'coach-dashboard.html',
+                        'admin': 'admin-dashboard.html'
+                    };
+                    
+                    window.location.href = dashboardPages[role] || 'dashboard.html';
+                }, 2000);
+            }
+            
+            // ارسال مجدد کد
+            resendCode() {
+                if (this.timeLeft > 0) return;
+                
+                // بازنشانی تایمر
+                this.timeLeft = this.totalTime;
+                this.startTimer();
+                
+                // غیرفعال کردن دکمه
+                document.getElementById('smsResendBtn').disabled = true;
+                document.getElementById('smsResendBtn').classList.remove('btn-outline-primary');
+                document.getElementById('smsResendBtn').classList.add('btn-outline-secondary');
+                
+                // پاک کردن inputها
+                document.querySelectorAll('.sms-code-input').forEach(input => {
+                    input.value = '';
+                    input.style.borderColor = '';
+                    input.style.backgroundColor = '';
+                });
+                
+                // غیرفعال کردن دکمه تأیید
+                document.getElementById('smsVerifyBtn').disabled = true;
+                document.getElementById('smsVerifyBtn').innerHTML = 
+                    '<i class="fas fa-check-circle me-2"></i>تأیید و ادامه به داشبورد';
+                document.getElementById('smsVerifyBtn').classList.remove('btn-success');
+                document.getElementById('smsVerifyBtn').classList.add('btn-primary');
+                
+                // تولید کد جدید (در دمو ثابت است)
+                this.generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
+                console.log(`کد جدید برای دمو: ${this.generatedCode}`);
+                
+                this.showSuccess('کد جدید ارسال شد!');
+                document.querySelector('.sms-code-input')?.focus();
+            }
+            
+            // ==================== ابزارهای کمکی ====================
+            shakeCodeInputs() {
+                const inputs = document.querySelectorAll('.sms-code-input');
+                inputs.forEach(input => {
+                    input.style.animation = 'shake 0.5s';
+                    input.style.borderColor = '#dc3545';
+                    
+                    setTimeout(() => {
+                        input.style.animation = '';
+                    }, 500);
+                });
+            }
+            
+            showError(message) {
+                this.showMessage(message, 'danger');
+            }
+            
+            showSuccess(message) {
+                this.showMessage(message, 'success');
+            }
+            
+            showWarning(message) {
+                this.showMessage(message, 'warning');
+            }
+            
+            showMessage(message, type) {
+                // ایجاد المان پیام
+                const alertDiv = document.createElement('div');
+                alertDiv.className = `alert alert-${type} alert-dismissible fade show mt-3`;
+                alertDiv.innerHTML = `
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+                
+                // اضافه کردن به صفحه
+                const form = document.getElementById('smsVerificationForm');
+                form.parentNode.insertBefore(alertDiv, form.nextSibling);
+                
+                // حذف خودکار پس از 5 ثانیه
+                setTimeout(() => {
+                    if (alertDiv.parentNode) {
+                        alertDiv.classList.remove('show');
+                        setTimeout(() => alertDiv.remove(), 300);
+                    }
+                }, 5000);
+            }
+            
+            setupEventListeners() {
+                // رویداد ارسال مجدد
+                document.getElementById('smsResendBtn').addEventListener('click', () => {
+                    this.resendCode();
+                });
+                
+                // رویداد تأیید
+                document.getElementById('smsVerificationForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const fullCode = document.getElementById('fullSmsCode').value;
+                    if (fullCode.length === this.codeLength) {
+                        this.validateCode(fullCode);
+                    }
+                });
+                
+                // رویداد inputها
+                document.querySelectorAll('.sms-code-input').forEach(input => {
+                    input.addEventListener('input', () => this.checkCodeCompletion());
+                });
             }
         }
         
-        // راه‌اندازی سیستم 2FA
+        // ==================== اجرای سیستم ====================
         document.addEventListener('DOMContentLoaded', () => {
-            window.twoFactorAuth = new TwoFactorAuth();
+            // اضافه کردن استایل انیمیشن
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes shake {
+                    0%, 100% { transform: translateX(0); }
+                    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                    20%, 40%, 60%, 80% { transform: translateX(5px); }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // راه‌اندازی سیستم
+            window.smsVerification = new SmsVerification();
         });
     </script>
 </body>
