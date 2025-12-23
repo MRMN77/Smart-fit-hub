@@ -1,694 +1,588 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ورود به حساب - SMART FIT</title>
-
+    <title>ورود به SMART FIT</title>
+    
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- استایل اختصاصی -->
-    <link rel="stylesheet" href="../assets/css/main.css">
-
+    <!-- CSS پروژه -->
+    <link href="../assets/css/styles.css" rel="stylesheet">
+    
     <style>
-        .login-container {
+        
+        
+        .login-page {
             min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 30%, #764ba2 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             padding: 20px;
         }
-
+        
         .login-card {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
             width: 100%;
             max-width: 450px;
+            overflow: hidden;
         }
-
+        
         .login-header {
-            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            background: linear-gradient(90deg, #4e54c8, #8f94fb);
             color: white;
             padding: 30px;
             text-align: center;
         }
-
+        
         .login-header h2 {
-            margin: 0;
             font-weight: 700;
+            margin-bottom: 10px;
         }
-
-        .login-header p {
-            opacity: 0.9;
-            margin-top: 10px;
-            font-size: 0.95rem;
-        }
-
+        
         .login-body {
             padding: 40px;
         }
-
-        .form-floating>label {
-            right: 0 !important;
-            left: auto !important;
-            padding-right: 0.75rem !important;
-            font-family: 'Vazirmatn', sans-serif;
-        }
-
+        
         .form-control {
+            padding: 12px 20px;
             border-radius: 10px;
-            padding: 16px 20px;
             border: 2px solid #e0e0e0;
             transition: all 0.3s;
         }
-
+        
         .form-control:focus {
-            border-color: #4361ee;
-            box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+            border-color: #4e54c8;
+            box-shadow: 0 0 0 3px rgba(78, 84, 200, 0.2);
         }
-
-        /* کپچای ساده و کوچک */
-        .captcha-box {
+        
+        .input-group-text {
             background: #f8f9fa;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 20px 0;
-            border: 1px solid #dee2e6;
-        }
-
-        .captcha-display {
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-align: center;
-            margin: 10px 0;
-            padding: 10px;
-            background: white;
-            border-radius: 8px;
             border: 2px solid #e0e0e0;
+            border-left: 0;
         }
-
-        .login-options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 20px 0;
-            font-size: 0.9rem;
+        
+        .btn-login {
+            background: linear-gradient(90deg, #4e54c8, #8f94fb);
+            border: none;
+            color: white;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.3s;
         }
-
-        .remember-me {
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(78, 84, 200, 0.3);
         }
-
-        .forgot-password {
-            color: #4361ee;
-            text-decoration: none;
-        }
-
-        .forgot-password:hover {
-            text-decoration: underline;
-        }
-
+        
         .login-footer {
             text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
+            padding: 20px;
             border-top: 1px solid #eee;
-            color: #666;
-            font-size: 0.95rem;
+            background: #f8f9fa;
         }
-
-        .login-footer a {
-            color: #4361ee;
+        
+        .forgot-password-section {
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 30px;
+        }
+        
+        .back-to-login {
+            color: #4e54c8;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 500;
         }
-
-        .login-footer a:hover {
+        
+        .back-to-login:hover {
             text-decoration: underline;
         }
+        
+        .timer-text {
+            font-family: monospace;
+            font-weight: bold;
+            color: #dc3545;
+        }
+        
+        /* انیمیشن‌ها */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        
     </style>
+    
 </head>
-
 <body>
-    <div class="login-container">
-        <div class="login-card">
+    <div class="login-page">
+        <div class="login-card fade-in">
+            <!-- هدر -->
             <div class="login-header">
-                <h2><i class="fas fa-sign-in-alt me-2"></i>ورود به حساب کاربری</h2>
-                <p>به SMART FIT خوش آمدید. لطفاً وارد شوید.</p>
+                <div style="font-size: 3rem; margin-bottom: 15px;">
+                    <i class="fas fa-sign-in-alt"></i>
+                </div>
+                <h2>ورود به SMART FIT</h2>
+                <p class="mb-0">لطفاً اطلاعات خود را وارد کنید</p>
             </div>
-
+            
+            <!-- بدنه -->
             <div class="login-body">
-                <form id="login-form">
+                <!-- فرم ورود اصلی -->
+                <form id="loginForm">
                     <!-- ایمیل -->
-                    <div class="form-floating mb-3">
-                        <input type="email" class="form-control" id="login-email" placeholder="name@example.com" required>
-                        <label for="login-email">
-                            <i class="fas fa-envelope me-2"></i>آدرس ایمیل
-                        </label>
-                    </div>
-
-                    <!-- رمز عبور -->
-                    <div class="form-floating mb-3">
-                        <input type="password" class="form-control" id="login-password" placeholder="رمز عبور" required minlength="6">
-                        <label for="login-password">
-                            <i class="fas fa-lock me-2"></i>رمز عبور
-                        </label>
-                    </div>
-
-                    <!-- انتخاب نقش -->
-                    <div class="mb-3">
-                        <label class="form-label">ورود به عنوان:</label>
-                        <select class="form-select" id="login-role">
-                            <option value="athlete" selected>ورزشکار</option>
-                            <option value="coach">مربی</option>
-
-                        </select>
-                    </div>
-
-                    <!-- کپچا -->
-                    <div class="captcha-box">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <small class="text-muted">
-                                <i class="fas fa-shield-alt me-1"></i>تایید امنیتی
-                            </small>
-                            <button type="button" class="btn btn-sm btn-outline-secondary" id="refresh-captcha">
-                                <i class="fas fa-redo"></i> جدید
-                            </button>
-                        </div>
-
-                        <div class="captcha-display" id="captcha-question">
-                            <!-- سوال ریاضی اینجا نمایش داده می‌شه -->
-                        </div>
-
-                        <input type="number" class="form-control mt-2" id="captcha-answer" placeholder="جواب را وارد کنید" required>
-                    </div>
-
-                    <!-- گزینه‌ها -->
-                    <div class="login-options">
-                        <div class="remember-me">
-                            <input type="checkbox" id="remember-me">
-                            <label for="remember-me" class="mb-0">مرا به خاطر بسپار</label>
-                        </div>
-                        <a href="#" class="forgot-password">رمز عبور را فراموش کرده‌ام؟</a>
-                        
-                    </div>
-
-                    <!-- دکمه ورود -->
-                    <button type="submit" class="btn btn-primary w-100 py-3 fw-bold">
-                        <i class="fas fa-sign-in-alt me-2"></i>ورود به حساب
-                    </button>
-                </form>
-
-                <!-- ثبت‌نام جدید -->
-                <div class="login-footer">
-                    حساب کاربری ندارید؟
-                    <a href="register.html">ثبت‌نام رایگان</a>
-
-                    <div class="mt-3">
-                        <a href="login-admin.html" class="text-warning">
-                            <i class="fas fa-user-shield me-1"></i>ورود مدیران سیستم
-                        </a>
-                    </div>
-<!-- در فایل login.html، بعد از فرم ورود، این بخش را اضافه کن -->
-
-<!-- بخش فراموشی رمز عبور -->
-<div class="row mt-4">
-    <div class="col-12">
-        <div class="card border-0 shadow-sm">
-            <div class="card-body p-4">
-                <h5 class="card-title mb-3">
-                    <i class="fas fa-key text-warning me-2"></i>
-                    بازیابی رمز عبور
-                </h5>
-                
-                <form id="forgotPasswordForm">
-                    <div class="mb-3">
-                        <label for="recoveryEmail" class="form-label">
-                            ایمیل یا شماره موبایل خود را وارد کنید
+                    <div class="mb-4">
+                        <label for="email" class="form-label fw-bold">
+                            <i class="fas fa-envelope me-2"></i>ایمیل
                         </label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="recoveryEmail" 
-                                   placeholder="example@smartfit.ir یا ۰۹۱۲XXXXXXX" required>
-                            <button class="btn btn-outline-secondary" type="button" id="checkUserBtn">
-                                بررسی
-                            </button>
-                        </div>
-                        <div class="form-text">
-                            کد بازیابی به ایمیل یا شماره موبایل شما ارسال خواهد شد
+                            <input type="email" class="form-control" id="email" 
+                                   placeholder="example@smartfit.ir" required>
+                            <span class="input-group-text">
+                                <i class="fas fa-at"></i>
+                            </span>
                         </div>
                     </div>
                     
-                    <!-- این بخش بعد از کلیک روی بررسی نمایش داده می‌شود -->
-                    <div id="recoveryOptions" style="display: none;">
-                        <div class="mb-3">
-                            <label class="form-label">روش بازیابی را انتخاب کنید:</label>
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="radio" name="recoveryMethod" 
-                                       id="recoveryEmailMethod" value="email" checked>
-                                <label class="form-check-label" for="recoveryEmailMethod">
-                                    <i class="fas fa-envelope text-primary me-2"></i>
-                                    ارسال کد به ایمیل
-                                    <small class="text-muted d-block" id="emailDisplay"></small>
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="recoveryMethod" 
-                                       id="recoverySMSMethod" value="sms">
-                                <label class="form-check-label" for="recoverySMSMethod">
-                                    <i class="fas fa-sms text-success me-2"></i>
-                                    ارسال کد به پیامک
-                                    <small class="text-muted d-block" id="phoneDisplay"></small>
-                                </label>
-                            </div>
+                    <!-- رمز عبور -->
+                    <div class="mb-4">
+                        <label for="password" class="form-label fw-bold">
+                            <i class="fas fa-key me-2"></i>رمز عبور
+                        </label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="password" 
+                                   placeholder="••••••••" required>
+                            <span class="input-group-text" id="togglePassword" style="cursor: pointer;">
+                                <i class="fas fa-eye"></i>
+                            </span>
                         </div>
-                        
-                        <div class="mb-3">
-                            <label for="recoveryCode" class="form-label">کد تأیید</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="recoveryCode" 
-                                       placeholder="کد ۶ رقمی" maxlength="6" disabled>
-                                <button class="btn btn-warning" type="button" id="sendCodeBtn">
-                                    <i class="fas fa-paper-plane me-1"></i> ارسال کد
-                                </button>
-                            </div>
-                            <div class="mt-2">
-                                <small class="text-muted" id="timerText"></small>
-                            </div>
+                    </div>
+                    
+                    <!-- چک‌باکس‌ها -->
+                    <div class="mb-4">
+                       
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="rememberMe">
+                           <label class="form-check-label" for="rememberMe">
+                                مرا به خاطر بسپار
+                            </label>
                         </div>
-                        
-                        <div class="mb-3">
-                            <label for="newPassword" class="form-label">رمز عبور جدید</label>
-                            <div class="input-group">
-                                <input type="password" class="form-control" id="newPassword" 
-                                       placeholder="رمز عبور جدید (حداقل ۸ کاراکتر)" disabled>
-                                <button class="btn btn-outline-secondary" type="button" id="toggleNewPassword">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="confirmPassword" class="form-label">تکرار رمز عبور جدید</label>
-                            <input type="password" class="form-control" id="confirmPassword" 
-                                   placeholder="تکرار رمز عبور جدید" disabled>
-                        </div>
-                        
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-success" id="resetPasswordBtn" disabled>
-                                <i class="fas fa-check-circle me-2"></i>
-                                تغییر رمز عبور
-                            </button>
-                        </div>
+                    </div>
+                    
+                    <!-- دکمه ورود -->
+                    <div class="d-grid mb-3">
+                        <button type="submit" class="btn btn-login" id="loginBtn">
+                            <i class="fas fa-sign-in-alt me-2"></i>
+                            ورود به سیستم
+                        </button>
+                    </div>
+                    
+                    <!-- لینک فراموشی رمز -->
+                    <div class="text-center mb-3">
+                        <a href="#forgotPassword" class="text-decoration-none" id="showForgotPassword">
+                            <i class="fas fa-question-circle me-2"></i>
+                            رمز عبور را فراموش کرده‌اید؟
+                        </a>
+                    </div>
+                    
+                    <!-- ثبت‌نام جدید -->
+                    <div class="text-center">
+                        <p class="mb-0">
+                            حساب کاربری ندارید؟
+                            <a href="register-complete.html" class="text-primary fw-bold">
+                                ثبت‌نام کنید
+                            </a>
+                        </p>
                     </div>
                 </form>
                 
-                <div class="alert alert-info mt-3">
-                    <h6><i class="fas fa-info-circle me-2"></i>راهنمایی:</h6>
-                    <ul class="mb-0 small">
-                        <li>اگر ایمیل یا شماره موبایل خود را فراموش کرده‌اید، با پشتیبانی تماس بگیرید</li>
-                        <li>کد بازیابی تنها ۱۰ دقیقه اعتبار دارد</li>
-                        <li>رمز عبور باید حداقل ۸ کاراکتر و شامل حروف و اعداد باشد</li>
-                    </ul>
-                </div>
-                
-                <div class="text-center mt-3">
-                    <a href="login.html" class="text-decoration-none">
-                        <i class="fas fa-arrow-right me-1"></i> بازگشت به صفحه ورود
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- JavaScript مربوط به فراموشی رمز -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // متغیرهای زمان‌سنج
-        let countdown = 600; // 10 دقیقه
-        let countdownInterval;
-        
-        // عناصر DOM
-        const checkUserBtn = document.getElementById('checkUserBtn');
-        const recoveryOptions = document.getElementById('recoveryOptions');
-        const sendCodeBtn = document.getElementById('sendCodeBtn');
-        const resetPasswordBtn = document.getElementById('resetPasswordBtn');
-        const timerText = document.getElementById('timerText');
-        const emailDisplay = document.getElementById('emailDisplay');
-        const phoneDisplay = document.getElementById('phoneDisplay');
-        const recoveryEmailInput = document.getElementById('recoveryEmail');
-        const recoveryCodeInput = document.getElementById('recoveryCode');
-        const newPasswordInput = document.getElementById('newPassword');
-        const confirmPasswordInput = document.getElementById('confirmPassword');
-        const toggleNewPasswordBtn = document.getElementById('toggleNewPassword');
-        
-        // بررسی کاربر
-        checkUserBtn.addEventListener('click', function() {
-            const userInput = recoveryEmailInput.value.trim();
-            
-            if (!userInput) {
-                alert('لطفاً ایمیل یا شماره موبایل خود را وارد کنید');
-                return;
-            }
-            
-            // شبیه‌سازی بررسی کاربر
-            const isEmail = userInput.includes('@');
-            const isPhone = /^09\d{9}$/.test(userInput.replace(/\D/g, ''));
-            
-            if (!isEmail && !isPhone) {
-                alert('لطفاً یک ایمیل یا شماره موبایل معتبر وارد کنید');
-                return;
-            }
-            
-            // نمایش اطلاعات
-            if (isEmail) {
-                emailDisplay.textContent = userInput;
-                phoneDisplay.textContent = '۰۹۱۲XXXXXXX (در صورت ثبت)';
-                document.getElementById('recoveryEmailMethod').checked = true;
-            } else {
-                const formattedPhone = userInput.replace(/\D/g, '').replace(/^0/, '+98 ');
-                phoneDisplay.textContent = formattedPhone;
-                emailDisplay.textContent = 'user@smartfit.ir (در صورت ثبت)';
-                document.getElementById('recoverySMSMethod').checked = true;
-            }
-            
-            // نمایش بخش گزینه‌ها
-            recoveryOptions.style.display = 'block';
-            
-            // غیرفعال کردن فیلد ورودی
-            recoveryEmailInput.disabled = true;
-            checkUserBtn.disabled = true;
-            
-            // فعال کردن دکمه ارسال کد
-            sendCodeBtn.disabled = false;
-            
-            alert('✅ اطلاعات کاربری یافت شد. لطفاً روش بازیابی را انتخاب کنید.');
-        });
-        
-        // ارسال کد تأیید
-        sendCodeBtn.addEventListener('click', function() {
-            const method = document.querySelector('input[name="recoveryMethod"]:checked').value;
-            const userInput = recoveryEmailInput.value.trim();
-            
-            // تولید کد رندوم
-            const verificationCode = '123456'; // در واقعیت کد رندوم تولید شود
-            
-            // نمایش پیام
-            const methodText = method === 'email' ? 'ایمیل' : 'پیامک';
-            alert(`کد تأیید ۶ رقمی به ${methodText} شما ارسال شد.\nکد: ${verificationCode}`);
-            
-            // فعال کردن فیلد کد
-            recoveryCodeInput.disabled = false;
-            recoveryCodeInput.focus();
-            
-            // شروع تایمر
-            startCountdown();
-            
-            // فعال کردن فیلدهای رمز عبور
-            newPasswordInput.disabled = false;
-            confirmPasswordInput.disabled = false;
-            
-            // غیرفعال کردن دکمه ارسال کد
-            sendCodeBtn.disabled = true;
-            sendCodeBtn.innerHTML = '<i class="fas fa-check me-1"></i> کد ارسال شد';
-            sendCodeBtn.classList.remove('btn-warning');
-            sendCodeBtn.classList.add('btn-secondary');
-        });
-        
-        // نمایش/مخفی رمز عبور
-        toggleNewPasswordBtn.addEventListener('click', function() {
-            const type = newPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            newPasswordInput.setAttribute('type', type);
-            confirmPasswordInput.setAttribute('type', type);
-            
-            const icon = this.querySelector('i');
-            icon.classList.toggle('fa-eye');
-            icon.classList.toggle('fa-eye-slash');
-        });
-        
-        // اعتبارسنجی رمز عبور
-        newPasswordInput.addEventListener('input', validatePassword);
-        confirmPasswordInput.addEventListener('input', validatePassword);
-        recoveryCodeInput.addEventListener('input', validatePassword);
-        
-        function validatePassword() {
-            const code = recoveryCodeInput.value.trim();
-            const newPass = newPasswordInput.value.trim();
-            const confirmPass = confirmPasswordInput.value.trim();
-            
-            let isValid = true;
-            
-            // بررسی کد تأیید
-            if (code.length !== 6) {
-                isValid = false;
-            }
-            
-            // بررسی رمز عبور
-            if (newPass.length < 8) {
-                isValid = false;
-            }
-            
-            // بررسی تطابق رمزها
-            if (newPass !== confirmPass) {
-                isValid = false;
-            }
-            
-            // فعال/غیرفعال کردن دکمه تغییر رمز
-            resetPasswordBtn.disabled = !isValid;
-        }
-        
-        // ارسال فرم تغییر رمز
-        document.getElementById('forgotPasswordForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const newPassword = newPasswordInput.value.trim();
-            
-            // شبیه‌سازی تغییر رمز
-            resetPasswordBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> در حال تغییر...';
-            resetPasswordBtn.disabled = true;
-            
-            setTimeout(() => {
-                // نمایش موفقیت
-                alert('✅ رمز عبور شما با موفقیت تغییر یافت!');
-                
-                // ذخیره در localStorage (برای دمو)
-                localStorage.setItem('temp_new_password', newPassword);
-                
-                // بازگشت به صفحه ورود
-                window.location.href = 'login.html';
-            }, 1500);
-        });
-        
-        // تایمر
-        function startCountdown() {
-            clearInterval(countdownInterval);
-            countdown = 600;
-            
-            countdownInterval = setInterval(() => {
-                countdown--;
-                
-                const minutes = Math.floor(countdown / 60);
-                const seconds = countdown % 60;
-                
-                timerText.textContent = `زمان باقی‌مانده: ${minutes}:${seconds.toString().padStart(2, '0')}`;
-                
-                if (countdown <= 0) {
-                    clearInterval(countdownInterval);
-                    timerText.textContent = 'کد منقضی شد';
-                    timerText.classList.add('text-danger');
+                <!-- بخش فراموشی رمز عبور (مخفی) -->
+                <div id="forgotPasswordSection" class="forgot-password-section" style="display: none;">
+                    <h5 class="mb-4">
+                        <i class="fas fa-key text-warning me-2"></i>
+                        بازیابی رمز عبور
+                    </h5>
                     
-                    // غیرفعال کردن فیلدها
-                    recoveryCodeInput.disabled = true;
-                    newPasswordInput.disabled = true;
-                    confirmPasswordInput.disabled = true;
-                    resetPasswordBtn.disabled = true;
+                    <form id="forgotPasswordForm">
+                        <div class="mb-3">
+                            <label for="recoveryEmail" class="form-label">
+                                ایمیل یا شماره موبایل خود را وارد کنید
+                            </label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="recoveryEmail" 
+                                       placeholder="example@smartfit.ir یا ۰۹۱۲XXXXXXX" required>
+                                <button class="btn btn-outline-secondary" type="button" id="checkUserBtn">
+                                    بررسی
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- گزینه‌های بازیابی -->
+                        <div id="recoveryOptions" style="display: none;">
+                            <div class="mb-3">
+                                <label class="form-label">روش بازیابی:</label>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="recoveryMethod" 
+                                           id="recoveryEmailMethod" value="email" checked>
+                                    <label class="form-check-label" for="recoveryEmailMethod">
+                                        <i class="fas fa-envelope text-primary me-2"></i>
+                                        ارسال کد به ایمیل
+                                        <span class="text-muted small d-block" id="emailDisplay"></span>
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="recoveryMethod" 
+                                           id="recoverySMSMethod" value="sms">
+                                    <label class="form-check-label" for="recoverySMSMethod">
+                                        <i class="fas fa-sms text-success me-2"></i>
+                                        ارسال کد به پیامک
+                                        <span class="text-muted small d-block" id="phoneDisplay"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="recoveryCode" class="form-label">کد تأیید</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="recoveryCode" 
+                                           placeholder="کد ۶ رقمی" maxlength="6" disabled>
+                                    <button class="btn btn-warning" type="button" id="sendCodeBtn">
+                                        <i class="fas fa-paper-plane me-1"></i> ارسال کد
+                                    </button>
+                                </div>
+                                <div class="mt-2">
+                                    <small class="timer-text" id="timerText">کد هنوز ارسال نشده است</small>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="newPassword" class="form-label">رمز عبور جدید</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="newPassword" 
+                                           placeholder="رمز عبور جدید (حداقل ۸ کاراکتر)" disabled>
+                                    <button class="btn btn-outline-secondary" type="button" id="toggleNewPassword">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label">تکرار رمز عبور جدید</label>
+                                <input type="password" class="form-control" id="confirmPassword" 
+                                       placeholder="تکرار رمز عبور جدید" disabled>
+                            </div>
+                            
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-success" id="resetPasswordBtn" disabled>
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    تغییر رمز عبور
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                     
-                    // فعال کردن مجدد دکمه ارسال کد
-                    sendCodeBtn.disabled = false;
-                    sendCodeBtn.innerHTML = '<i class="fas fa-paper-plane me-1"></i> ارسال مجدد کد';
-                    sendCodeBtn.classList.remove('btn-secondary');
-                    sendCodeBtn.classList.add('btn-warning');
-                }
-            }, 1000);
-        }
-        
-        // نمایش زمان اولیه
-        timerText.textContent = 'کد هنوز ارسال نشده است';
-    });
-</script>
-
-<!-- CSS اضافی -->
-<style>
-    #recoveryOptions {
-        animation: fadeIn 0.5s ease-out;
-    }
-    
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .form-check-label {
-        cursor: pointer;
-        padding: 10px;
-        border-radius: 8px;
-        transition: background-color 0.3s;
-    }
-    
-    .form-check-input:checked + .form-check-label {
-        background-color: rgba(13, 110, 253, 0.1);
-    }
-</style>
-                    <div class="mt-2">
-                        <a href="../index.html" class="text-muted">
-                            <i class="fas fa-arrow-right me-1"></i>بازگشت به صفحه اصلی
+                    <!-- راهنمایی -->
+                    <div class="alert alert-info mt-3">
+                        <h6><i class="fas fa-info-circle me-2"></i>راهنمایی:</h6>
+                        <ul class="mb-0 small">
+                            <li>کد بازیابی ۱۰ دقیقه اعتبار دارد</li>
+                            <li>رمز عبور باید حداقل ۸ کاراکتر باشد</li>
+                            <li>اگر مشکل دارید، با پشتیبانی تماس بگیرید</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- بازگشت به ورود -->
+                    <div class="text-center mt-3">
+                        <a href="#login" class="back-to-login" id="backToLogin">
+                            <i class="fas fa-arrow-right me-1"></i> بازگشت به صفحه ورود
                         </a>
                     </div>
                 </div>
             </div>
+            
+            <!-- فوتر -->
+            <div class="login-footer">
+                <a href="../index.html" class="back-to-login">
+                    <i class="fas fa-arrow-right me-2"></i>بازگشت به صفحه اصلی
+                </a>
+            </div>
         </div>
     </div>
 
-    <!-- اسکریپت‌های ضروری -->
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/script.js"></script>
-    <!-- چت بات هوشمند -->
-    <script src="../assets/js/chatbot.js"></script>
-
+    
     <script>
-        // سیستم کپچای ساده و مطمئن
         document.addEventListener('DOMContentLoaded', function() {
-            const captchaQuestion = document.getElementById('captcha-question');
-            const refreshBtn = document.getElementById('refresh-captcha');
-            const captchaAnswer = document.getElementById('captcha-answer');
-            const loginForm = document.getElementById('login-form');
-
-            // تولید سوال کپچا
-            function generateCaptcha() {
-                const num1 = Math.floor(Math.random() * 8) + 2; // 2-9
-                const num2 = Math.floor(Math.random() * 6) + 2; // 2-7
-                const answer = num1 + num2;
-
-                // نمایش سوال
-                captchaQuestion.innerHTML = `
-                    <span class="text-primary">${num1}</span>
-                    <span class="mx-2">+</span>
-                    <span class="text-primary">${num2}</span>
-                    <span class="mx-2">=</span>
-                    <span class="text-muted">؟</span>
-                `;
-
-                // ذخیره جواب
-                captchaQuestion.dataset.answer = answer;
-
-                return answer;
-            }
-
-            // تولید اولین کپچا
-            generateCaptcha();
-
-            // دکمه تازه‌سازی کپچا
-            refreshBtn.addEventListener('click', function() {
-                generateCaptcha();
-                captchaAnswer.value = '';
-
-                // نمایش پیام
-                const alertDiv = document.createElement('div');
-                alertDiv.className = 'alert alert-info alert-dismissible fade show mt-3';
-                alertDiv.innerHTML = `
-                    سوال امنیتی جدید تولید شد
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                `;
-                loginForm.parentNode.insertBefore(alertDiv, loginForm.nextSibling);
-
-                setTimeout(() => {
-                    if (alertDiv.parentNode) alertDiv.remove();
-                }, 3000);
+            console.log('🔐 صفحه ورود بارگذاری شد');
+            
+            // ==================== مدیریت نمایش/مخفی رمز ====================
+            document.getElementById('togglePassword').addEventListener('click', function() {
+                const passwordInput = document.getElementById('password');
+                const icon = this.querySelector('i');
+                
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    passwordInput.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
             });
-
-            // اعتبارسنجی فرم
-            loginForm.addEventListener('submit', function(e) {
+            
+            // ==================== فرم ورود اصلی ====================
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
                 e.preventDefault();
-
-                const email = document.getElementById('login-email').value;
-                const password = document.getElementById('login-password').value;
-                const userRole = document.getElementById('login-role').value;
-                const userAnswer = parseInt(captchaAnswer.value);
-                const correctAnswer = parseInt(captchaQuestion.dataset.answer);
-
-                // اعتبارسنجی
+                
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value.trim();
+                const rememberMe = document.getElementById('rememberMe').checked;
+                
                 if (!email || !password) {
-                    showAlert('لطفاً ایمیل و رمز عبور را وارد کنید', 'danger');
+                    alert('لطفاً ایمیل و رمز عبور را وارد کنید');
                     return;
                 }
-
-                if (isNaN(userAnswer)) {
-                    showAlert('لطفاً پاسخ سوال امنیتی را وارد کنید', 'warning');
-                    captchaAnswer.focus();
-                    return;
-                }
-
-                if (userAnswer !== correctAnswer) {
-                    showAlert('پاسخ سوال امنیتی نادرست است', 'danger');
-                    generateCaptcha();
-                    captchaAnswer.value = '';
-                    captchaAnswer.focus();
-                    return;
-                }
-
-                // همه چیز درست بود
-                showAlert('در حال بررسی اطلاعات...', 'info');
-
-                // ذخیره اطلاعات
-                const tempUser = {
-                    email: email,
-                    phone: '09123456789',
-                    name: 'کاربر نمونه',
-                    role: userRole
-                };
-
-                localStorage.setItem('smartfit_temp_user', JSON.stringify(tempUser));
-                localStorage.setItem('smartfit_user_role', userRole);
-
-                // هدایت به صفحه 2FA
+                
+                // شبیه‌سازی ورود
+                const loginBtn = document.getElementById('loginBtn');
+                const originalText = loginBtn.innerHTML;
+                
+                loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>در حال ورود...';
+                loginBtn.disabled = true;
+                
                 setTimeout(() => {
-                    window.location.href = 'verify-2fa.html';
+                    // اطلاعات دمو
+                    const demoUsers = [
+                        { email: 'test@smartfit.ir', password: '123456', role: 'athlete' },
+                        { email: 'coach@smartfit.ir', password: '123456', role: 'coach' },
+                        { email: 'admin@smartfit.ir', password: 'Admin@123', role: 'admin' }
+                    ];
+                    
+                    const user = demoUsers.find(u => u.email === email && u.password === password);
+                    
+                    if (user || (email && password)) { // در دمو هر اطلاعاتی قبول می‌کنیم
+                        // ذخیره اطلاعات کاربر
+                        const userData = {
+                            email: email,
+                            name: email.split('@')[0],
+                            role: user ? user.role : 'athlete',
+                            isLoggedIn: true,
+                            loginTime: new Date().toISOString(),
+                            rememberMe: rememberMe
+                        };
+                        
+                        localStorage.setItem('smartfit_user', JSON.stringify(userData));
+                        
+                        // نمایش موفقیت
+                        alert('✅ ورود موفقیت‌آمیز!');
+                        
+                        // هدایت به داشبورد مناسب
+                        setTimeout(() => {
+                            const dashboardPages = {
+                                'athlete': 'dashboard.html',
+                                'coach': 'coach-dashboard.html',
+                                'admin': 'admin-dashboard.html'
+                            };
+                            
+                            const targetPage = dashboardPages[userData.role] || 'dashboard.html';
+                            window.location.href = targetPage;
+                        }, 1000);
+                        
+                    } else {
+                        alert('❌ ایمیل یا رمز عبور اشتباه است');
+                        loginBtn.innerHTML = originalText;
+                        loginBtn.disabled = false;
+                    }
                 }, 1500);
             });
-
-            // تابع نمایش پیام
-            function showAlert(message, type = 'info') {
-                const alertDiv = document.createElement('div');
-                alertDiv.className = `alert alert-${type} alert-dismissible fade show mt-3`;
-                alertDiv.innerHTML = `
-                    ${message}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                `;
-
-                loginForm.parentNode.insertBefore(alertDiv, loginForm.nextSibling);
-
+            
+            // ==================== نمایش بخش فراموشی رمز ====================
+            document.getElementById('showForgotPassword').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('forgotPasswordSection').style.display = 'block';
+            });
+            
+            // ==================== بازگشت به فرم ورود ====================
+            document.getElementById('backToLogin').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('forgotPasswordSection').style.display = 'none';
+                document.getElementById('loginForm').style.display = 'block';
+            });
+            
+            // ==================== فراموشی رمز ====================
+            let countdown = 600; // 10 دقیقه
+            let countdownInterval;
+            
+            const checkUserBtn = document.getElementById('checkUserBtn');
+            const recoveryOptions = document.getElementById('recoveryOptions');
+            const sendCodeBtn = document.getElementById('sendCodeBtn');
+            const resetPasswordBtn = document.getElementById('resetPasswordBtn');
+            const timerText = document.getElementById('timerText');
+            const emailDisplay = document.getElementById('emailDisplay');
+            const phoneDisplay = document.getElementById('phoneDisplay');
+            const recoveryEmailInput = document.getElementById('recoveryEmail');
+            const recoveryCodeInput = document.getElementById('recoveryCode');
+            const newPasswordInput = document.getElementById('newPassword');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            const toggleNewPasswordBtn = document.getElementById('toggleNewPassword');
+            
+            // بررسی کاربر
+            checkUserBtn.addEventListener('click', function() {
+                const userInput = recoveryEmailInput.value.trim();
+                
+                if (!userInput) {
+                    alert('لطفاً ایمیل یا شماره موبایل خود را وارد کنید');
+                    return;
+                }
+                
+                const isEmail = userInput.includes('@');
+                const isPhone = /^09\d{9}$/.test(userInput.replace(/\D/g, ''));
+                
+                if (!isEmail && !isPhone) {
+                    alert('لطفاً یک ایمیل یا شماره موبایل معتبر وارد کنید');
+                    return;
+                }
+                
+                // نمایش اطلاعات
+                if (isEmail) {
+                    emailDisplay.textContent = userInput;
+                    phoneDisplay.textContent = '۰۹۱۲XXXXXXX (در صورت ثبت)';
+                    document.getElementById('recoveryEmailMethod').checked = true;
+                } else {
+                    const formattedPhone = userInput.replace(/\D/g, '').replace(/^0/, '+98 ');
+                    phoneDisplay.textContent = formattedPhone;
+                    emailDisplay.textContent = 'user@smartfit.ir (در صورت ثبت)';
+                    document.getElementById('recoverySMSMethod').checked = true;
+                }
+                
+                // نمایش گزینه‌ها
+                recoveryOptions.style.display = 'block';
+                recoveryEmailInput.disabled = true;
+                checkUserBtn.disabled = true;
+                sendCodeBtn.disabled = false;
+                
+                alert('✅ اطلاعات کاربری یافت شد. لطفاً روش بازیابی را انتخاب کنید.');
+            });
+            
+            // ارسال کد
+            sendCodeBtn.addEventListener('click', function() {
+                const method = document.querySelector('input[name="recoveryMethod"]:checked').value;
+                const verificationCode = '123456';
+                
+                const methodText = method === 'email' ? 'ایمیل' : 'پیامک';
+                alert(`کد تأیید ۶ رقمی به ${methodText} شما ارسال شد.\nکد: ${verificationCode}`);
+                
+                recoveryCodeInput.disabled = false;
+                recoveryCodeInput.focus();
+                startCountdown();
+                
+                newPasswordInput.disabled = false;
+                confirmPasswordInput.disabled = false;
+                
+                sendCodeBtn.disabled = true;
+                sendCodeBtn.innerHTML = '<i class="fas fa-check me-1"></i> کد ارسال شد';
+                sendCodeBtn.classList.remove('btn-warning');
+                sendCodeBtn.classList.add('btn-secondary');
+            });
+            
+            // نمایش/مخفی رمز
+            toggleNewPasswordBtn.addEventListener('click', function() {
+                const type = newPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                newPasswordInput.setAttribute('type', type);
+                confirmPasswordInput.setAttribute('type', type);
+                
+                const icon = this.querySelector('i');
+                icon.classList.toggle('fa-eye');
+                icon.classList.toggle('fa-eye-slash');
+            });
+            
+            // اعتبارسنجی رمز
+            newPasswordInput.addEventListener('input', validatePassword);
+            confirmPasswordInput.addEventListener('input', validatePassword);
+            recoveryCodeInput.addEventListener('input', validatePassword);
+            
+            function validatePassword() {
+                const code = recoveryCodeInput.value.trim();
+                const newPass = newPasswordInput.value.trim();
+                const confirmPass = confirmPasswordInput.value.trim();
+                
+                let isValid = true;
+                
+                if (code.length !== 6) isValid = false;
+                if (newPass.length < 8) isValid = false;
+                if (newPass !== confirmPass) isValid = false;
+                
+                resetPasswordBtn.disabled = !isValid;
+            }
+            
+            // تغییر رمز
+            document.getElementById('forgotPasswordForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const newPassword = newPasswordInput.value.trim();
+                
+                resetPasswordBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> در حال تغییر...';
+                resetPasswordBtn.disabled = true;
+                
                 setTimeout(() => {
-                    if (alertDiv.parentNode) {
-                        alertDiv.remove();
+                    alert('✅ رمز عبور شما با موفقیت تغییر یافت!\n\nلطفاً با رمز جدید وارد شوید.');
+                    
+                    // بازگشت به صفحه ورود
+                    document.getElementById('forgotPasswordSection').style.display = 'none';
+                    document.getElementById('loginForm').style.display = 'block';
+                    
+                    // پاک کردن فرم
+                    document.getElementById('forgotPasswordForm').reset();
+                    resetPasswordBtn.innerHTML = '<i class="fas fa-check-circle me-2"></i> تغییر رمز عبور';
+                }, 1500);
+            });
+            
+            // تایمر
+            function startCountdown() {
+                clearInterval(countdownInterval);
+                countdown = 600;
+                
+                countdownInterval = setInterval(() => {
+                    countdown--;
+                    
+                    const minutes = Math.floor(countdown / 60);
+                    const seconds = countdown % 60;
+                    
+                    timerText.textContent = `زمان باقی‌مانده: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+                    
+                    if (countdown <= 0) {
+                        clearInterval(countdownInterval);
+                        timerText.textContent = 'کد منقضی شد';
+                        timerText.classList.add('text-danger');
+                        
+                        recoveryCodeInput.disabled = true;
+                        newPasswordInput.disabled = true;
+                        confirmPasswordInput.disabled = true;
+                        resetPasswordBtn.disabled = true;
+                        
+                        sendCodeBtn.disabled = false;
+                        sendCodeBtn.innerHTML = '<i class="fas fa-paper-plane me-1"></i> ارسال مجدد کد';
+                        sendCodeBtn.classList.remove('btn-secondary');
+                        sendCodeBtn.classList.add('btn-warning');
                     }
-                }, 5000);
+                }, 1000);
             }
         });
     </script>
-    
 </body>
-
 </html>
