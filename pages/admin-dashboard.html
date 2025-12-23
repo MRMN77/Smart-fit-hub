@@ -3,665 +3,1102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>داشبورد مدیریت - SMART FIT</title>
+    <title>پنل مدیریت - SMART FIT</title>
     
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <!-- استایل اختصاصی -->
-    <link rel="stylesheet" href="../assets/css/main.css">
+    <!-- CSS پروژه -->
+    <link href="../assets/css/styles.css" rel="stylesheet">
     
     <style>
-        .admin-dashboard {
+        :root {
+            --primary-color: #4e54c8;
+            --secondary-color: #8f94fb;
+            --success-color: #28a745;
+            --info-color: #17a2b8;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --dark-color: #343a40;
+            --light-color: #f8f9fa;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            font-family: 'Vazir', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        /* سایدبار */
+        .admin-sidebar {
+            background: linear-gradient(180deg, #1a237e 0%, #283593 100%);
+            color: white;
+            min-height: 100vh;
+            position: fixed;
+            width: 260px;
+            box-shadow: 3px 0 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        
+        .sidebar-header {
+            padding: 25px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar-logo {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .sidebar-logo i {
+            color: #4fc3f7;
+        }
+        
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 12px 25px;
+            margin: 5px 15px;
+            border-radius: 10px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .nav-link i {
+            width: 20px;
+            text-align: center;
+        }
+        
+        .nav-badge {
+            margin-right: auto;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        
+        /* محتوای اصلی */
+        .admin-content {
+            margin-right: 260px;
             padding: 20px;
-            background: #f8f9fa;
             min-height: 100vh;
         }
         
         .admin-header {
-            background: linear-gradient(135deg, #2a087c 0%, #1a054d 100%);
-            color: white;
-            padding: 30px;
+            background: white;
             border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(42, 8, 124, 0.2);
+            padding: 20px 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         
-        .admin-badge {
-            background: #f94144;
-            color: white;
-            padding: 8px 20px;
+        .header-title h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+        
+        .header-title p {
+            color: #7f8c8d;
+            margin: 0;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .search-box {
+            position: relative;
+            width: 300px;
+        }
+        
+        .search-box input {
+            padding-right: 45px;
             border-radius: 25px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            display: inline-block;
-            margin-bottom: 15px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .search-box i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #95a5a6;
+        }
+        
+        /* کارت‌های آمار */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
         }
         
         .stat-card {
-            border: none;
+            background: white;
             border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s;
-            margin-bottom: 25px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
             overflow: hidden;
         }
         
         .stat-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 4px;
+        }
+        
+        .stat-card.primary::before { background: var(--primary-color); }
+        .stat-card.success::before { background: var(--success-color); }
+        .stat-card.warning::before { background: var(--warning-color); }
+        .stat-card.danger::before { background: var(--danger-color); }
+        
+        .stat-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .stat-info h3 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+        
+        .stat-info p {
+            color: #7f8c8d;
+            margin: 0;
+            font-size: 14px;
         }
         
         .stat-icon {
             width: 60px;
             height: 60px;
-            border-radius: 15px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
-            margin-bottom: 15px;
+            font-size: 24px;
+            color: white;
         }
         
-        .user-table-container {
+        .stat-icon.primary { background: var(--primary-color); }
+        .stat-icon.success { background: var(--success-color); }
+        .stat-icon.warning { background: var(--warning-color); }
+        .stat-icon.danger { background: var(--danger-color); }
+        
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        
+        .stat-trend.up { color: var(--success-color); }
+        .stat-trend.down { color: var(--danger-color); }
+        
+        /* چارت‌ها */
+        .chart-container {
             background: white;
             border-radius: 15px;
             padding: 25px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             margin-bottom: 30px;
         }
         
-        .action-buttons .btn {
-            padding: 6px 15px;
-            font-size: 0.85rem;
-            border-radius: 8px;
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
         }
         
-        .system-health {
+        .chart-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin: 0;
+        }
+        
+        /* جداول */
+        .table-container {
             background: white;
             border-radius: 15px;
             padding: 25px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
         }
         
-        .health-item {
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .table-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin: 0;
+        }
+        
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .admin-table thead {
+            background: #f8f9fa;
+        }
+        
+        .admin-table th {
+            padding: 15px;
+            font-weight: 600;
+            color: #2c3e50;
+            border-bottom: 2px solid #e9ecef;
+            text-align: right;
+        }
+        
+        .admin-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e9ecef;
+            vertical-align: middle;
+        }
+        
+        .admin-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 15px 0;
-            border-bottom: 1px solid #eee;
+            justify-content: center;
+            font-weight: 600;
         }
         
-        .health-item:last-child {
-            border-bottom: none;
+        .badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
         }
         
-        .health-status {
+        .badge-success { background: #d4edda; color: #155724; }
+        .badge-warning { background: #fff3cd; color: #856404; }
+        .badge-danger { background: #f8d7da; color: #721c24; }
+        .badge-info { background: #d1ecf1; color: #0c5460; }
+        
+        .btn-action {
             padding: 5px 15px;
             border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: bold;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
         }
         
-        .status-good {
-            background: rgba(75, 181, 67, 0.15);
-            color: #4bb543;
+        /* نوتیفیکیشن‌ها */
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            background: var(--danger-color);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
-        .status-warning {
-            background: rgba(249, 199, 79, 0.15);
-            color: #f9c74f;
+        /* ریسپانسیو */
+        @media (max-width: 992px) {
+            .admin-sidebar {
+                width: 80px;
+            }
+            
+            .sidebar-header span,
+            .nav-link span:not(.nav-badge) {
+                display: none;
+            }
+            
+            .admin-content {
+                margin-right: 80px;
+            }
+            
+            .search-box {
+                width: 200px;
+            }
         }
         
-        .status-danger {
-            background: rgba(249, 65, 68, 0.15);
-            color: #f94144;
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-box {
+                display: none;
+            }
         }
         
-        .log-entry {
-            padding: 12px 15px;
-            background: #f8f9fa;
+        /* انیمیشن‌ها */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        /* اسکرول بار سفارشی */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
             border-radius: 10px;
-            margin-bottom: 10px;
-            border-right: 4px solid #2a087c;
-            font-size: 0.9rem;
         }
         
-        .log-time {
-            color: #666;
-            font-size: 0.8rem;
-            font-family: monospace;
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
         }
     </style>
 </head>
 <body>
-    <!-- ناوبری ادمین -->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, #2a087c 0%, #1a054d 100%);">
-        <div class="container-fluid">
-            <a class="navbar-brand fw-bold" href="#">
-                <i class="fas fa-user-shield me-2"></i>
-                پنل مدیریت سیستم SMART FIT
-            </a>
-            <div class="navbar-nav ms-auto">
-                <div class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
-                        <div class="me-2">
-                            <strong>مدیر ارشد</strong>
-                            <small class="d-block opacity-75">admin@smartfit.ir</small>
-                        </div>
-                        <div class="admin-avatar">
-                            <i class="fas fa-crown"></i>
-                        </div>
-                    </a>
+    <!-- سایدبار -->
+    <div class="admin-sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+                <i class="fas fa-crown"></i>
+                <span>SMART FIT Admin</span>
+            </div>
+            <small class="text-muted d-block mt-2">پنل مدیریت سیستم</small>
+        </div>
+        
+        <div class="sidebar-menu">
+            <nav class="nav flex-column">
+                <a class="nav-link active" href="#">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>داشبورد</span>
+                </a>
+                
+                <a class="nav-link" href="#users">
+                    <i class="fas fa-users"></i>
+                    <span>کاربران</span>
+                    <span class="nav-badge badge bg-danger">۱۲</span>
+                </a>
+                
+                <a class="nav-link" href="#coaches">
+                    <i class="fas fa-dumbbell"></i>
+                    <span>مربیان</span>
+                    <span class="nav-badge badge bg-warning">۳</span>
+                </a>
+                
+                <a class="nav-link" href="#athletes">
+                    <i class="fas fa-running"></i>
+                    <span>ورزشکاران</span>
+                </a>
+                
+                <a class="nav-link" href="#reports">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>گزارشات</span>
+                </a>
+                
+                <a class="nav-link" href="#payments">
+                    <i class="fas fa-credit-card"></i>
+                    <span>پرداخت‌ها</span>
+                </a>
+                
+                <a class="nav-link" href="#content">
+                    <i class="fas fa-newspaper"></i>
+                    <span>محتوا</span>
+                </a>
+                
+                <a class="nav-link" href="#settings">
+                    <i class="fas fa-cog"></i>
+                    <span>تنظیمات</span>
+                </a>
+            </nav>
+        </div>
+        
+        <div class="sidebar-footer p-3 border-top border-white-10">
+            <div class="d-flex align-items-center">
+                <div class="user-avatar me-3">A</div>
+                <div>
+                    <h6 class="mb-0" id="adminName">مدیر سیستم</h6>
+                    <small class="text-muted" id="adminEmail">admin@smartfit.ir</small>
+                </div>
+            </div>
+            <button class="btn btn-outline-light btn-sm w-100 mt-3" onclick="logoutAdmin()">
+                <i class="fas fa-sign-out-alt me-1"></i>خروج از سیستم
+            </button>
+        </div>
+    </div>
+    
+    <!-- محتوای اصلی -->
+    <div class="admin-content">
+        <!-- هدر -->
+        <div class="admin-header fade-in">
+            <div class="header-title">
+                <h1><i class="fas fa-chart-line me-2 text-primary"></i>داشبورد مدیریت</h1>
+                <p>آمار و گزارشات لحظه‌ای سیستم SMART FIT</p>
+            </div>
+            
+            <div class="header-actions">
+                <div class="search-box">
+                    <input type="text" class="form-control" placeholder="جستجوی کاربر، مربی، گزارش...">
+                    <i class="fas fa-search"></i>
+                </div>
+                
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-plus me-2"></i>ایجاد جدید
+                    </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">
-                            <i class="fas fa-cog me-2"></i>تنظیمات سیستم
-                        </a></li>
-                        <li><a class="dropdown-item" href="#">
-                            <i class="fas fa-user-cog me-2"></i>پروفایل مدیر
-                        </a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-user-plus me-2"></i>کاربر جدید</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-dumbbell me-2"></i>مربی جدید</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-file-alt me-2"></i>گزارش جدید</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-danger" href="login.html">
-                            <i class="fas fa-sign-out-alt me-2"></i>خروج از سیستم
-                        </a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-download me-2"></i>خروجی Excel</a></li>
                     </ul>
                 </div>
-            </div>
-        </div>
-    </nav>
-
-    <div class="admin-dashboard container-fluid">
-        <!-- هدر ادمین -->
-        <div class="admin-header">
-            <div class="admin-badge">
-                <i class="fas fa-shield-alt me-2"></i>دسترسی سطح مدیریت
-            </div>
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <h1 class="fw-bold mb-3">
-                        <i class="fas fa-tachometer-alt me-3"></i>
-                        داشبورد مدیریت مرکزی
-                    </h1>
-                    <p class="opacity-90 mb-0">
-                        نظارت کامل بر سیستم، کاربران، امنیت و عملکرد SMART FIT
-                    </p>
-                </div>
-                <div class="col-md-4 text-md-end">
-                    <div class="text-white-50">
-                        <small>آخرین بروزرسانی:</small>
-                        <div id="last-update">لحظاتی پیش</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- آمار کلی -->
-        <div class="row mb-4">
-            <div class="col-xl-3 col-md-6">
-                <div class="stat-card">
-                    <div class="card-body">
-                        <div class="stat-icon" style="background: rgba(67, 97, 238, 0.15); color: #4361ee;">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <h2 class="mb-2" id="total-users">۲,۸۴۷</h2>
-                        <p class="text-muted mb-2">کاربران ثبت‌نام‌شده</p>
-                        <div class="d-flex justify-content-between">
-                            <small class="text-success">
-                                <i class="fas fa-arrow-up me-1"></i>۱۲٫۵٪ افزایش
-                            </small>
-                            <small class="text-muted">امروز: +۳۴</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-xl-3 col-md-6">
-                <div class="stat-card">
-                    <div class="card-body">
-                        <div class="stat-icon" style="background: rgba(75, 181, 67, 0.15); color: #4bb543;">
-                            <i class="fas fa-user-tie"></i>
-                        </div>
-                        <h2 class="mb-2" id="total-coaches">۴۸</h2>
-                        <p class="text-muted mb-2">مربیان فعال</p>
-                        <div class="d-flex justify-content-between">
-                            <small class="text-success">
-                                <i class="fas fa-arrow-up me-1"></i>۵٫۲٪ افزایش
-                            </small>
-                            <small class="text-muted">امروز: +۲</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-xl-3 col-md-6">
-                <div class="stat-card">
-                    <div class="card-body">
-                        <div class="stat-icon" style="background: rgba(249, 199, 79, 0.15); color: #f9c74f;">
-                            <i class="fas fa-dumbbell"></i>
-                        </div>
-                        <h2 class="mb-2" id="active-workouts">۱۲,۵۴۷</h2>
-                        <p class="text-muted mb-2">جلسه تمرین فعال</p>
-                        <div class="d-flex justify-content-between">
-                            <small class="text-success">
-                                <i class="fas fa-arrow-up me-1"></i>۸٫۷٪ افزایش
-                            </small>
-                            <small class="text-muted">امروز: +۲۳۴</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-xl-3 col-md-6">
-                <div class="stat-card">
-                    <div class="card-body">
-                        <div class="stat-icon" style="background: rgba(249, 65, 68, 0.15); color: #f94144;">
-                            <i class="fas fa-server"></i>
-                        </div>
-                        <h2 class="mb-2">۹۹٫۸٪</h2>
-                        <p class="text-muted mb-2">آپ‌تایم سیستم</p>
-                        <div class="d-flex justify-content-between">
-                            <small class="text-success">
-                                <i class="fas fa-check-circle me-1"></i>پایدار
-                            </small>
-                            <small class="text-muted">۳۰ روز گذشته</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- نمودارها و مدیریت کاربران -->
-        <div class="row mb-4">
-            <div class="col-lg-8">
-                <div class="user-table-container">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h5 class="mb-0">
-                            <i class="fas fa-user-cog me-2"></i>
-                            مدیریت کاربران
-                        </h5>
-                        <div>
-                            <button class="btn btn-primary me-2">
-                                <i class="fas fa-plus me-1"></i>کاربر جدید
-                            </button>
-                            <button class="btn btn-outline-secondary">
-                                <i class="fas fa-download me-1"></i>خروجی گزارش
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="table-responsive">
-                        <table class="table table-hover" id="users-table">
-                            <thead>
-                                <tr>
-                                    <th>نام کاربر</th>
-                                    <th>ایمیل</th>
-                                    <th>نقش</th>
-                                    <th>تاریخ عضویت</th>
-                                    <th>وضعیت</th>
-                                    <th>عملیات</th>
-                                </tr>
-                            </thead>
-                            <tbody id="users-list">
-                                <!-- کاربران به صورت داینامیک لود می‌شن -->
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <div class="d-flex justify-content-between align-items-center mt-3">
-                        <small class="text-muted">
-                            نمایش ۱۰ مورد از ۲,۸۴۷ کاربر
-                        </small>
-                        <nav>
-                            <ul class="pagination pagination-sm mb-0">
-                                <li class="page-item disabled"><a class="page-link" href="#">قبلی</a></li>
-                                <li class="page-item active"><a class="page-link" href="#">۱</a></li>
-                                <li class="page-item"><a class="page-link" href="#">۲</a></li>
-                                <li class="page-item"><a class="page-link" href="#">۳</a></li>
-                                <li class="page-item"><a class="page-link" href="#">بعدی</a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-lg-4">
-                <div class="system-health">
-                    <h5 class="mb-4">
-                        <i class="fas fa-heartbeat me-2 text-danger"></i>
-                        سلامت سیستم
-                    </h5>
-                    
-                    <div class="health-item">
-                        <div>
-                            <div class="fw-bold">سرور برنامه</div>
-                            <small class="text-muted">API و منطق کسب‌وکار</small>
-                        </div>
-                        <span class="health-status status-good">
-                            <i class="fas fa-check-circle me-1"></i>عالی
-                        </span>
-                    </div>
-                    
-                    <div class="health-item">
-                        <div>
-                            <div class="fw-bold">پایگاه داده</div>
-                            <small class="text-muted">MySQL - پردازش کوئری‌ها</small>
-                        </div>
-                        <span class="health-status status-good">
-                            <i class="fas fa-check-circle me-1"></i>پایدار
-                        </span>
-                    </div>
-                    
-                    <div class="health-item">
-                        <div>
-                            <div class="fw-bold">فضای ذخیره‌سازی</div>
-                            <small class="text-muted">۸۷٪ استفاده شده</small>
-                        </div>
-                        <span class="health-status status-warning">
-                            <i class="fas fa-exclamation-triangle me-1"></i>هشدار
-                        </span>
-                    </div>
-                    
-                    <div class="health-item">
-                        <div>
-                            <div class="fw-bold">امنیت سیستم</div>
-                            <small class="text-muted">فایروال و لاگین</small>
-                        </div>
-                        <span class="health-status status-good">
-                            <i class="fas fa-shield-alt me-1"></i>فعال
-                        </span>
-                    </div>
-                    
-                    <div class="health-item">
-                        <div>
-                            <div class="fw-bold">پهنای باند</div>
-                            <small class="text-muted">مصرف ماهانه</small>
-                        </div>
-                        <span class="health-status status-good">
-                            <i class="fas fa-chart-line me-1"></i>نرمال
-                        </span>
-                    </div>
-                    
-                    <button class="btn btn-outline-primary w-100 mt-4">
-                        <i class="fas fa-redo me-1"></i>بررسی سلامت کامل
+                
+                <div class="position-relative">
+                    <button class="btn btn-light position-relative">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">۳</span>
                     </button>
                 </div>
             </div>
         </div>
-
-        <!-- نمودارها و لاگ‌ها -->
-        <div class="row">
+        
+        <!-- کارت‌های آمار -->
+        <div class="stats-grid fade-in">
+            <div class="stat-card primary">
+                <div class="stat-content">
+                    <div class="stat-info">
+                        <h3 id="totalUsers">۲,۸۴۷</h3>
+                        <p>کاربران کل</p>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>۱۲.۵% افزایش</span>
+                        </div>
+                    </div>
+                    <div class="stat-icon primary">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stat-card success">
+                <div class="stat-content">
+                    <div class="stat-info">
+                        <h3 id="activeCoaches">۴۸</h3>
+                        <p>مربیان فعال</p>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>۵.۲% افزایش</span>
+                        </div>
+                    </div>
+                    <div class="stat-icon success">
+                        <i class="fas fa-dumbbell"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stat-card warning">
+                <div class="stat-content">
+                    <div class="stat-info">
+                        <h3 id="monthlyIncome">۱۲۸M</h3>
+                        <p>درآمد ماهانه (تومان)</p>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>۱۸.۳% افزایش</span>
+                        </div>
+                    </div>
+                    <div class="stat-icon warning">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stat-card danger">
+                <div class="stat-content">
+                    <div class="stat-info">
+                        <h3 id="pendingRequests">۱۲</h3>
+                        <p>درخواست‌های در انتظار</p>
+                        <div class="stat-trend down">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>۳.۱% کاهش</span>
+                        </div>
+                    </div>
+                    <div class="stat-icon danger">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- چارت‌ها -->
+        <div class="row fade-in">
+            <div class="col-lg-8">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3><i class="fas fa-chart-bar me-2 text-primary"></i>رشد کاربران (۶ ماه گذشته)</h3>
+                        <select class="form-select form-select-sm" style="width: auto;" id="chartRange">
+                            <option value="6m">۶ ماه گذشته</option>
+                            <option value="3m">۳ ماه گذشته</option>
+                            <option value="1y">۱ سال گذشته</option>
+                        </select>
+                    </div>
+                    <canvas id="growthChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3><i class="fas fa-chart-pie me-2 text-success"></i>توزیع کاربران</h3>
+                    </div>
+                    <canvas id="distributionChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- جداول -->
+        <div class="row fade-in">
             <div class="col-lg-6">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title mb-4">
-                            <i class="fas fa-chart-bar me-2"></i>
-                            آمار ثبت‌نام کاربران
-                        </h5>
-                        <canvas id="registrations-chart"></canvas>
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3><i class="fas fa-dumbbell me-2 text-success"></i>مربیان برتر</h3>
+                        <a href="#" class="btn btn-sm btn-outline-success">مشاهده همه</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>مربی</th>
+                                    <th>ورزشکاران</th>
+                                    <th>امتیاز</th>
+                                    <th>وضعیت</th>
+                                    <th>عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="topCoachesTable">
+                                <!-- با JavaScript پر می‌شود -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
             
             <div class="col-lg-6">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title mb-4">
-                            <i class="fas fa-clipboard-list me-2"></i>
-                            لاگ فعالیت‌های اخیر
-                        </h5>
-                        <div id="activity-logs">
-                            <!-- لاگ‌های سیستم -->
-                        </div>
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3><i class="fas fa-running me-2 text-info"></i>ورزشکاران جدید</h3>
+                        <a href="#" class="btn btn-sm btn-outline-info">مشاهده همه</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ورزشکار</th>
+                                    <th>تاریخ عضویت</th>
+                                    <th>مربی</th>
+                                    <th>پلن</th>
+                                    <th>عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="newAthletesTable">
+                                <!-- با JavaScript پر می‌شود -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
+        </div>
+        
+        <!-- فعالیت‌های اخیر -->
+        <div class="table-container mt-4 fade-in">
+            <div class="table-header">
+                <h3><i class="fas fa-history me-2 text-warning"></i>فعالیت‌های اخیر سیستم</h3>
+                <button class="btn btn-sm btn-outline-warning" onclick="refreshActivities()">
+                    <i class="fas fa-sync-alt"></i> بروزرسانی
+                </button>
+            </div>
+            <div class="table-responsive">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>کاربر</th>
+                            <th>فعالیت</th>
+                            <th>زمان</th>
+                            <th>جزئیات</th>
+                            <th>وضعیت</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentActivitiesTable">
+                        <!-- با JavaScript پر می‌شود -->
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
-    <!-- فوتر ادمین -->
-    <footer class="bg-dark text-white py-4 mt-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h6 class="fw-bold">
-                        <i class="fas fa-user-shield me-2"></i>
-                        SMART FIT Admin Panel
-                    </h6>
-                    <small class="opacity-75">
-                        نسخه ۲.۴.۱ | آخرین بروزرسانی: دی ۱۴۰۲
-                    </small>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <small class="opacity-75">
-                        <i class="fas fa-lock me-1"></i>
-                        تمامی فعالیت‌ها لاگ و مانیتور می‌شوند
-                    </small>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- اسکریپت‌ها -->
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/script.js"></script>
-    <!-- چت بات هوشمند -->
-    <script src="../assets/js/chatbot.js"></script>
     
     <script>
-        // داده‌های نمونه برای ادمین
-        const adminData = {
-            users: [
-                { id: 1, name: 'علی محمدی', email: 'ali@example.com', role: 'ورزشکار', joinDate: '۱۴۰۲/۱۰/۱۵', status: 'فعال' },
-                { id: 2, name: 'مریم کریمی', email: 'maryam@example.com', role: 'ورزشکار', joinDate: '۱۴۰۲/۱۰/۱۰', status: 'فعال' },
-                { id: 3, name: 'رضا احمدی', email: 'reza@example.com', role: 'مربی', joinDate: '۱۴۰۲/۰۹/۲۰', status: 'فعال' },
-                { id: 4, name: 'سارا حسینی', email: 'sara@example.com', role: 'ورزشکار', joinDate: '۱۴۰۲/۰۹/۱۵', status: 'غیرفعال' },
-                { id: 5, name: 'امید جعفری', email: 'omid@example.com', role: 'ورزشکار', joinDate: '۱۴۰۲/۰۹/۰۵', status: 'فعال' },
-                { id: 6, name: 'نازنین رضایی', email: 'nazanin@example.com', role: 'ورزشکار', joinDate: '۱۴۰۲/۰۸/۲۸', status: 'فعال' },
-                { id: 7, name: 'محمد رضوی', email: 'mohammad@example.com', role: 'مربی', joinDate: '۱۴۰۲/۰۸/۲۰', status: 'فعال' },
-                { id: 8, name: 'فاطمه امینی', email: 'fatemeh@example.com', role: 'ورزشکار', joinDate: '۱۴۰۲/۰۸/۱۵', status: 'معلق' },
-                { id: 9, name: 'حسین نوروزی', email: 'hossein@example.com', role: 'ورزشکار', joinDate: '۱۴۰۲/۰۸/۱۰', status: 'فعال' },
-                { id: 10, name: 'لیلا محمدی', email: 'leila@example.com', role: 'ورزشکار', joinDate: '۱۴۰۲/۰۸/۰۵', status: 'فعال' }
-            ],
-            activityLogs: [
-                { time: '۱۰:۴۵:۲۳', action: 'ورود موفق مدیر', user: 'admin', ip: '192.168.1.100' },
-                { time: '۱۰:۳۰:۱۵', action: 'ایجاد کاربر جدید', user: 'admin', ip: '192.168.1.100' },
-                { time: '۱۰:۱۵:۴۲', action: 'به‌روزرسانی برنامه ورزشی', user: 'مربی رضا', ip: '192.168.1.105' },
-                { time: '۰۹:۵۵:۱۸', action: 'ثبت‌نام کاربر جدید', user: 'سیستم', ip: '85.185.25.34' },
-                { time: '۰۹:۴۰:۳۳', action: 'لاگین ناموفق', user: 'نامشخص', ip: '45.76.89.123' },
-                { time: '۰۹:۲۵:۰۷', action: 'پشتیبان‌گیری اتوماتیک', user: 'سیستم', ip: 'localhost' },
-                { time: '۰۹:۱۰:۵۵', action: 'ارسال نوتیفیکیشن', user: 'سیستم', ip: 'localhost' }
-            ]
-        };
-
-        // راه‌اندازی داشبورد ادمین
+        // ==================== مدیریت ادمین ====================
         document.addEventListener('DOMContentLoaded', function() {
-            // چک کردن دسترسی ادمین
-            if (!localStorage.getItem('smartfit_admin')) {
+            console.log('🚀 پنل مدیریت SMART FIT در حال راه‌اندازی...');
+            
+            // بررسی لاگین ادمین
+            checkAdminLogin();
+            
+            // بارگذاری داده‌ها
+            loadAdminData();
+            loadTopCoaches();
+            loadNewAthletes();
+            loadRecentActivities();
+            initializeCharts();
+            
+            // بروزرسانی خودکار
+            startAutoRefresh();
+            
+            console.log('✅ پنل مدیریت آماده است');
+        });
+        
+        // ==================== بررسی لاگین ====================
+        function checkAdminLogin() {
+            const adminData = JSON.parse(localStorage.getItem('smartfit_admin') || '{}');
+            
+            if (!adminData.isLoggedIn) {
+                alert('⚠️ دسترسی غیرمجاز! لطفاً ابتدا وارد شوید.');
                 window.location.href = 'login-admin.html';
                 return;
             }
             
-            // لود کاربران
-            loadUsers();
+            // نمایش اطلاعات ادمین
+            document.getElementById('adminName').textContent = adminData.name || 'مدیر سیستم';
+            document.getElementById('adminEmail').textContent = adminData.email || 'admin@smartfit.ir';
             
-            // لود لاگ‌های فعالیت
-            loadActivityLogs();
+            console.log(`👑 مدیر وارد شده: ${adminData.name}`);
+        }
+        
+        // ==================== بارگذاری داده‌ها ====================
+        function loadAdminData() {
+            // داده‌های نمونه
+            const data = {
+                totalUsers: 2847,
+                activeCoaches: 48,
+                monthlyIncome: '۱۲۸',
+                pendingRequests: 12,
+                activeUsers: 2147,
+                totalRevenue: '۴.۲ میلیارد',
+                newUsersToday: 34,
+                avgSessionTime: '24 دقیقه'
+            };
             
-            // ایجاد نمودارها
-            createCharts();
-            
-            // بروزرسانی زمان
-            updateLastUpdateTime();
-            
-            // شروع تایمر بروزرسانی
-            setInterval(updateLastUpdateTime, 60000); // هر دقیقه
-        });
-
-        function loadUsers() {
-            const container = document.getElementById('users-list');
-            if (!container) return;
-            
-            container.innerHTML = '';
-            
-            adminData.users.forEach(user => {
-                const statusClass = user.status === 'فعال' ? 'success' :
-                                  user.status === 'غیرفعال' ? 'secondary' : 'warning';
-                
-                const roleClass = user.role === 'مربی' ? 'info' : 'primary';
-                
-                const userHTML = `
-                    <tr>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <div class="avatar-sm me-3" style="width: 36px; height: 36px; background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                                    ${user.name.charAt(0)}
-                                </div>
-                                <div>
-                                    <div class="fw-bold">${user.name}</div>
-                                    <small class="text-muted">ID: ${user.id.toString().padStart(4, '0')}</small>
-                                </div>
-                            </div>
-                        </td>
-                        <td>${user.email}</td>
-                        <td>
-                            <span class="badge bg-${roleClass}">
-                                ${user.role}
-                            </span>
-                        </td>
-                        <td>${user.joinDate}</td>
-                        <td>
-                            <span class="badge bg-${statusClass}">
-                                ${user.status}
-                            </span>
-                        </td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn btn-outline-primary btn-sm me-1" title="ویرایش">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn btn-outline-${user.status === 'فعال' ? 'warning' : 'success'} btn-sm me-1" 
-                                        title="${user.status === 'فعال' ? 'غیرفعال کردن' : 'فعال کردن'}">
-                                    <i class="fas fa-${user.status === 'فعال' ? 'ban' : 'check'}"></i>
-                                </button>
-                                <button class="btn btn-outline-danger btn-sm" title="حذف">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-                
-                container.insertAdjacentHTML('beforeend', userHTML);
+            // به‌روزرسانی کارت‌ها
+            Object.entries(data).forEach(([key, value]) => {
+                const element = document.getElementById(key);
+                if (element) element.textContent = value;
             });
         }
-
-        function loadActivityLogs() {
-            const container = document.getElementById('activity-logs');
-            if (!container) return;
+        
+        function loadTopCoaches() {
+            const coaches = [
+                { name: 'دکتر علی محمدی', athletes: 42, rating: '۴.۹', status: 'فعال', specialty: 'بدنسازی' },
+                { name: 'مهندس مریم کریمی', athletes: 38, rating: '۴.۸', status: 'فعال', specialty: 'کاردیو' },
+                { name: 'استاد رضا احمدی', athletes: 35, rating: '۴.۷', status: 'مشغول', specialty: 'یوگا' },
+                { name: 'خانم سارا حسینی', athletes: 28, rating: '۴.۶', status: 'فعال', specialty: 'کراس فیت' },
+                { name: 'آقای محمد جعفری', athletes: 25, rating: '۴.۵', status: 'غیرفعال', specialty: 'تناسب اندام' }
+            ];
             
+            const container = document.getElementById('topCoachesTable');
             container.innerHTML = '';
             
-            adminData.activityLogs.forEach(log => {
-                const logHTML = `
-                    <div class="log-entry">
-                        <div class="d-flex justify-content-between align-items-start">
+            coaches.forEach(coach => {
+                const row = document.createElement('tr');
+                let statusBadge = '';
+                
+                switch(coach.status) {
+                    case 'فعال': statusBadge = 'badge-success'; break;
+                    case 'مشغول': statusBadge = 'badge-warning'; break;
+                    case 'غیرفعال': statusBadge = 'badge-danger'; break;
+                }
+                
+                row.innerHTML = `
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="user-avatar me-3">${coach.name.charAt(0)}</div>
                             <div>
-                                <strong>${log.action}</strong>
-                                <div class="text-muted small">
-                                    کاربر: ${log.user} | IP: ${log.ip}
-                                </div>
+                                <strong>${coach.name}</strong>
+                                <div class="text-muted small">${coach.specialty}</div>
                             </div>
-                            <div class="log-time">${log.time}</div>
                         </div>
-                    </div>
+                    </td>
+                    <td>
+                        <strong>${coach.athletes}</strong>
+                        <div class="text-muted small">ورزشکار</div>
+                    </td>
+                    <td>
+                        <span class="fw-bold">${coach.rating}</span>
+                        <i class="fas fa-star text-warning ms-1"></i>
+                    </td>
+                    <td>
+                        <span class="badge ${statusBadge}">${coach.status}</span>
+                    </td>
+                    <td>
+                        <button class="btn-action btn btn-sm btn-outline-primary">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn-action btn btn-sm btn-outline-success">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </td>
                 `;
-                
-                container.insertAdjacentHTML('beforeend', logHTML);
+                container.appendChild(row);
             });
         }
-
-        function createCharts() {
-            // نمودار ثبت‌نام‌ها
-            const regCtx = document.getElementById('registrations-chart');
-            if (regCtx) {
-                new Chart(regCtx, {
-                    type: 'line',
-                    data: {
-                        labels: ['دی ۱۴۰۱', 'بهمن', 'اسفند', 'فروردین ۱۴۰۲', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر'],
-                        datasets: [{
-                            label: 'تعداد ثبت‌نام',
-                            data: [120, 135, 148, 165, 180, 195, 210, 230, 250, 270, 285, 300],
-                            borderColor: '#4361ee',
-                            backgroundColor: 'rgba(67, 97, 238, 0.1)',
-                            tension: 0.4,
-                            fill: true
-                        }]
+        
+        function loadNewAthletes() {
+            const athletes = [
+                { name: 'حسین رضایی', joinDate: '۱۴۰۳/۰۱/۱۵', coach: 'علی محمدی', plan: 'پلن طلایی', status: 'فعال' },
+                { name: 'فاطمه امینی', joinDate: '۱۴۰۳/۰۱/۱۴', coach: 'مریم کریمی', plan: 'پلن نقره‌ای', status: 'فعال' },
+                { name: 'امیرحسین زمانی', joinDate: '۱۴۰۳/۰۱/۱۳', coach: 'رضا احمدی', plan: 'پلن برنزی', status: 'فعال' },
+                { name: 'زهرا محمودی', joinDate: '۱۴۰۳/۰۱/۱۲', coach: 'سارا حسینی', plan: 'پلن طلایی', status: 'در انتظار' },
+                { name: 'محمد تقوی', joinDate: '۱۴۰۳/۰۱/۱۱', coach: 'محمد جعفری', plan: 'پلن نقره‌ای', status: 'فعال' }
+            ];
+            
+            const container = document.getElementById('newAthletesTable');
+            container.innerHTML = '';
+            
+            athletes.forEach(athlete => {
+                const row = document.createElement('tr');
+                let statusBadge = athlete.status === 'فعال' ? 'badge-success' : 'badge-warning';
+                
+                row.innerHTML = `
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="user-avatar me-3">${athlete.name.charAt(0)}</div>
+                            <div>
+                                <strong>${athlete.name}</strong>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        ${athlete.joinDate}
+                        <div class="text-muted small">${getPersianDate(athlete.joinDate)}</div>
+                    </td>
+                    <td>
+                        <span class="badge bg-info">${athlete.coach}</span>
+                    </td>
+                    <td>
+                        <span class="badge ${athlete.plan.includes('طلایی') ? 'bg-warning' : athlete.plan.includes('نقره') ? 'bg-secondary' : 'bg-danger'}">
+                            ${athlete.plan}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn-action btn btn-sm btn-outline-primary" onclick="viewAthlete('${athlete.name}')">
+                            <i class="fas fa-eye"></i> مشاهده
+                        </button>
+                    </td>
+                `;
+                container.appendChild(row);
+            });
+        }
+        
+        function loadRecentActivities() {
+            const activities = [
+                { user: 'مدیر سیستم', action: 'تأیید مربی جدید', time: '۲ دقیقه پیش', details: 'مربی "احمدی" تأیید شد', status: 'موفق' },
+                { user: 'علی محمدی', action: 'ایجاد برنامه تمرینی', time: '۱۵ دقیقه پیش', details: 'برنامه برای ۵ ورزشکار', status: 'موفق' },
+                { user: 'سیستم', action: 'پشتیبان‌گیری خودکار', time: '۱ ساعت پیش', details: 'پشتیبان کامل سیستم', status: 'موفق' },
+                { user: 'مریم کریمی', action: 'ارسال پیام گروهی', time: '۲ ساعت پیش', details: 'به ۲۰ ورزشکار', status: 'موفق' },
+                { user: 'حسین رضایی', action: 'ارتقاء پلن', time: '۳ ساعت پیش', details: 'از نقره‌ای به طلایی', status: 'موفق' }
+            ];
+            
+            const container = document.getElementById('recentActivitiesTable');
+            container.innerHTML = '';
+            
+            activities.forEach(activity => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="user-avatar me-2">${activity.user.charAt(0)}</div>
+                            <span>${activity.user}</span>
+                        </div>
+                    </td>
+                    <td>${activity.action}</td>
+                    <td>
+                        <span class="text-muted">${activity.time}</span>
+                    </td>
+                    <td>
+                        <small>${activity.details}</small>
+                    </td>
+                    <td>
+                        <span class="badge badge-success">${activity.status}</span>
+                    </td>
+                `;
+                container.appendChild(row);
+            });
+        }
+        
+        // ==================== چارت‌ها ====================
+        function initializeCharts() {
+            // چارت رشد
+            const growthCtx = document.getElementById('growthChart').getContext('2d');
+            new Chart(growthCtx, {
+                type: 'line',
+                data: {
+                    labels: ['مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'],
+                    datasets: [
+                        {
+                            label: 'کاربران جدید',
+                            data: [120, 180, 150, 210, 280, 320],
+                            borderColor: '#4e54c8',
+                            backgroundColor: 'rgba(78, 84, 200, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'مربیان جدید',
+                            data: [8, 12, 10, 15, 18, 20],
+                            borderColor: '#28a745',
+                            backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
                     },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                rtl: true,
-                                labels: {
-                                    font: {
-                                        family: 'Vazirmatn'
-                                    }
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            rtl: true
+                        },
+                        tooltip: {
+                            rtl: true,
+                            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                            titleFont: { size: 14 },
+                            bodyFont: { size: 13 }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                drawBorder: false
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString('fa-IR');
                                 }
                             }
                         },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    callback: function(value) {
-                                        return value;
-                                    }
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // چارت توزیع
+            const distCtx = document.getElementById('distributionChart').getContext('2d');
+            new Chart(distCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['ورزشکاران', 'مربیان', 'مدیران', 'مهمان'],
+                    datasets: [{
+                        data: [2450, 48, 5, 344],
+                        backgroundColor: [
+                            '#4e54c8',
+                            '#28a745',
+                            '#dc3545',
+                            '#6c757d'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            rtl: true
+                        },
+                        tooltip: {
+                            rtl: true,
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value.toLocaleString('fa-IR')} (${percentage}%)`;
                                 }
                             }
                         }
                     }
-                });
+                }
+            });
+        }
+        
+        // ==================== توابع کمکی ====================
+        function getPersianDate(dateString) {
+            const months = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
+            const parts = dateString.split('/');
+            if (parts.length === 3) {
+                return `${parts[2]} ${months[parseInt(parts[1]) - 1]} ${parts[0]}`;
+            }
+            return dateString;
+        }
+        
+        function viewAthlete(name) {
+            alert(`👤 مشاهده ورزشکار: ${name}\n\nاین بخش در نسخه دمو کامل نیست.`);
+        }
+        
+        function refreshActivities() {
+            const btn = document.querySelector('.btn-outline-warning i');
+            btn.classList.add('fa-spin');
+            
+            setTimeout(() => {
+                loadRecentActivities();
+                btn.classList.remove('fa-spin');
+                showToast('✅ فعالیت‌های اخیر بروزرسانی شد', 'success');
+            }, 1000);
+        }
+        
+        function showToast(message, type = 'info') {
+            // ایجاد toast داینامیک
+            const toast = document.createElement('div');
+            toast.className = `position-fixed top-20 start-20 p-3 bg-${type} text-white rounded shadow`;
+            toast.style.zIndex = '9999';
+            toast.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'} me-2"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+        
+        // ==================== بروزرسانی خودکار ====================
+        function startAutoRefresh() {
+            // بروزرسانی آمار هر 30 ثانیه
+            setInterval(() => {
+                loadAdminData();
+                console.log('📊 آمار بروزرسانی شد');
+            }, 30000);
+            
+            // بروزرسانی فعالیت‌ها هر 60 ثانیه
+            setInterval(() => {
+                loadRecentActivities();
+            }, 60000);
+        }
+        
+        // ==================== جستجو ====================
+        document.querySelector('.search-box input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const query = this.value.trim();
+                if (query) {
+                    alert(`🔍 جستجو برای: "${query}"\n\n(سیستم جستجوی کامل در نسخه نهایی پیاده‌سازی می‌شود)`);
+                    this.value = '';
+                }
+            }
+        });
+        
+        // ==================== خروج ادمین ====================
+        function logoutAdmin() {
+            if (confirm('آیا می‌خواهید از حساب مدیریت خارج شوید؟')) {
+                localStorage.removeItem('smartfit_admin');
+                showToast('👋 با موفقیت خارج شدید', 'info');
+                
+                setTimeout(() => {
+                    window.location.href = '../index.html';
+                }, 1500);
             }
         }
-
-        function updateLastUpdateTime() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('fa-IR');
-            const dateString = now.toLocaleDateString('fa-IR');
-            
-            document.getElementById('last-update').textContent = 
-                `${dateString} - ${timeString}`;
-        }
-
-        // شبیه‌سازی بروزرسانی زنده آمار
-        function simulateLiveUpdates() {
-            setInterval(() => {
-                // افزایش تصادفی تعداد کاربران
-                const totalUsers = document.getElementById('total-users');
-                const current = parseInt(totalUsers.textContent.replace(/,/g, ''));
-                const increase = Math.floor(Math.random() * 5);
-                totalUsers.textContent = (current + increase).toLocaleString('fa-IR');
-                
-                // افزایش تصادفی مربیان
-                const totalCoaches = document.getElementById('total-coaches');
-                const currentCoaches = parseInt(totalCoaches.textContent);
-                if (Math.random() > 0.7) {
-                    totalCoaches.textContent = (currentCoaches + 1).toLocaleString('fa-IR');
-                }
-            }, 10000); // هر ۱۰ ثانیه
-        }
-
-        // شروع شبیه‌سازی
-        simulateLiveUpdates();
+        
+        // ==================== مدیریت ریسپانسیو ====================
+        window.addEventListener('resize', function() {
+            // بازسازی چارت‌ها در صورت تغییر سایز
+            if (this.innerWidth < 768) {
+                document.querySelectorAll('canvas').forEach(canvas => {
+                    canvas.style.maxHeight = '200px';
+                });
+            }
+        });
     </script>
 </body>
 </html>

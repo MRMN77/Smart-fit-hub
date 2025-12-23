@@ -13,141 +13,7 @@
     <link href="../assets/css/styles.css" rel="stylesheet">
     
     <style>
-        /* فقط آیکون چت‌بات کوچک */
-        .chatbot-widget {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            z-index: 9999;
-        }
-        
-        .chatbot-toggle {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #4e54c8, #8f94fb);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 5px 20px rgba(78, 84, 200, 0.4);
-            font-size: 24px;
-            transition: all 0.3s;
-            position: relative;
-        }
-        
-        .chatbot-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 25px rgba(78, 84, 200, 0.6);
-        }
-        
-        .chatbot-notification {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            width: 20px;
-            height: 20px;
-            background: #ff4757;
-            border-radius: 50%;
-            font-size: 12px;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        /* پاپ‌آپ چت (فقط وقتی باز شود) */
-        .chatbot-popup {
-            position: absolute;
-            bottom: 80px;
-            left: 0;
-            width: 350px;
-            height: 450px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-            border: 2px solid #4e54c8;
-        }
-        
-        .chatbot-popup-header {
-            background: linear-gradient(90deg, #4e54c8, #8f94fb);
-            color: white;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .chatbot-popup-body {
-            flex: 1;
-            padding: 15px;
-            overflow-y: auto;
-            background: #f8f9fa;
-        }
-        
-        .chatbot-popup-footer {
-            padding: 15px;
-            border-top: 1px solid #dee2e6;
-            background: white;
-        }
-        
-        .chatbot-close-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.3s;
-        }
-        
-        .chatbot-close-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        
-        /* استایل پیام‌ها */
-        .chat-message {
-            margin-bottom: 10px;
-            padding: 10px 15px;
-            border-radius: 18px;
-            max-width: 80%;
-            clear: both;
-            word-wrap: break-word;
-        }
-        
-        .chat-message.bot {
-            background: white;
-            border: 1px solid #dee2e6;
-            float: right;
-            border-bottom-right-radius: 5px;
-        }
-        
-        .chat-message.user {
-            background: #4e54c8;
-            color: white;
-            float: left;
-            border-bottom-left-radius: 5px;
-        }
-        
-        /* انیمیشن پرش */
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        .bounce {
-            animation: bounce 0.5s;
-        }
-        
-        /* استایل‌های فرم ثبت‌نام */
+        /* استایل‌های فرم */
         .registration-wizard {
             max-width: 800px;
             margin: 40px auto;
@@ -256,31 +122,143 @@
             width: 0%;
             transition: width 0.5s;
         }
+        
+        /* چت‌بات کوچک */
+        .chatbot-widget {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 1000;
+        }
+        
+        .chatbot-toggle {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #4e54c8, #8f94fb);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(78, 84, 200, 0.4);
+            font-size: 24px;
+            transition: all 0.3s;
+        }
+        
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(78, 84, 200, 0.6);
+        }
+        
+        .chatbot-popup {
+            position: absolute;
+            bottom: 80px;
+            left: 0;
+            width: 350px;
+            height: 450px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            border: 2px solid #4e54c8;
+        }
+        
+        .chatbot-popup-header {
+            background: linear-gradient(90deg, #4e54c8, #8f94fb);
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chatbot-popup-body {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+        
+        .chatbot-popup-footer {
+            padding: 15px;
+            border-top: 1px solid #dee2e6;
+            background: white;
+        }
+        
+        .chat-message {
+            margin-bottom: 10px;
+            padding: 10px 15px;
+            border-radius: 18px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        
+        .chat-message.bot {
+            background: white;
+            border: 1px solid #dee2e6;
+            float: right;
+            margin-right: 0;
+            margin-left: auto;
+        }
+        
+        .chat-message.user {
+            background: #4e54c8;
+            color: white;
+            float: left;
+            margin-left: 0;
+            margin-right: auto;
+        }
+        
+        /* تاریخ شمسی */
+        .persian-date-inputs .form-control,
+        .persian-date-inputs .form-select {
+            text-align: center;
+        }
+        
+        .date-help {
+            font-size: 12px;
+            cursor: pointer;
+            color: #4e54c8;
+        }
+        
+        /* کارت نقش */
+        .role-card {
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        
+        .role-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .role-card.border-3 {
+            border-width: 3px !important;
+        }
     </style>
 </head>
 <body style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh;">
 
-    <!-- چت‌بات هوشمند (آیکون کوچک) -->
+    <!-- چت‌بات هوشمند -->
     <div class="chatbot-widget">
-        <!-- فقط آیکون - بدون کادر بزرگ -->
         <div class="chatbot-toggle" id="chatbotToggle" title="راهنمای ثبت‌نام">
             <i class="fas fa-robot"></i>
-            <span class="chatbot-notification"></span>
         </div>
         
-        <!-- کادر چت (فقط وقتی باز شود) -->
         <div class="chatbot-popup" id="chatbotPopup">
             <div class="chatbot-popup-header">
                 <div>
                     <i class="fas fa-robot me-2"></i>
                     <strong>دستیار ثبت‌نام</strong>
                 </div>
-                <button class="chatbot-close-btn" id="chatbotClose">
+                <button class="btn btn-sm btn-light" id="chatbotClose">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             <div class="chatbot-popup-body" id="chatbotMessages">
-                <!-- پیام‌ها اینجا نمایش داده می‌شوند -->
+                <!-- پیام‌ها -->
             </div>
             <div class="chatbot-popup-footer">
                 <div class="input-group">
@@ -351,8 +329,40 @@
                         
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="birthDate" class="form-label required-field">تاریخ تولد</label>
-                                <input type="date" class="form-control" id="birthDate" required>
+                                <label class="form-label required-field">تاریخ تولد (شمسی)</label>
+                                <div class="row g-2 persian-date-inputs">
+                                    <div class="col-4">
+                                        <input type="number" class="form-control" 
+                                               id="birthYear" placeholder="سال" 
+                                               min="1300" max="1405" required>
+                                    </div>
+                                    <div class="col-4">
+                                        <select class="form-select" id="birthMonth" required>
+                                            <option value="">ماه</option>
+                                            <option value="01">فروردین</option>
+                                            <option value="02">اردیبهشت</option>
+                                            <option value="03">خرداد</option>
+                                            <option value="04">تیر</option>
+                                            <option value="05">مرداد</option>
+                                            <option value="06">شهریور</option>
+                                            <option value="07">مهر</option>
+                                            <option value="08">آبان</option>
+                                            <option value="09">آذر</option>
+                                            <option value="10">دی</option>
+                                            <option value="11">بهمن</option>
+                                            <option value="12">اسفند</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="number" class="form-control" 
+                                               id="birthDay" placeholder="روز" 
+                                               min="1" max="31" required>
+                                    </div>
+                                </div>
+                                <small class="form-text text-muted">
+                                    مثال: ۱۳۷۵ برای سال، فروردین برای ماه، ۱۵ برای روز
+                                </small>
+                                <input type="hidden" id="birthDateFull">
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label required-field">جنسیت</label>
@@ -381,10 +391,10 @@
                             <div class="col-md-6 mb-3">
                                 <label for="phone" class="form-label required-field">شماره موبایل</label>
                                 <div class="input-group">
-                                   <input type="tel" class="form-control" id="phone" 
-                                           pattern="9[0-9]{9}" placeholder="9123456789" required>
-                                    <span class="input-group-text">+98</span>
                                     
+                                    <input type="tel" class="form-control" id="phone" 
+                                           pattern="9[0-9]{9}" placeholder="9123456789" required>
+                                           <span class="input-group-text">+98</span>
                                 </div>
                                 <small class="form-text text-muted">کد تأیید به این شماره ارسال می‌شود</small>
                             </div>
@@ -392,7 +402,7 @@
                         
                         <div class="row">
                             <div class="col-md-12 mb-3">
-                                <label for="address" class="form-label">آدرس</label>
+                                <label for="address" class="form-label">آدرس (اختیاری)</label>
                                 <textarea class="form-control" id="address" rows="2"></textarea>
                             </div>
                         </div>
@@ -412,14 +422,16 @@
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 <label for="height" class="form-label required-field">قد (سانتی‌متر)</label>
-                                <input type="number" class="form-control" id="height" min="100" max="250" required>
+                                <input type="number" class="form-control" id="height" 
+                                       min="100" max="250" placeholder="۱۷۵" required>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label for="weight" class="form-label required-field">وزن (کیلوگرم)</label>
-                                <input type="number" class="form-control" id="weight" min="30" max="200" step="0.1" required>
+                                <input type="number" class="form-control" id="weight" 
+                                       min="30" max="200" step="0.1" placeholder="۷۰.۵" required>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label for="bloodType" class="form-label">گروه خونی</label>
+                                <label for="bloodType" class="form-label">گروه خونی (اختیاری)</label>
                                 <select class="form-select" id="bloodType">
                                     <option value="">انتخاب کنید</option>
                                     <option value="A+">A+</option>
@@ -465,8 +477,7 @@
                         
                         <div class="row">
                             <div class="col-md-12 mb-3">
-                                <label for="interests" class="form-label">علاقه‌مندی‌های ورزشی</label>
-                                <div class="form-text mb-2">انتخاب یک یا چند مورد:</div>
+                                <label class="form-label">علاقه‌مندی‌های ورزشی (اختیاری)</label>
                                 <div class="row">
                                     <div class="col-md-3 mb-2">
                                         <div class="form-check">
@@ -492,37 +503,13 @@
                                             <label class="form-check-label" for="interest4">کراس فیت</label>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 mb-2">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="swimming" id="interest5">
-                                            <label class="form-check-label" for="interest5">شنا</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 mb-2">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="running" id="interest6">
-                                            <label class="form-check-label" for="interest6">دویدن</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 mb-2">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="cycling" id="interest7">
-                                            <label class="form-check-label" for="interest7">دوچرخه‌سواری</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 mb-2">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="martial_arts" id="interest8">
-                                            <label class="form-check-label" for="interest8">ورزش‌های رزمی</label>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                         
                         <div class="row">
                             <div class="col-md-12 mb-3">
-                                <label for="medicalNotes" class="form-label">ملاحظات پزشکی</label>
+                                <label for="medicalNotes" class="form-label">ملاحظات پزشکی (اختیاری)</label>
                                 <textarea class="form-control" id="medicalNotes" rows="3" 
                                           placeholder="در صورت داشتن بیماری خاص یا محدودیت پزشکی، اینجا بنویسید"></textarea>
                             </div>
@@ -676,8 +663,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- محتوای قوانین -->
-                    <p>متن قوانین و شرایط استفاده...</p>
+                    <h6>شرایط استفاده از پلتفرم SMART FIT:</h6>
+                    <ol>
+                        <li>اطلاعات وارد شده باید واقعی و دقیق باشد</li>
+                        <li>کاربر مسئول حفظ امنیت حساب کاربری خود است</li>
+                        <li>هرگونه سوءاستفاده از حساب مسدود خواهد شد</li>
+                        <li>اطلاعات پزشکی فقط برای برنامه‌ریزی تمرین استفاده می‌شود</li>
+                        <li>می‌توانید درخواست حذف حساب خود را دهید</li>
+                    </ol>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
@@ -690,7 +683,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- اسکریپت ثبت‌نام -->
     <script>
         // ==================== مدیریت مراحل ====================
         let currentStep = 1;
@@ -754,9 +746,11 @@
         function validateStep(step) {
             switch(step) {
                 case 1:
+                    // اعتبارسنجی تاریخ شمسی
+                    const birthValid = validatePersianDate();
                     return document.getElementById('firstName').value &&
                            document.getElementById('lastName').value &&
-                           document.getElementById('birthDate').value &&
+                           birthValid &&
                            document.querySelector('input[name="gender"]:checked') &&
                            document.getElementById('email').value &&
                            document.getElementById('phone').value;
@@ -774,6 +768,48 @@
             }
         }
         
+        // ==================== اعتبارسنجی تاریخ شمسی ====================
+        function validatePersianDate() {
+            const year = document.getElementById('birthYear')?.value;
+            const month = document.getElementById('birthMonth')?.value;
+            const day = document.getElementById('birthDay')?.value;
+            
+            if (!year || !month || !day) {
+                return false;
+            }
+            
+            // بررسی محدوده‌ها
+            if (year < 1300 || year > 1405) {
+                alert('سال تولد باید بین ۱۳۰۰ تا ۱۴۰۵ باشد');
+                return false;
+            }
+            
+            if (day < 1 || day > 31) {
+                alert('روز تولد باید بین ۱ تا ۳۱ باشد');
+                return false;
+            }
+            
+            // محاسبه سن
+            const currentYear = 1403; // سال جاری شمسی
+            const age = currentYear - parseInt(year);
+            
+            if (age < 10) {
+                alert('سن باید حداقل ۱۰ سال باشد');
+                return false;
+            }
+            
+            if (age > 100) {
+                alert('سن نمی‌تواند بیشتر از ۱۰۰ سال باشد');
+                return false;
+            }
+            
+            // ذخیره تاریخ کامل
+            const persianDate = `${year}/${month}/${day.toString().padStart(2, '0')}`;
+            document.getElementById('birthDateFull').value = persianDate;
+            
+            return true;
+        }
+        
         // ==================== انتخاب نقش ====================
         document.querySelectorAll('.select-role-btn').forEach(btn => {
             btn.addEventListener('click', function() {
@@ -788,25 +824,39 @@
                 this.closest('.role-card').classList.add('border-3');
                 document.getElementById('selectedRole').value = role;
                 
-                // فعال کردن دکمه مرحله بعد
-                document.querySelector('[onclick="nextStep(4)"]').disabled = false;
+                // نمایش پیام
+                const roleNames = {
+                    'athlete': 'ورزشکار',
+                    'coach': 'مربی',
+                    'admin': 'مدیر سیستم'
+                };
+                
+                console.log(`✅ نقش انتخاب شد: ${roleNames[role]}`);
             });
         });
         
         // ==================== بروزرسانی اطلاعات مرور ====================
         function updateReviewData() {
+            // نام ماه شمسی
+            const monthNames = {
+                '01': 'فروردین', '02': 'اردیبهشت', '03': 'خرداد',
+                '04': 'تیر', '05': 'مرداد', '06': 'شهریور',
+                '07': 'مهر', '08': 'آبان', '09': 'آذر',
+                '10': 'دی', '11': 'بهمن', '12': 'اسفند'
+            };
+            
             const data = {
-                نام: document.getElementById('firstName').value,
+                'نام': document.getElementById('firstName').value,
                 'نام خانوادگی': document.getElementById('lastName').value,
-                'تاریخ تولد': document.getElementById('birthDate').value,
-                جنسیت: document.querySelector('input[name="gender"]:checked')?.nextElementSibling?.textContent,
-                ایمیل: document.getElementById('email').value,
+                'تاریخ تولد': `${document.getElementById('birthYear').value} ${monthNames[document.getElementById('birthMonth').value] || ''} ${document.getElementById('birthDay').value}`,
+                'جنسیت': document.querySelector('input[name="gender"]:checked')?.nextElementSibling?.textContent,
+                'ایمیل': document.getElementById('email').value,
                 'شماره موبایل': '+98' + document.getElementById('phone').value,
-                قد: document.getElementById('height').value + ' سانتی‌متر',
-                وزن: document.getElementById('weight').value + ' کیلوگرم',
+                'قد': document.getElementById('height').value + ' سانتی‌متر',
+                'وزن': document.getElementById('weight').value + ' کیلوگرم',
                 'سطح آمادگی': document.getElementById('fitnessLevel').options[document.getElementById('fitnessLevel').selectedIndex]?.text,
-                هدف: document.getElementById('goal').options[document.getElementById('goal').selectedIndex]?.text,
-                نقش: document.querySelector('.role-card.border-3 h5.card-title')?.textContent || 'انتخاب نشده'
+                'هدف': document.getElementById('goal').options[document.getElementById('goal').selectedIndex]?.text,
+                'نقش': document.querySelector('.role-card.border-3 h5.card-title')?.textContent || 'انتخاب نشده'
             };
             
             let html = '<div class="row">';
@@ -836,7 +886,7 @@
                 personal: {
                     firstName: document.getElementById('firstName').value,
                     lastName: document.getElementById('lastName').value,
-                    birthDate: document.getElementById('birthDate').value,
+                    birthDate: document.getElementById('birthDateFull').value,
                     gender: document.querySelector('input[name="gender"]:checked')?.value,
                     email: document.getElementById('email').value,
                     phone: '+98' + document.getElementById('phone').value,
@@ -865,6 +915,7 @@
             
             // نمایش موفقیت
             const submitBtn = document.getElementById('finalSubmitBtn');
+            const originalText = submitBtn.innerHTML;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>در حال ثبت...';
             submitBtn.disabled = true;
             
@@ -875,21 +926,15 @@
                 // هدایت به صفحه تأیید کد
                 window.location.href = 'verify-2fa.html';
             }, 1500);
+            
+            // در صورت خطا، بازگرداندن دکمه
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 5000);
         });
         
         // ==================== چت‌بات ساده ====================
-        document.addEventListener('DOMContentLoaded', function() {
-            // تنظیم حداقل تاریخ تولد (18 سال قبل)
-            const today = new Date();
-            const minDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
-            document.getElementById('birthDate').max = minDate.toISOString().split('T')[0];
-            
-            // راه‌اندازی چت‌بات
-            initializeChatbot();
-            
-            console.log('✅ سیستم ثبت‌نام کامل راه‌اندازی شد');
-        });
-        
         function initializeChatbot() {
             const chatbotToggle = document.getElementById('chatbotToggle');
             const chatbotPopup = document.getElementById('chatbotPopup');
@@ -909,9 +954,12 @@
             
             // باز کردن چت‌بات
             chatbotToggle.addEventListener('click', function() {
-                chatbotPopup.style.display = 'flex';
-                addBotMessage(helpMessages[0]);
-                chatbotToggle.classList.remove('bounce');
+                const isOpen = chatbotPopup.style.display === 'flex';
+                chatbotPopup.style.display = isOpen ? 'none' : 'flex';
+                
+                if (!isOpen && chatbotMessages.children.length === 0) {
+                    addBotMessage("👋 سلام! من دستیار ثبت‌نام SMART FIT هستم. هر سؤالی دارید بپرسید.");
+                }
             });
             
             // بستن چت‌بات
@@ -939,9 +987,11 @@
                     
                     if (message.includes('سلام')) response = "سلام! 😊 چطور می‌تونم کمک کنم؟";
                     if (message.includes('مرحله')) response = helpMessages[0];
-                    if (message.includes('ورزشکار') || message.includes('مربی')) response = helpMessages[1];
+                    if (message.includes('ورزشکار') || message.includes('مربی') || message.includes('مدیر')) response = helpMessages[1];
                     if (message.includes('کد')) response = helpMessages[2];
                     if (message.includes('قد') || message.includes('وزن')) response = helpMessages[3];
+                    if (message.includes('تاریخ')) response = "تاریخ تولد را به شمسی وارد کنید (مثال: سال ۱۳۷۵، ماه فروردین، روز ۱۵)";
+                    if (message.includes('تشکر') || message.includes('ممنون')) response = "خوشحالم که کمک کردم! موفق باشید 🌟";
                     
                     addBotMessage(response);
                 }, 800);
@@ -970,18 +1020,42 @@
             // پرش آیکون هر 30 ثانیه (اگر چت باز نشده)
             setInterval(() => {
                 if (chatbotPopup.style.display !== 'flex') {
-                    chatbotToggle.classList.add('bounce');
+                    chatbotToggle.style.animation = 'bounce 0.5s';
                     setTimeout(() => {
-                        chatbotToggle.classList.remove('bounce');
+                        chatbotToggle.style.animation = '';
                     }, 500);
                 }
             }, 30000);
-            
-            // پیام خوش‌آمدگویی اولیه
-            setTimeout(() => {
-                addBotMessage("👋 سلام! من دستیار ثبت‌نام SMART FIT هستم. هر سؤالی دارید بپرسید.");
-            }, 1000);
         }
+        
+        // ==================== انیمیشن پرش ====================
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes bounce {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-10px); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // ==================== مقداردهی اولیه ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            // راه‌اندازی چت‌بات
+            initializeChatbot();
+            
+            // نمایش سن بر اساس تاریخ تولد
+            document.getElementById('birthYear').addEventListener('input', function() {
+                const year = this.value;
+                if (year && year >= 1300 && year <= 1405) {
+                    const age = 1403 - parseInt(year);
+                    if (age >= 10) {
+                        console.log(`📅 سن تخمینی: ${age} سال`);
+                    }
+                }
+            });
+            
+            console.log('✅ سیستم ثبت‌نام کامل راه‌اندازی شد');
+        });
     </script>
 </body>
 </html>
