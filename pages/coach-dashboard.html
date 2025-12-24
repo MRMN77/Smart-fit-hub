@@ -1,647 +1,1020 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>داشبورد مربی - SMART FIT</title>
-
+    
     <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- استایل اختصاصی -->
-    <link rel="stylesheet" href="../assets/css/main.css">
-
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        .coach-dashboard {
-            padding: 20px;
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #4cc9f0;
+            --success-color: #06d6a0;
+            --warning-color: #ffd166;
+            --danger-color: #ef476f;
+            --dark-color: #1a1a2e;
+            --light-color: #f8f9fa;
         }
-
-        .coach-header {
-            background: linear-gradient(135deg, #4bb543 0%, #2e7d32 100%);
+        
+        * {
+            font-family: 'Vazirmatn', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            color: #333;
+            min-height: 100vh;
+        }
+        
+        /* ==================== نوار کناری مربی ==================== */
+        .sidebar {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(180deg, #2d3436 0%, #1a1a2e 100%);
             color: white;
-            padding: 25px;
-            border-radius: 15px;
-            margin-bottom: 30px;
+            padding: 25px 0;
+            box-shadow: 5px 0 25px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
         }
-
-        .athlete-card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s;
-            margin-bottom: 20px;
+        
+        .sidebar-header {
+            padding: 0 25px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
         }
-
-        .athlete-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-        }
-
-        .athlete-avatar {
-            width: 70px;
-            height: 70px;
+        
+        .coach-avatar-sidebar {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            background: linear-gradient(135deg, #ffd166, #ffb347);
             border-radius: 50%;
-            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
-            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
-            font-weight: bold;
+            font-size: 32px;
+            border: 3px solid white;
         }
-
-        .progress-ring {
-            width: 80px;
-            height: 80px;
+        
+        .coach-name {
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 5px;
         }
-
-        .workout-plan-card {
+        
+        .coach-specialty-badge {
+            font-size: 13px;
+            color: #ffd166;
+            background: rgba(255, 209, 102, 0.1);
+            padding: 3px 12px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        
+        .sidebar-menu {
+            padding: 25px 0;
+        }
+        
+        .nav-item {
+            margin-bottom: 8px;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s;
+            border-right: 3px solid transparent;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.05);
+            border-right-color: #ffd166;
+        }
+        
+        .badge-sidebar {
+            background: var(--danger-color);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            margin-right: auto;
+        }
+        
+        /* ==================== محتوای اصلی ==================== */
+        .main-content {
+            margin-right: 280px;
+            padding: 30px;
+            min-height: 100vh;
+        }
+        
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eef2f7;
+        }
+        
+        .page-title h1 {
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 5px;
+        }
+        
+        .page-title p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .coach-rating-badge {
+            background: linear-gradient(135deg, #ffd166, #ffb347);
+            color: #333;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .top-bar-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .btn-notification {
+            position: relative;
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            color: #666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            background: var(--danger-color);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* ==================== کارت‌های آماری مربی ==================== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+            border: 1px solid #f0f0f0;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+        
+        .stat-icon.students { background: linear-gradient(135deg, #4361ee, #3a0ca3); }
+        .stat-icon.sessions { background: linear-gradient(135deg, #06d6a0, #04a380); }
+        .stat-icon.rating { background: linear-gradient(135deg, #ffd166, #ffb347); }
+        .stat-icon.income { background: linear-gradient(135deg, #ef476f, #d43360); }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* ==================== برنامه امروز ==================== */
+        .schedule-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 40px;
+        }
+        
+        .schedule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .schedule-title {
+            font-weight: 700;
+            color: var(--dark-color);
+            font-size: 20px;
+        }
+        
+        .schedule-date {
+            color: #666;
+            font-size: 14px;
+            background: #f8f9fa;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        .sessions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .session-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-right: 4px solid #ffd166;
+        }
+        
+        .session-time {
+            width: 100px;
+            text-align: center;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .session-info {
+            flex: 1;
+        }
+        
+        .session-student {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 5px;
+        }
+        
+        .session-type {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .session-status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-upcoming { background: #cce5ff; color: #004085; }
+        .status-ongoing { background: #d4edda; color: #155724; }
+        .status-completed { background: #d1ecf1; color: #0c5460; }
+        
+        /* ==================== ورزشکاران فعال ==================== */
+        .students-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 40px;
+        }
+        
+        .students-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .student-card {
             background: #f8f9fa;
             border-radius: 12px;
             padding: 20px;
-            border-right: 4px solid #4bb543;
+            transition: transform 0.3s;
+            border: 2px solid transparent;
         }
-
-        .badge-coach {
-            background: #4bb543;
+        
+        .student-card:hover {
+            transform: translateY(-5px);
+            border-color: #ffd166;
+        }
+        
+        .student-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .student-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        
+        .student-name {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .student-level {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .student-progress {
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        
+        .student-progress-bar {
+            height: 100%;
+            background: #06d6a0;
+            border-radius: 3px;
+        }
+        
+        /* ==================== درخواست‌های جدید ==================== */
+        .requests-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 40px;
+        }
+        
+        .requests-list {
+            margin-top: 20px;
+        }
+        
+        .request-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .request-info h4 {
+            margin-bottom: 5px;
+            color: var(--dark-color);
+        }
+        
+        .request-info p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .request-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-accept {
+            background: #06d6a0;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        .btn-reject {
+            background: #ef476f;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        /* ==================== نمودارها ==================== */
+        .charts-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .chart-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            height: 350px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chart-container {
+            flex: 1;
+            position: relative;
+        }
+        
+        /* ==================== درآمد و مالی ==================== */
+        .income-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 40px;
+        }
+        
+        .income-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .income-item {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        
+        .income-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 5px;
+        }
+        
+        .income-label {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* ==================== فوتر ==================== */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 14px;
+            border-top: 1px solid #eef2f7;
+            margin-top: 40px;
+        }
+        
+        /* ==================== واکنش‌گرایی ==================== */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 20px;
+            }
+            
+            .main-content {
+                margin-right: 0;
+                padding: 20px;
+            }
+            
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid, .students-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .session-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .session-time {
+                width: 100%;
+            }
+            
+            .request-item {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .request-actions {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
-
 <body>
-    <!-- ناوبری -->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, #4bb543 0%, #2e7d32 100%);">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="#">
-                <i class="fas fa-user-tie me-2"></i>
-                داشبورد مربی SMART FIT
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCoach">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCoach">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">
-                            <i class="fas fa-tachometer-alt me-1"></i>داشبورد
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#athletes">
-                            <i class="fas fa-users me-1"></i>ورزشکاران
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#workouts">
-                            <i class="fas fa-dumbbell me-1"></i>برنامه‌ها
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#schedule">
-                            <i class="fas fa-calendar-alt me-1"></i>زمان‌بندی
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="profile.html">
-                            <i class="fas fa-user me-1"></i>پروفایل
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-warning" href="login.html">
-                            <i class="fas fa-sign-out-alt me-1"></i>خروج
-                        </a>
-                    </li>
-                </ul>
+    <!-- ==================== نوار کناری مربی ==================== -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="coach-avatar-sidebar">
+                <i class="fas fa-user-tie"></i>
             </div>
+            <div class="coach-name">علی محمدی</div>
+            <div class="coach-specialty-badge">مربی بدنسازی</div>
         </div>
-    </nav>
+        
+        <nav class="sidebar-menu">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>داشبورد مربی</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>برنامه زمانی</span>
+                        <span class="badge-sidebar">۳</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">
+                        <i class="fas fa-users"></i>
+                        <span>ورزشکاران من</span>
+                        <span class="badge-sidebar">۲۴</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">
+                        <i class="fas fa-comments"></i>
+                        <span>پیام‌ها</span>
+                        <span class="badge-sidebar">۵</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">
+                        <i class="fas fa-dumbbell"></i>
+                        <span>برنامه‌های تمرینی</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>گزارش‌ها و آمار</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">
+                        <i class="fas fa-wallet"></i>
+                        <span>درآمد و مالی</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>تنظیمات پروفایل</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../index.html">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>خروج از سیستم</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 
-    <div class="coach-dashboard container mt-4">
-        <!-- هدر داشبورد -->
-        <div class="coach-header">
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <h2 class="fw-bold">
-                        <i class="fas fa-user-tie me-2"></i>
-                        سلام، مربی محترم!
-                    </h2>
-                    <p class="mb-0 opacity-90">
-                        به پنل مدیریت ورزشکاران خوش آمدید. امروز ۵ جلسه تمرینی دارید.
-                    </p>
-                </div>
-                <div class="col-md-4 text-md-end">
-                    <span class="badge-coach">
-                        <i class="fas fa-badge-check me-1"></i>مربی تاییدشده
-                    </span>
-                </div>
+    <!-- ==================== محتوای اصلی ==================== -->
+    <div class="main-content">
+        <!-- نوار بالایی -->
+        <div class="top-bar">
+            <div class="page-title">
+                <h1>داشبورد مربی</h1>
+                <p>سلام علی! امروز ۶ جلسه تمرینی دارید 🏋️‍♂️</p>
             </div>
-        </div>
-
-        <!-- آمار کلی -->
-        <div class="row mb-4">
-            <div class="col-md-3 col-6 mb-3">
-                <div class="card text-center h-100">
-                    <div class="card-body">
-                        <div class="text-success fs-1">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <h3 class="mt-2" id="total-athletes">۱۲</h3>
-                        <p class="text-muted mb-0">ورزشکار فعال</p>
-                    </div>
+            
+            <div class="top-bar-actions">
+                <div class="coach-rating-badge">
+                    <i class="fas fa-star"></i>
+                    امتیاز: ۴.۷/۵
                 </div>
-            </div>
-            <div class="col-md-3 col-6 mb-3">
-                <div class="card text-center h-100">
-                    <div class="card-body">
-                        <div class="text-primary fs-1">
-                            <i class="fas fa-dumbbell"></i>
-                        </div>
-                        <h3 class="mt-2" id="active-plans">۲۸</h3>
-                        <p class="text-muted mb-0">برنامه فعال</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-6 mb-3">
-                <div class="card text-center h-100">
-                    <div class="card-body">
-                        <div class="text-warning fs-1">
-                            <i class="fas fa-calendar-check"></i>
-                        </div>
-                        <h3 class="mt-2" id="today-sessions">۵</h3>
-                        <p class="text-muted mb-0">جلسه امروز</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-6 mb-3">
-                <div class="card text-center h-100">
-                    <div class="card-body">
-                        <div class="text-danger fs-1">
-                            <i class="fas fa-trophy"></i>
-                        </div>
-                        <h3 class="mt-2" id="goals-achieved">۴۷</h3>
-                        <p class="text-muted mb-0">هدف محقق شده</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- بخش ورزشکاران -->
-        <div class="card mb-4" id="athletes">
-            <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">
-                    <i class="fas fa-users me-2 text-success"></i>
-                    ورزشکاران تحت نظر
-                </h5>
-                <button class="btn btn-success btn-sm">
-                    <i class="fas fa-plus me-1"></i>افزودن ورزشکار
+                <button class="btn-notification">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">۳</span>
                 </button>
-            </div>
-            <div class="card-body">
-                <div class="row" id="athletes-list">
-                    <!-- ورزشکاران به صورت داینامیک لود می‌شن -->
+                <div class="btn btn-primary">
+                    <i class="fas fa-plus"></i> جلسه جدید
                 </div>
             </div>
         </div>
 
-        <!-- برنامه‌های امروز -->
-        <div class="row mb-4">
-            <div class="col-lg-8">
-                <div class="card h-100" id="workouts">
-                    <div class="card-header bg-white">
-                        <h5 class="mb-0">
-                            <i class="fas fa-dumbbell me-2 text-primary"></i>
-                            برنامه‌های تمرینی امروز
-                        </h5>
+        <!-- کارت‌های آماری -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-value">۲۴</div>
+                        <div class="stat-label">ورزشکار فعال</div>
                     </div>
-                    <div class="card-body">
-                        <div id="today-workouts">
-                            <!-- برنامه‌های امروز -->
+                    <div class="stat-icon students">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+                <div style="font-size: 12px; color: #06d6a0;">
+                    <i class="fas fa-arrow-up"></i> ۴ نفر افزایش این ماه
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-value">۴۵</div>
+                        <div class="stat-label">جلسه این ماه</div>
+                    </div>
+                    <div class="stat-icon sessions">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                </div>
+                <div style="font-size: 12px; color: #06d6a0;">
+                    <i class="fas fa-arrow-up"></i> ۸٪ افزایش نسبت به ماه قبل
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-value">۴.۷/۵</div>
+                        <div class="stat-label">میانگین امتیاز</div>
+                    </div>
+                    <div class="stat-icon rating">
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div style="font-size: 12px; color: #06d6a0;">
+                    ۹۲٪ رضایت ورزشکاران
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-value">۱۲.۵M</div>
+                        <div class="stat-label">درآمد این ماه</div>
+                    </div>
+                    <div class="stat-icon income">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                </div>
+                <div style="font-size: 12px; color: #06d6a0;">
+                    <i class="fas fa-arrow-up"></i> ۱۵٪ افزایش نسبت به ماه قبل
+                </div>
+            </div>
+        </div>
+
+        <!-- برنامه امروز -->
+        <div class="schedule-card">
+            <div class="schedule-header">
+                <div class="schedule-title">برنامه امروز</div>
+                <div class="schedule-date">چهارشنبه ۲۰ دی ۱۴۰۳</div>
+            </div>
+            
+            <div class="sessions-list">
+                <div class="session-item">
+                    <div class="session-time">۰۸:۰۰ - ۰۹:۰۰</div>
+                    <div class="session-info">
+                        <div class="session-student">رضا احمدی</div>
+                        <div class="session-type">بدنسازی - برنامه پیشرفته</div>
+                    </div>
+                    <div class="session-status status-completed">تکمیل شده</div>
+                </div>
+                
+                <div class="session-item">
+                    <div class="session-time">۱۰:۰۰ - ۱۱:۰۰</div>
+                    <div class="session-info">
+                        <div class="session-student">مریم کریمی</div>
+                        <div class="session-type">یوگا - سطح متوسط</div>
+                    </div>
+                    <div class="session-status status-ongoing">در حال انجام</div>
+                </div>
+                
+                <div class="session-item">
+                    <div class="session-time">۱۶:۰۰ - ۱۷:۰۰</div>
+                    <div class="session-info">
+                        <div class="session-student">سارا نعمتی</div>
+                        <div class="session-type">کاردیو - کاهش وزن</div>
+                    </div>
+                    <div class="session-status status-upcoming">آینده</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ورزشکاران فعال -->
+        <div class="students-card">
+            <div class="schedule-header">
+                <div class="schedule-title">ورزشکاران فعال</div>
+                <div class="btn btn-primary">
+                    <i class="fas fa-plus"></i> ورزشکار جدید
+                </div>
+            </div>
+            
+            <div class="students-grid">
+                <div class="student-card">
+                    <div class="student-header">
+                        <div class="student-avatar">ر</div>
+                        <div>
+                            <div class="student-name">رضا احمدی</div>
+                            <div class="student-level">سطح پیشرفته</div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="card h-100">
-                    <div class="card-header bg-white">
-                        <h5 class="mb-0">
-                            <i class="fas fa-chart-line me-2 text-warning"></i>
-                            پیشرفت کلی
-                        </h5>
+                    <div style="font-size: 14px; color: #666; margin-bottom: 10px;">
+                        برنامه: بدنسازی حرفه‌ای
                     </div>
-                    <div class="card-body">
-                        <canvas id="coach-progress-chart"></canvas>
+                    <div class="student-progress">
+                        <div class="student-progress-bar" style="width: 85%"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; color: #666;">
+                        <span>پیشرفت: ۸۵%</span>
+                        <span>۱۸ جلسه</span>
+                    </div>
+                </div>
+                
+                <div class="student-card">
+                    <div class="student-header">
+                        <div class="student-avatar">م</div>
+                        <div>
+                            <div class="student-name">مریم کریمی</div>
+                            <div class="student-level">سطح متوسط</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 14px; color: #666; margin-bottom: 10px;">
+                        برنامه: یوگا و انعطاف
+                    </div>
+                    <div class="student-progress">
+                        <div class="student-progress-bar" style="width: 65%"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; color: #666;">
+                        <span>پیشرفت: ۶۵%</span>
+                        <span>۱۲ جلسه</span>
+                    </div>
+                </div>
+                
+                <div class="student-card">
+                    <div class="student-header">
+                        <div class="student-avatar">س</div>
+                        <div>
+                            <div class="student-name">سارا نعمتی</div>
+                            <div class="student-level">سطح مبتدی</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 14px; color: #666; margin-bottom: 10px;">
+                        برنامه: کاردیو و کاهش وزن
+                    </div>
+                    <div class="student-progress">
+                        <div class="student-progress-bar" style="width: 45%"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; color: #666;">
+                        <span>پیشرفت: ۴۵%</span>
+                        <span>۸ جلسه</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- برنامه‌های آماده -->
-        <div class="card mb-4">
-            <div class="card-header bg-white">
-                <h5 class="mb-0">
-                    <i class="fas fa-clipboard-list me-2 text-info"></i>
-                    برنامه‌های آماده
-                </h5>
-            </div>
-            <div class="card-body">
-                <div class="row" id="workout-templates">
-                    <!-- برنامه‌های آماده -->
+        <!-- بخش نمودارها -->
+        <div class="charts-section">
+            <!-- نمودار درآمد -->
+            <div class="chart-card">
+                <h3 style="margin-bottom: 20px; color: var(--dark-color);">درآمد ماهانه</h3>
+                <div class="chart-container">
+                    <canvas id="incomeChart"></canvas>
                 </div>
             </div>
+            
+            <!-- نمودار رضایت -->
+            <div class="chart-card">
+                <h3 style="margin-bottom: 20px; color: var(--dark-color);">رضایت ورزشکاران</h3>
+                <div class="chart-container">
+                    <canvas id="satisfactionChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- درخواست‌های جدید -->
+        <div class="requests-card">
+            <div class="schedule-header">
+                <div class="schedule-title">درخواست‌های جدید</div>
+                <div class="btn btn-secondary">
+                    مشاهده همه
+                </div>
+            </div>
+            
+            <div class="requests-list">
+                <div class="request-item">
+                    <div class="request-info">
+                        <h4>محمد حسینی</h4>
+                        <p>درخواست برنامه بدنسازی پیشرفته</p>
+                    </div>
+                    <div class="request-actions">
+                        <button class="btn-accept">پذیرش</button>
+                        <button class="btn-reject">رد</button>
+                    </div>
+                </div>
+                
+                <div class="request-item">
+                    <div class="request-info">
+                        <h4>فاطمه رضایی</h4>
+                        <p>درخواست برنامه یوگا برای مبتدیان</p>
+                    </div>
+                    <div class="request-actions">
+                        <button class="btn-accept">پذیرش</button>
+                        <button class="btn-reject">رد</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- درآمد و مالی -->
+        <div class="income-card">
+            <h3 style="margin-bottom: 20px; color: var(--dark-color);">وضعیت مالی</h3>
+            <div class="income-stats">
+                <div class="income-item">
+                    <div class="income-value">۱۲,۵۰۰,۰۰۰</div>
+                    <div class="income-label">درآمد این ماه</div>
+                </div>
+                <div class="income-item">
+                    <div class="income-value">۸۵٪</div>
+                    <div class="income-label">دریافت شده</div>
+                </div>
+                <div class="income-item">
+                    <div class="income-value">۴۵</div>
+                    <div class="income-label">جلسه برگزار شده</div>
+                </div>
+                <div class="income-item">
+                    <div class="income-value">۲۷۸,۰۰۰</div>
+                    <div class="income-label">میانگین درآمد هر جلسه</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- فوتر -->
+        <div class="footer">
+            <p>SMART FIT - پنل مربیان | نسخه ۲.۰</p>
+            <p style="font-size: 12px; color: #999; margin-top: 5px;">
+                تعداد جلسات امروز: ۳ | ظرفیت باقی‌مانده: ۶ نفر
+            </p>
         </div>
     </div>
 
-    <!-- اسکریپت‌ها -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/script.js"></script>
-    <!-- چت بات هوشمند -->
-    <script src="../assets/js/chatbot.js"></script>
-
+    <!-- ==================== اسکریپت‌ها ==================== -->
     <script>
-        // داده‌های نمونه برای مربی
-        const coachData = {
-            athletes: [{
-                    id: 1,
-                    name: 'علی محمدی',
-                    level: 'پیشرفته',
-                    progress: 85,
-                    lastWorkout: 'دیروز',
-                    goal: 'عضله‌سازی'
-                },
-                {
-                    id: 2,
-                    name: 'مریم کریمی',
-                    level: 'متوسط',
-                    progress: 65,
-                    lastWorkout: 'امروز',
-                    goal: 'کاهش وزن'
-                },
-                {
-                    id: 3,
-                    name: 'رضا احمدی',
-                    level: 'مبتدی',
-                    progress: 45,
-                    lastWorkout: '۲ روز پیش',
-                    goal: 'تناسب اندام'
-                },
-                {
-                    id: 4,
-                    name: 'سارا حسینی',
-                    level: 'پیشرفته',
-                    progress: 90,
-                    lastWorkout: 'امروز',
-                    goal: 'آمادگی مسابقه'
-                },
-                {
-                    id: 5,
-                    name: 'امید جعفری',
-                    level: 'متوسط',
-                    progress: 70,
-                    lastWorkout: 'دیروز',
-                    goal: 'افزایش قدرت'
-                },
-                {
-                    id: 6,
-                    name: 'نازنین رضایی',
-                    level: 'مبتدی',
-                    progress: 30,
-                    lastWorkout: '۳ روز پیش',
-                    goal: 'سلامت عمومی'
-                }
-            ],
-            todayWorkouts: [{
-                    time: '۸:۰۰',
-                    athlete: 'مریم کریمی',
-                    type: 'کاردیو',
-                    duration: '۴۵ دقیقه'
-                },
-                {
-                    time: '۱۰:۰۰',
-                    athlete: 'سارا حسینی',
-                    type: 'وزنه‌برداری',
-                    duration: '۶۰ دقیقه'
-                },
-                {
-                    time: '۱۴:۰۰',
-                    athlete: 'امید جعفری',
-                    type: 'کراس فیت',
-                    duration: '۵۰ دقیقه'
-                },
-                {
-                    time: '۱۶:۰۰',
-                    athlete: 'علی محمدی',
-                    type: 'تمرین قدرتی',
-                    duration: '۷۰ دقیقه'
-                },
-                {
-                    time: '۱۸:۰۰',
-                    athlete: 'گروهی',
-                    type: 'یوگا',
-                    duration: '۶۰ دقیقه'
-                }
-            ],
-            workoutTemplates: [{
-                    name: 'برنامه کاهش وزن',
-                    level: 'متوسط',
-                    duration: '۸ هفته',
-                    focus: 'کاردیو'
-                },
-                {
-                    name: 'برنامه عضله‌سازی',
-                    level: 'پیشرفته',
-                    duration: '۱۲ هفته',
-                    focus: 'وزنه'
-                },
-                {
-                    name: 'برنامه مبتدی',
-                    level: 'مبتدی',
-                    duration: '۴ هفته',
-                    focus: 'آمادگی'
-                },
-                {
-                    name: 'برنامه حرفه‌ای',
-                    level: 'حرفه‌ای',
-                    duration: '۱۶ هفته',
-                    focus: 'قدرت'
-                }
-            ]
-        };
-
-        // راه‌اندازی داشبورد مربی
         document.addEventListener('DOMContentLoaded', function() {
-            // لود ورزشکاران
-            loadAthletes();
-
-            // لود برنامه‌های امروز
-            loadTodayWorkouts();
-
-            // لود برنامه‌های آماده
-            loadWorkoutTemplates();
-
-            // ایجاد نمودار
-            createProgressChart();
-
-            // تنظیم آمار
-            updateStats();
-        });
-
-        function loadAthletes() {
-            const container = document.getElementById('athletes-list');
-            if (!container) return;
-
-            container.innerHTML = '';
-
-            coachData.athletes.forEach(athlete => {
-                const progressColor = athlete.progress >= 80 ? 'success' :
-                    athlete.progress >= 60 ? 'primary' :
-                    athlete.progress >= 40 ? 'warning' : 'danger';
-
-                const athleteHTML = `
-                    <div class="col-md-6 col-lg-4 mb-3">
-                        <div class="athlete-card">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center mb-3">
-                                    <div class="athlete-avatar me-3">
-                                        ${athlete.name.charAt(0)}
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-1">${athlete.name}</h6>
-                                        <span class="badge bg-${athlete.level === 'پیشرفته' ? 'success' : 
-                                                               athlete.level === 'متوسط' ? 'primary' : 'secondary'}">
-                                            ${athlete.level}
-                                        </span>
-                                    </div>
-                                </div>
-                                
-                                <div class="mb-3">
-                                    <small class="text-muted">هدف: ${athlete.goal}</small>
-                                    <div class="progress mt-1" style="height: 8px;">
-                                        <div class="progress-bar bg-${progressColor}" 
-                                             style="width: ${athlete.progress}%"></div>
-                                    </div>
-                                    <small class="text-muted d-block mt-1">
-                                        پیشرفت: ${athlete.progress}%
-                                    </small>
-                                </div>
-                                
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <small class="text-muted">
-                                        <i class="fas fa-history me-1"></i>
-                                        آخرین تمرین: ${athlete.lastWorkout}
-                                    </small>
-                                    <button class="btn btn-outline-primary btn-sm">
-                                        <i class="fas fa-eye me-1"></i>مشاهده
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-                container.insertAdjacentHTML('beforeend', athleteHTML);
-            });
-        }
-
-        function loadTodayWorkouts() {
-            const container = document.getElementById('today-workouts');
-            if (!container) return;
-
-            container.innerHTML = '';
-
-            coachData.todayWorkouts.forEach(workout => {
-                const workoutHTML = `
-                    <div class="workout-plan-card mb-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="mb-1">
-                                    <i class="fas fa-clock me-2 text-primary"></i>
-                                    ${workout.time} - ${workout.athlete}
-                                </h6>
-                                <div class="d-flex gap-3 mt-2">
-                                    <span class="badge bg-info">
-                                        <i class="fas fa-dumbbell me-1"></i>
-                                        ${workout.type}
-                                    </span>
-                                    <span class="badge bg-secondary">
-                                        <i class="fas fa-hourglass-half me-1"></i>
-                                        ${workout.duration}
-                                    </span>
-                                </div>
-                            </div>
-                            <div>
-                                <button class="btn btn-success btn-sm">
-                                    <i class="fas fa-check me-1"></i>تایید
-                                </button>
-                                <button class="btn btn-outline-secondary btn-sm ms-2">
-                                    <i class="fas fa-edit me-1"></i>ویرایش
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-                container.insertAdjacentHTML('beforeend', workoutHTML);
-            });
-        }
-
-        function loadWorkoutTemplates() {
-            const container = document.getElementById('workout-templates');
-            if (!container) return;
-
-            container.innerHTML = '';
-
-            coachData.workoutTemplates.forEach(template => {
-                const levelColor = template.level === 'پیشرفته' ? 'danger' :
-                    template.level === 'متوسط' ? 'warning' : 'success';
-
-                const templateHTML = `
-                    <div class="col-md-6 col-lg-3 mb-3">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h6 class="card-title">${template.name}</h6>
-                                <div class="mb-3">
-                                    <span class="badge bg-${levelColor}">
-                                        ${template.level}
-                                    </span>
-                                    <span class="badge bg-secondary ms-1">
-                                        ${template.duration}
-                                    </span>
-                                </div>
-                                <p class="card-text small">
-                                    <i class="fas fa-bullseye me-1"></i>
-                                    تمرکز: ${template.focus}
-                                </p>
-                                <div class="d-grid gap-2">
-                                    <button class="btn btn-outline-primary btn-sm">
-                                        <i class="fas fa-play me-1"></i>اجرا
-                                    </button>
-                                    <button class="btn btn-outline-secondary btn-sm">
-                                        <i class="fas fa-user-plus me-1"></i>اختصاص
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-                container.insertAdjacentHTML('beforeend', templateHTML);
-            });
-        }
-
-        function createProgressChart() {
-            const ctx = document.getElementById('coach-progress-chart');
-            if (!ctx) return;
-
-            new Chart(ctx, {
-                type: 'bar',
+            // نمودار درآمد
+            const incomeCtx = document.getElementById('incomeChart').getContext('2d');
+            new Chart(incomeCtx, {
+                type: 'line',
                 data: {
-                    labels: ['هفته ۱', 'هفته ۲', 'هفته ۳', 'هفته ۴', 'هفته ۵', 'هفته ۶'],
+                    labels: ['مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'],
                     datasets: [{
-                        label: 'میانگین پیشرفت ورزشکاران',
-                        data: [65, 70, 75, 80, 85, 90],
-                        backgroundColor: [
-                            'rgba(75, 181, 67, 0.7)',
-                            'rgba(75, 181, 67, 0.7)',
-                            'rgba(75, 181, 67, 0.7)',
-                            'rgba(75, 181, 67, 0.7)',
-                            'rgba(75, 181, 67, 0.7)',
-                            'rgba(75, 181, 67, 0.7)'
-                        ],
-                        borderColor: [
-                            '#4bb543',
-                            '#4bb543',
-                            '#4bb543',
-                            '#4bb543',
-                            '#4bb543',
-                            '#4bb543'
-                        ],
-                        borderWidth: 1
+                        label: 'درآمد (میلیون تومان)',
+                        data: [8, 9.5, 10.2, 12.5, 11.8, 13],
+                        borderColor: '#06d6a0',
+                        backgroundColor: 'rgba(6, 214, 160, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true
                     }]
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
                     scales: {
                         y: {
                             beginAtZero: true,
-                            max: 100,
                             ticks: {
                                 callback: function(value) {
-                                    return value + '%';
+                                    return value + 'M';
                                 }
                             }
                         }
                     }
                 }
             });
-        }
-
-        function updateStats() {
-            // آمار می‌تونن از سرور بیاین
-            document.getElementById('total-athletes').textContent = coachData.athletes.length;
-            document.getElementById('active-plans').textContent = coachData.athletes.length * 2; // فرضی
-            document.getElementById('today-sessions').textContent = coachData.todayWorkouts.length;
-            document.getElementById('goals-achieved').textContent = Math.floor(
-                coachData.athletes.reduce((sum, a) => sum + a.progress, 0) / coachData.athletes.length
-            );
-        }
+            
+            // نمودار رضایت
+            const satisfactionCtx = document.getElementById('satisfactionChart').getContext('2d');
+            new Chart(satisfactionCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['رضا احمدی', 'مریم کریمی', 'سارا نعمتی', 'علی نوری', 'فاطمه محمدی'],
+                    datasets: [{
+                        label: 'امتیاز رضایت',
+                        data: [4.8, 4.7, 4.5, 4.9, 4.6],
+                        backgroundColor: '#ffd166',
+                        borderColor: '#ffb347',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 5,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '/5';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            console.log('داشبورد مربی با موفقیت بارگذاری شد');
+        });
     </script>
-    <!-- بعد از آمار کلی -->
-<div class="card mb-4">
-    <div class="card-header">
-        <h5><i class="fas fa-money-bill-wave me-2 text-success"></i>درآمد و مالی</h5>
-    </div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="text-center p-3">
-                    <h3 class="text-success" id="total-earned">۴,۲۵۰,۰۰۰</h3>
-                    <p class="text-muted">درآمد کل (تومان)</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="text-center p-3">
-                    <h3 id="monthly-earned">۱,۲۵۰,۰۰۰</h3>
-                    <p class="text-muted">درآمد این ماه</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="text-center p-3">
-                    <h3 id="pending-payment">۳۲۰,۰۰۰</h3>
-                    <p class="text-muted">درآمد در انتظار</p>
-                </div>
-            </div>
-        </div>
-        
-        <table class="table table-hover mt-3">
-            <thead>
-                <tr>
-                    <th>ورزشکار</th>
-                    <th>طرح</th>
-                    <th>مبلغ ماهانه</th>
-                    <th>وضعیت پرداخت</th>
-                    <th>تاریخ بعدی</th>
-                </tr>
-            </thead>
-            <tbody id="payment-list">
-                <!-- لیست پرداخت‌ها -->
-            </tbody>
-        </table>
-    </div>
-</div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ورود مدیر - SMART FIT</title>
     
     <!-- Bootstrap 5 -->
@@ -22,6 +22,7 @@
             --success-color: #06d6a0;
             --danger-color: #ef476f;
             --warning-color: #ffd166;
+            --chatbot-color: #4361ee;
         }
         
         * {
@@ -38,12 +39,14 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
+            position: relative;
         }
         
         .login-container {
             width: 100%;
             max-width: 480px;
             animation: fadeIn 0.8s ease-out;
+            z-index: 10;
         }
         
         @keyframes fadeIn {
@@ -56,7 +59,7 @@
             backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 24px;
-            padding: 45px 35px;
+            padding: 40px 30px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
@@ -69,11 +72,11 @@
         
         .login-header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 35px;
         }
         
         .admin-icon {
-            font-size: 50px;
+            font-size: 45px;
             color: var(--accent-color);
             margin-bottom: 15px;
             background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
@@ -86,12 +89,12 @@
             color: var(--light-color);
             font-weight: 700;
             margin-bottom: 10px;
-            font-size: 28px;
+            font-size: 26px;
         }
         
         .login-header p {
             color: rgba(255, 255, 255, 0.7);
-            font-size: 15px;
+            font-size: 14px;
             line-height: 1.6;
         }
         
@@ -99,24 +102,24 @@
             display: inline-block;
             background: rgba(239, 71, 111, 0.15);
             color: var(--danger-color);
-            padding: 8px 20px;
+            padding: 6px 18px;
             border-radius: 50px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             margin-top: 15px;
             border: 1px solid rgba(239, 71, 111, 0.3);
         }
         
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 22px;
         }
         
         .form-label {
             color: var(--light-color);
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: block;
-            font-size: 15px;
+            font-size: 14px;
         }
         
         .form-label i {
@@ -134,16 +137,16 @@
             top: 50%;
             transform: translateY(-50%);
             color: rgba(255, 255, 255, 0.5);
-            font-size: 18px;
+            font-size: 16px;
         }
         
         .form-control {
             background: rgba(255, 255, 255, 0.07);
             border: 2px solid rgba(255, 255, 255, 0.1);
             color: var(--light-color);
-            border-radius: 12px;
-            padding: 16px 20px 16px 55px;
-            font-size: 16px;
+            border-radius: 10px;
+            padding: 14px 15px 14px 50px;
+            font-size: 15px;
             transition: all 0.3s;
             width: 100%;
         }
@@ -151,7 +154,7 @@
         .form-control:focus {
             background: rgba(255, 255, 255, 0.1);
             border-color: var(--accent-color);
-            box-shadow: 0 0 0 4px rgba(76, 201, 240, 0.2);
+            box-shadow: 0 0 0 3px rgba(76, 201, 240, 0.2);
             color: var(--light-color);
             outline: none;
         }
@@ -161,10 +164,10 @@
         }
         
         .captcha-section {
-            background: rgba(0, 0, 0, 0.25);
-            border-radius: 16px;
-            padding: 25px;
-            margin: 30px 0;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 25px 0;
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
         
@@ -172,59 +175,58 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         
         .captcha-code-box {
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
         }
         
         .captcha-text {
-    font-family: 'Courier New', monospace;
-    font-size: 36px;
-    font-weight: bold;
-    letter-spacing: 10px;
-    color: var(--warning-color);
-    direction: ltr;
-    user-select: none;
-    text-shadow: 0 2px 10px rgba(255, 209, 102, 0.3);
-    padding: 10px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
-    margin: 10px 0;
-}
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 5px;
+            color: var(--warning-color);
+            direction: ltr;
+            user-select: none;
+            padding: 5px;
+            margin: 0;
+        }
         
         .captcha-controls {
             display: flex;
-            gap: 15px;
+            gap: 10px;
+            align-items: center;
         }
         
         .captcha-input {
             flex: 1;
             text-align: center;
-            font-size: 20px;
-            letter-spacing: 5px;
+            font-size: 16px;
+            letter-spacing: 3px;
             font-weight: bold;
+            padding: 12px;
         }
         
         .btn-refresh {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             border: none;
             color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 20px;
+            font-size: 18px;
         }
         
         .btn-refresh:hover {
@@ -236,10 +238,10 @@
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             border: none;
             color: white;
-            padding: 18px;
-            border-radius: 14px;
+            padding: 16px;
+            border-radius: 12px;
             font-weight: 700;
-            font-size: 18px;
+            font-size: 16px;
             width: 100%;
             margin-top: 10px;
             cursor: pointer;
@@ -247,13 +249,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 10px;
         }
         
         .btn-login:hover {
             background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
             transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(67, 97, 238, 0.4);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4);
         }
         
         .btn-login:active {
@@ -267,13 +269,14 @@
         }
         
         .alert-message {
-            border-radius: 12px;
-            padding: 18px;
-            margin-top: 25px;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
             text-align: center;
             display: none;
             animation: slideIn 0.3s ease-out;
             font-weight: 500;
+            font-size: 14px;
         }
         
         @keyframes slideIn {
@@ -295,15 +298,15 @@
         
         .footer-links {
             text-align: center;
-            margin-top: 35px;
-            padding-top: 25px;
+            margin-top: 30px;
+            padding-top: 20px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .back-link {
             color: rgba(255, 255, 255, 0.6);
             text-decoration: none;
-            font-size: 15px;
+            font-size: 14px;
             transition: all 0.3s;
             display: inline-flex;
             align-items: center;
@@ -317,23 +320,267 @@
         
         .test-credentials {
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 15px;
-            margin-top: 25px;
-            font-size: 13px;
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 20px;
+            font-size: 12px;
             color: rgba(255, 255, 255, 0.6);
             text-align: center;
             border: 1px dashed rgba(255, 255, 255, 0.1);
         }
         
+        .captcha-hint {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 11px;
+            text-align: center;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        /* ==================== استایل‌های چت‌بات ==================== */
+        #smartfit-chatbot {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 1000;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+        
+        .chatbot-toggle {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--chatbot-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(67, 97, 238, 0.4);
+            transition: all 0.3s;
+            color: white;
+            font-size: 24px;
+            position: relative;
+        }
+        
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.6);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger-color);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .chatbot-window {
+            position: absolute;
+            bottom: 70px;
+            left: 0;
+            width: 350px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .chatbot-header {
+            background: linear-gradient(135deg, var(--chatbot-color), var(--secondary-color));
+            padding: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .chatbot-avatar {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--chatbot-color);
+        }
+        
+        .chatbot-header-info h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .chatbot-header-info p {
+            margin: 5px 0 0;
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        
+        .chatbot-close {
+            margin-right: auto;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+        
+        .chatbot-close:hover {
+            opacity: 1;
+        }
+        
+        .chatbot-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+        
+        .message-bot {
+            background: #f0f2f5;
+            color: #333;
+            align-self: flex-start;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .message-user {
+            background: var(--chatbot-color);
+            color: white;
+            align-self: flex-end;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .chatbot-input-container {
+            padding: 20px;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 10px;
+            background: white;
+        }
+        
+        .chatbot-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .chatbot-input:focus {
+            border-color: var(--chatbot-color);
+        }
+        
+        .chatbot-send {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--chatbot-color), var(--secondary-color));
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+        
+        .chatbot-send:hover {
+            transform: scale(1.05);
+        }
+        
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 10px 20px;
+            background: #f9f9f9;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .quick-reply {
+            background: white;
+            border: 1px solid #e0e0e0;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .quick-reply:hover {
+            background: var(--chatbot-color);
+            color: white;
+            border-color: var(--chatbot-color);
+        }
+        
+        .typing-indicator {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: #f0f2f5;
+            border-radius: 18px;
+            align-self: flex-start;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #999;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+        
         @media (max-width: 576px) {
             .login-card {
-                padding: 35px 25px;
+                padding: 30px 20px;
             }
             
             .captcha-text {
-                font-size: 26px;
-                letter-spacing: 5px;
+                font-size: 20px;
+                letter-spacing: 4px;
             }
             
             .captcha-controls {
@@ -342,7 +589,18 @@
             
             .btn-refresh {
                 width: 100%;
-                height: 55px;
+                height: 45px;
+            }
+            
+            #smartfit-chatbot {
+                left: 20px;
+                bottom: 20px;
+            }
+            
+            .chatbot-window {
+                width: calc(100vw - 40px);
+                left: -150px;
+                height: 450px;
             }
         }
     </style>
@@ -402,16 +660,13 @@
                 <!-- کپچا -->
                 <div class="captcha-section">
                     <div class="captcha-header">
-                        <label class="form-label">
+                        <label class="form-label" style="margin: 0;">
                             <i class="fas fa-robot"></i> کد امنیتی
                         </label>
-                        <span style="color: rgba(255,255,255,0.5); font-size: 13px;">
-                            حروف بزرگ انگلیسی
-                        </span>
                     </div>
                     
                     <div class="captcha-code-box">
-                        <div class="captcha-text" id="captchaDisplay">SMART-FIT</div>
+                        <div class="captcha-text" id="captchaDisplay">SMART</div>
                     </div>
                     
                     <div class="captcha-controls">
@@ -419,23 +674,18 @@
                                class="form-control captcha-input" 
                                id="captchaInput" 
                                placeholder="کد بالا را وارد کنید"
-                               maxlength="8"
-                               
+                               maxlength="6"
                                required>
                         <button type="button" class="btn-refresh" id="refreshCaptcha" title="کد جدید">
                             <i class="fas fa-redo"></i>
                         </button>
-                        
                     </div>
-                    <div style="text-align: center; margin-top: 10px;">
-    <small style="color: rgba(255, 255, 255, 0.5); font-size: 12px;">
-        <i class="fas fa-info-circle"></i>
-        کد را وارد کنید
-        
-    </small>
-</div>
+                    
+                    <div class="captcha-hint">
+                        <i class="fas fa-info-circle"></i>
+                        کد شامل ۶ حرف بزرگ انگلیسی (بدون اعداد گیج‌کننده)
+                    </div>
                 </div>
-                
                 
                 <!-- دکمه ورود -->
                 <button type="submit" class="btn-login" id="loginButton">
@@ -460,14 +710,65 @@
         </div>
     </div>
 
-    <!-- اسکریپت‌های جاوااسکریپت -->
+    <!-- ==================== چت‌بات SMART FIT ==================== -->
+    <div id="smartfit-chatbot">
+        <!-- دکمه شناور -->
+        <div class="chatbot-toggle" id="chatbotToggle">
+            <i class="fas fa-comment-dots"></i>
+            <span class="notification-badge" id="chatNotification" style="display: none;">1</span>
+        </div>
+        
+        <!-- پنجره چت -->
+        <div class="chatbot-window" id="chatbotWindow">
+            <!-- هدر چت -->
+            <div class="chatbot-header">
+                <div class="chatbot-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="chatbot-header-info">
+                    <h3>دستیار SMART FIT</h3>
+                    <p>من اینجام تا کمک کنم 💪</p>
+                </div>
+                <button class="chatbot-close" id="chatbotClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- پیام‌ها -->
+            <div class="chatbot-messages" id="chatMessages">
+                <!-- پیام‌ها به صورت دینامیک اضافه می‌شوند -->
+            </div>
+            
+            <!-- پاسخ‌های سریع -->
+            <div class="quick-replies" id="quickReplies">
+                <div class="quick-reply" data-question="برنامه تمرینی">🎯 برنامه تمرینی</div>
+                <div class="quick-reply" data-question="تغذیه">🥗 راهنمای تغذیه</div>
+                <div class="quick-reply" data-question="ورود">🔐 راهنمای ورود</div>
+                <div class="quick-reply" data-question="تماس">📞 تماس با پشتیبانی</div>
+            </div>
+            
+            <!-- ورودی کاربر -->
+            <div class="chatbot-input-container">
+                <input type="text" 
+                       class="chatbot-input" 
+                       id="chatInput" 
+                       placeholder="سوال خود را بپرسید..."
+                       autocomplete="off">
+                <button class="chatbot-send" id="chatSend">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- اسکریپت‌های اصلی -->
     <script>
         // ==================== تنظیمات سیستم ====================
         const SYSTEM_CONFIG = {
             adminUsername: "admin-moein",
             adminPassword: "1998",
-            redirectDelay: 1500, // میلی‌ثانیه
-            loginDelay: 1000    // شبیه‌سازی تاخیر سرور
+            redirectDelay: 1500,
+            loginDelay: 1000
         };
         
         // ==================== متغیرهای جهانی ====================
@@ -482,29 +783,24 @@
         const systemMessage = document.getElementById('systemMessage');
         const loginButton = document.getElementById('loginButton');
         
-        // ==================== توابع کمکی ====================
+        // ==================== توابع ورود ====================
         
-        // تولید کد کپچای تصادفی
-      function generateCaptcha() {
-    // استفاده فقط از حروف بزرگ انگلیسی قابل تشخیص
-    // حذف حروف و اعداد گیج کننده: I, O, 0, 1, 2, Z, S, 5
-    const safeChars = "ABCDEFGHJKLMNPQRSTUVWXYZ346789";
-    let captcha = "";
-    const length = 6; // طول استاندارد کپچا
-    
-    // تولید کپچای تصادفی
-    for(let i = 0; i < length; i++) {
-        const randomIndex = Math.floor(Math.random() * safeChars.length);
-        captcha += safeChars.charAt(randomIndex);
-    }
-    
-    // ذخیره و نمایش کپچا
-    currentCaptcha = captcha;
-    captchaDisplay.textContent = currentCaptcha;
-    
-    console.log("کد کپچا تولید شد:", currentCaptcha);
-    return currentCaptcha;
-}
+        // تولید کد کپچای استاندارد ۶ حرفی
+        function generateCaptcha() {
+            const safeChars = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+            let captcha = "";
+            const length = 6;
+            
+            for(let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * safeChars.length);
+                captcha += safeChars.charAt(randomIndex);
+            }
+            
+            currentCaptcha = captcha;
+            captchaDisplay.textContent = currentCaptcha;
+            
+            return currentCaptcha;
+        }
         
         // نمایش پیام سیستم
         function showSystemMessage(message, type = "success") {
@@ -512,7 +808,6 @@
             systemMessage.className = `alert-message alert-${type}`;
             systemMessage.style.display = "block";
             
-            // مخفی کردن خودکار پیام خطا
             if(type === "error") {
                 setTimeout(() => {
                     systemMessage.style.display = "none";
@@ -535,7 +830,6 @@
         
         // اعتبارسنجی فرم
         function validateForm(username, password, userCaptcha) {
-            // بررسی نام کاربری
             if(username !== SYSTEM_CONFIG.adminUsername) {
                 return {
                     isValid: false,
@@ -543,7 +837,6 @@
                 };
             }
             
-            // بررسی رمز عبور
             if(password !== SYSTEM_CONFIG.adminPassword) {
                 return {
                     isValid: false,
@@ -551,39 +844,36 @@
                 };
             }
             
-            // بررسی کپچا (حساس به بزرگ/کوچک بودن حروف)
-            if(userCaptcha.toUpperCase() !== currentCaptcha.toUpperCase()) {
+            if(userCaptcha.toUpperCase() !== currentCaptcha) {
                 return {
                     isValid: false,
-                    message: "کد امنیتی صحیح نیست! لطفاً دقیقاً مانند کد بالا وارد کنید."
+                    message: "کد امنیتی صحیح نیست!"
                 };
             }
             
-            // همه چیز درست است
             return {
                 isValid: true,
                 message: "اعتبارسنجی موفقیت‌آمیز بود!"
             };
         }
         
-        // ==================== رویدادها ====================
+        // ==================== رویدادهای ورود ====================
         
         // بارگذاری اولیه صفحه
         document.addEventListener('DOMContentLoaded', function() {
             // تولید اولین کپچا
             generateCaptcha();
             
-            // تنظیم حروف بزرگ برای فیلد کپچا
+            // تبدیل حروف به بزرگ در حین تایپ
             captchaInput.addEventListener('input', function() {
-                this.value = this.value.toUpperCase();
+                this.value = this.value.toUpperCase().replace(/[^A-Z]/g, '');
             });
             
-            // فوکوس روی اولین فیلد
+            // فوکوس روی نام کاربری
             document.getElementById('username').focus();
             
-            console.log("✅ سیستم ورود مدیر آماده است");
-            console.log("👤 نام کاربری تست:", SYSTEM_CONFIG.adminUsername);
-            console.log("🔑 رمز عبور تست:", SYSTEM_CONFIG.adminPassword);
+            // راه‌اندازی چت‌بات
+            initializeChatbot();
         });
         
         // رویداد بازنشانی کپچا
@@ -614,6 +904,12 @@
                 return;
             }
             
+            // بررسی طول کپچا
+            if(userCaptcha.length !== 6) {
+                showSystemMessage("کد امنیتی باید دقیقاً ۶ حرف باشد", "error");
+                return;
+            }
+            
             // تغییر وضعیت دکمه
             setLoginButtonState(true);
             
@@ -624,15 +920,12 @@
             const validation = validateForm(username, password, userCaptcha);
             
             if(validation.isValid) {
-                // نمایش پیام موفقیت
-                showSystemMessage("✅ اطلاعات صحیح است! در حال انتقال به پنل مدیریت...", "success");
+                showSystemMessage("✅ اطلاعات صحیح است! در حال انتقال...", "success");
                 
-                // انتقال به داشبورد
                 setTimeout(() => {
                     window.location.href = "admin-dashboard.html";
                 }, SYSTEM_CONFIG.redirectDelay);
             } else {
-                // نمایش پیام خطا
                 showSystemMessage("❌ " + validation.message, "error");
                 
                 // بازنشانی کپچا
@@ -640,12 +933,11 @@
                 captchaInput.value = "";
                 captchaInput.focus();
                 
-                // بازگردانی دکمه
                 setLoginButtonState(false);
             }
         });
         
-        // امکان ریفرش کپچا با کلید F5
+        // کلید F5 برای ریفرش کپچا
         document.addEventListener('keydown', function(event) {
             if(event.key === 'F5' || (event.ctrlKey && event.key === 'r')) {
                 event.preventDefault();
@@ -654,6 +946,180 @@
                 }
             }
         });
+    </script>
+
+    <!-- اسکریپت چت‌بات -->
+    <script>
+        // ==================== تنظیمات چت‌بات ====================
+        const CHATBOT_CONFIG = {
+            name: "دستیار SMART FIT",
+            welcomeMessage: "سلام! من دستیار هوشمند SMART FIT هستم. چطور می‌تونم کمک کنم؟ 💪",
+            responses: {
+                greetings: ["سلام! 😊", "درود! چطور می‌تونم کمکتون کنم؟", "سلام عزیز! چه خبر؟"],
+                
+                faq: {
+                    "ورود": "برای ورود به سیستم، روی دکمه 'ورود' در منوی بالا کلیک کنید. مدیران از صفحه 'ورود مدیر' استفاده می‌کنند.",
+                    "برنامه تمرینی": "ما برنامه‌های تمرینی شخصی‌سازی شده داریم. در داشبورد می‌تونید برنامه مخصوص خودتون رو ببینید.",
+                    "تغذیه": "سیستم تغذیه هوشمند ما بر اساس اطلاعات شما برنامه غذایی مناسبی ارائه می‌ده.",
+                    "قیمت": "برای مشاهده قیمت‌ها به صفحه 'تعرفه‌ها' مراجعه کنید.",
+                    "دانلود": "اپلیکیشن موبایل ما از طریق لینک 'دانلود اپ' در دسترسه.",
+                    "تماس": "می‌تونید از طریق صفحه 'تماس با ما' با ما در ارتباط باشید.",
+                    "داشبورد": "پس از ورود، به داشبورد شخصی خودتون دسترسی دارید."
+                },
+                
+                fallback: "متأسفم، کاملاً متوجه نشدم! 😅 می‌تونید سوالتون رو واضح‌تر بپرسید یا با پشتیبانی تماس بگیرید."
+            }
+        };
+        
+        // ==================== توابع چت‌بات ====================
+        
+        function initializeChatbot() {
+            const chatbotToggle = document.getElementById('chatbotToggle');
+            const chatbotWindow = document.getElementById('chatbotWindow');
+            const chatbotClose = document.getElementById('chatbotClose');
+            const chatMessages = document.getElementById('chatMessages');
+            const chatInput = document.getElementById('chatInput');
+            const chatSend = document.getElementById('chatSend');
+            const quickReplies = document.querySelectorAll('.quick-reply');
+            const chatNotification = document.getElementById('chatNotification');
+            
+            let isChatOpen = false;
+            let messageHistory = [];
+            
+            // نمایش پیام خوش‌آمدگویی
+            function showWelcomeMessage() {
+                addMessage(CHATBOT_CONFIG.welcomeMessage, 'bot');
+            }
+            
+            // اضافه کردن پیام به چت
+            function addMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message message-${sender}`;
+                messageDiv.textContent = text;
+                
+                chatMessages.appendChild(messageDiv);
+                messageHistory.push({ text, sender, time: new Date() });
+                
+                // اسکرول به پایین
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // شبیه‌سازی تایپ کردن ربات
+            function showTypingIndicator() {
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'typing-indicator';
+                typingDiv.id = 'typingIndicator';
+                typingDiv.innerHTML = `
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                `;
+                
+                chatMessages.appendChild(typingDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                return typingDiv;
+            }
+            
+            // پاسخ هوشمند به پیام کاربر
+            function getBotResponse(userMessage) {
+                const message = userMessage.toLowerCase().trim();
+                
+                // پاسخ به سلام
+                if (message.includes('سلام') || message.includes('hello') || message.includes('hi')) {
+                    const greetings = CHATBOT_CONFIG.responses.greetings;
+                    return greetings[Math.floor(Math.random() * greetings.length)];
+                }
+                
+                // پاسخ به سوالات متداول
+                for (const [keyword, response] of Object.entries(CHATBOT_CONFIG.responses.faq)) {
+                    if (message.includes(keyword.toLowerCase())) {
+                        return response;
+                    }
+                }
+                
+                // پاسخ پیش‌فرض
+                return CHATBOT_CONFIG.responses.fallback;
+            }
+            
+            // ارسال پیام کاربر
+            function sendMessage() {
+                const message = chatInput.value.trim();
+                if (!message) return;
+                
+                // اضافه کردن پیام کاربر
+                addMessage(message, 'user');
+                chatInput.value = '';
+                
+                // نمایش تایپ کردن ربات
+                const typingIndicator = showTypingIndicator();
+                
+                // پاسخ ربات با تاخیر
+                setTimeout(() => {
+                    // حذف نشانگر تایپ
+                    const indicator = document.getElementById('typingIndicator');
+                    if (indicator) indicator.remove();
+                    
+                    // دریافت و نمایش پاسخ
+                    const response = getBotResponse(message);
+                    addMessage(response, 'bot');
+                }, 1000 + Math.random() * 1000);
+            }
+            
+            // باز/بستن چت‌بات
+            function toggleChat() {
+                isChatOpen = !isChatOpen;
+                
+                if (isChatOpen) {
+                    chatbotWindow.style.display = 'flex';
+                    chatNotification.style.display = 'none';
+                    chatInput.focus();
+                    
+                    // اگر اولین بار است که باز می‌شود، پیام خوش‌آمد بده
+                    if (messageHistory.length === 0) {
+                        showWelcomeMessage();
+                    }
+                } else {
+                    chatbotWindow.style.display = 'none';
+                }
+            }
+            
+            // ==================== رویدادها ====================
+            
+            // کلیک روی دکمه چت‌بات
+            chatbotToggle.addEventListener('click', toggleChat);
+            
+            // کلیک روی دکمه بستن
+            chatbotClose.addEventListener('click', toggleChat);
+            
+            // ارسال با دکمه
+            chatSend.addEventListener('click', sendMessage);
+            
+            // ارسال با Enter
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            // پاسخ‌های سریع
+            quickReplies.forEach(reply => {
+                reply.addEventListener('click', function() {
+                    const question = this.getAttribute('data-question');
+                    chatInput.value = question;
+                    sendMessage();
+                });
+            });
+            
+            // نمایش نوتیفیکیشن بعد از 10 ثانیه
+            setTimeout(() => {
+                if (!isChatOpen) {
+                    chatNotification.style.display = 'flex';
+                }
+            }, 10000);
+            
+            console.log("✅ چت‌بات SMART FIT راه‌اندازی شد");
+        }
     </script>
     
     <!-- Bootstrap JS -->
