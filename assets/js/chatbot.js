@@ -1,417 +1,258 @@
-// چت بات هوشمند SMART FIT
+// ==================== SMART FIT Chatbot - Core Brain ====================
+// فایل: assets/js/chatbot.js
+// تاریخ ایجاد: دی ۱۴۰۳
+// ====================
+
 class SmartFitChatbot {
     constructor() {
-        this.messages = [];
-        this.isOpen = false;
-        this.initializeChatbot();
+        this.name = "SMART FIT Assistant";
+        this.version = "2.0";
+        this.knowledgeBase = this.initializeKnowledgeBase();
+        this.conversationHistory = [];
+        this.userContext = {};
+        
+        console.log(`🤖 ${this.name} v${this.version} initialized`);
     }
-
-    initializeChatbot() {
-        // ایجاد عناصر چت بات
-        this.createChatbotHTML();
-        this.setupEventListeners();
-        this.loadInitialMessage();
-    }
-
-    createChatbotHTML() {
-        const chatbotHTML = `
-            <div id="smartfit-chatbot" class="smartfit-chatbot">
-                <div class="chatbot-header">
-                    <div class="chatbot-title">
-                        <i class="fas fa-robot"></i>
-                        <span>دستیار هوشمند SMART FIT</span>
-                    </div>
-                    <button class="chatbot-close">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
+    
+    // ==================== پایگاه دانش ====================
+    initializeKnowledgeBase() {
+        return {
+            // دانش عمومی سایت
+            site: {
+                pages: {
+                    'صفحه اصلی': 'index.html - اولین صفحه سایت با معرفی پروژه',
+                    'ورود': 'login.html - برای ورود کاربران عادی',
+                    'ورود مدیر': 'login-admin.html - برای ورود مدیران سیستم',
+                    'ثبت نام': 'register.html - برای ثبت‌نام کاربران جدید',
+                    'داشبورد': 'dashboard.html - پنل کاربر ورزشکار',
+                    'داشبورد مربی': 'coach-dashboard.html - پنل مربیان',
+                    'داشبورد مدیر': 'admin-dashboard.html - پنل مدیریت سیستم',
+                    'تعرفه‌ها': 'pricing.html - قیمت‌ها و پلن‌های مختلف',
+                    'گالری': 'gallery.html - تصاویر و ویدیوهای ورزشی',
+                    'چت': 'chat.html - سیستم پیام‌رسانی',
+                    'پیام‌رسان': 'messaging.html - سیستم پیشرفته پیام‌رسانی'
+                },
                 
-                <div class="chatbot-messages">
-                    <div class="message bot">
-                        <div class="message-content">
-                            سلام! من دستیار هوشمند SMART FIT هستم. چطور می‌تونم کمک کنم؟
-                        </div>
-                        <div class="message-time">همین الان</div>
-                    </div>
-                </div>
+                roles: {
+                    'ورزشکار': 'کاربر عادی که برنامه تمرینی و تغذیه دریافت می‌کند',
+                    'مربی': 'متخصص ورزشی که ورزشکاران را راهنمایی می‌کند',
+                    'مدیر': 'مدیر سیستم که کاربران و مربیان را مدیریت می‌کند'
+                },
                 
-                <div class="chatbot-input">
-                    <input type="text" placeholder="سوال خود را بپرسید..." class="chatbot-input-field">
-                    <button class="chatbot-send">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-            </div>
+                features: {
+                    'برنامه تمرینی': 'برنامه‌های شخصی‌سازی شده برای هر کاربر',
+                    'برنامه تغذیه': 'رژیم غذایی متناسب با هدف ورزشی',
+                    'ردیابی پیشرفت': 'نمودارها و آمار پیشرفت کاربر',
+                    'سیستم پیام‌رسانی': 'ارتباط بین ورزشکار، مربی و مدیر',
+                    'گزارش‌های مالی': 'گزارش‌های درآمد و هزینه‌ها',
+                    'مدیریت کاربران': 'مدیریت کاربران، مربیان و مدیران'
+                }
+            },
             
-            <button id="chatbot-toggle" class="chatbot-toggle-btn">
-                <i class="fas fa-comment-dots"></i>
-                <span class="chatbot-notification">!</span>
-            </button>
-        `;
-
-        document.body.insertAdjacentHTML('beforeend', chatbotHTML);
-    }
-
-    setupEventListeners() {
-        const toggleBtn = document.getElementById('chatbot-toggle');
-        const closeBtn = document.querySelector('.chatbot-close');
-        const sendBtn = document.querySelector('.chatbot-send');
-        const inputField = document.querySelector('.chatbot-input-field');
-
-        toggleBtn.addEventListener('click', () => this.toggleChatbot());
-        closeBtn.addEventListener('click', () => this.closeChatbot());
-        sendBtn.addEventListener('click', () => this.sendMessage());
-        
-        inputField.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') this.sendMessage();
-        });
-    }
-
-    toggleChatbot() {
-        const chatbot = document.getElementById('smartfit-chatbot');
-        this.isOpen = !this.isOpen;
-        
-        if (this.isOpen) {
-            chatbot.classList.add('open');
-            document.querySelector('.chatbot-input-field').focus();
-        } else {
-            chatbot.classList.remove('open');
-        }
-    }
-
-    closeChatbot() {
-        const chatbot = document.getElementById('smartfit-chatbot');
-        chatbot.classList.remove('open');
-        this.isOpen = false;
-    }
-
-    sendMessage() {
-        const inputField = document.querySelector('.chatbot-input-field');
-        const message = inputField.value.trim();
-        
-        if (!message) return;
-        
-        // نمایش پیام کاربر
-        this.addMessage(message, 'user');
-        inputField.value = '';
-        
-        // پاسخ هوش مصنوعی
-        setTimeout(() => {
-            const response = this.getBotResponse(message);
-            this.addMessage(response, 'bot');
-        }, 500);
-    }
-
-    addMessage(text, sender) {
-        const messagesContainer = document.querySelector('.chatbot-messages');
-        const time = new Date().toLocaleTimeString('fa-IR', { 
-            hour: '2-digit', 
-            minute: '2-digit' 
-        });
-        
-        const messageHTML = `
-            <div class="message ${sender}">
-                <div class="message-content">${text}</div>
-                <div class="message-time">${time}</div>
-            </div>
-        `;
-        
-        messagesContainer.insertAdjacentHTML('beforeend', messageHTML);
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        
-        // ذخیره در تاریخچه
-        this.messages.push({ text, sender, time });
-    }
-
-    loadInitialMessage() {
-        // پیام اولیه از قبل در HTML هست
-    }
-
-    getBotResponse(userMessage) {
-        const lowerMessage = userMessage.toLowerCase();
-        
-        const responses = {
-            'سلام': 'سلام! خوش آمدید. چطور می‌تونم کمک کنم؟',
-            'ورود': 'برای ورود به حساب کاربری، روی دکمه "ورود" در منوی بالا کلیک کنید.',
-            'ثبت نام': 'برای ثبت‌نام رایگان، روی دکمه "ثبت‌نام رایگان" در منوی بالا کلیک کنید.',
-            'برنامه ورزشی': 'ما برنامه‌های ورزشی شخصی‌سازی شده ارائه می‌دهیم. به داشبورد مراجعه کنید.',
-            'تغذیه': 'برنامه‌های غذایی متناسب با هدف و شرایط شما طراحی می‌شود.',
-            'قیمت': '۱۴ روز اول رایگان است! سپس می‌توانید از پلن‌های متنوع ما استفاده کنید.',
-            'مربی': 'با مربیان حرفه‌ای ما در ارتباط باشید. در بخش "مربی" اطلاعات بیشتر موجود است.',
-            'ورزش': 'برنامه‌های ورزشی متنوعی برای همه سطوح داریم.',
-            'default': 'متوجه نشدم. می‌تونید در مورد ورود، ثبت‌نام، برنامه ورزشی یا تغذیه سوال بپرسید.'
+            // دانش تخصصی ورزشی
+            fitness: {
+                workouts: {
+                    'بدنسازی': 'تمرینات قدرتی برای عضله‌سازی - شامل اسکات، پرس سینه، ددلیفت',
+                    'یوگا': 'تمرینات انعطاف و آرامش - مناسب برای کاهش استرس',
+                    'کاردیو': 'تمرینات هوازی - دویدن، دوچرخه، شنا برای چربی‌سوزی',
+                    'پیلاتس': 'تمرینات تقویت عضلات مرکزی بدن',
+                    'کراس فیت': 'تمرینات شدید و ترکیبی',
+                    'کیک‌بوکسینگ': 'تمرینات رزمی و دفاع شخصی'
+                },
+                
+                nutrition: {
+                    'پروتئین': 'برای عضله‌سازی و ترمیم بافت‌ها - مرغ، ماهی، تخم مرغ',
+                    'کربوهیدرات': 'منبع انرژی - برنج، سیب زمینی، نان سبوس‌دار',
+                    'چربی سالم': 'برای هورمون‌ها و انرژی - آووکادو، مغزها، روغن زیتون',
+                    'ویتامین‌ها': 'میوه‌ها و سبزیجات تازه',
+                    'آب': 'نوشیدن ۸ لیوان آب در روز ضروری است'
+                },
+                
+                tips: {
+                    'گرم کردن': 'قبل از تمرین ۱۰ دقیقه گرم کنید تا از آسیب جلوگیری شود',
+                    'سرد کردن': 'بعد از تمرین ۵ دقیقه حرکات کششی انجام دهید',
+                    'تغذیه قبل تمرین': '۲ ساعت قبل تمرین غذای سبک حاوی کربوهیدرات بخورید',
+                    'تغذیه بعد تمرین': 'تا ۱ ساعت بعد تمرین پروتئین مصرف کنید',
+                    'استراحت': 'بین ست‌ها ۶۰-۹۰ ثانیه و بین جلسات ۴۸ ساعت استراحت کنید'
+                }
+            },
+            
+            // دانش مدیریتی
+            management: {
+                'تایید کاربران': 'مدیر می‌تواند کاربران جدید را تایید یا رد کند',
+                'مدیریت مربیان': 'مدیر می‌تواند مربیان را مدیریت و نظارت کند',
+                'گزارش‌های مالی': 'گزارش درآمدها، هزینه‌ها و سود سیستم',
+                'تنظیمات سیستم': 'تنظیمات کلی سیستم و پیکربندی',
+                'پشتیبانی': 'پاسخ به سوالات و مشکلات کاربران'
+            },
+            
+            // سوالات متداول
+            faq: {
+                'چگونه ثبت نام کنم؟': 'به صفحه register.html بروید و اطلاعات خود را وارد کنید',
+                'چگونه وارد شوم؟': 'اگر کاربر عادی هستید به login.html، اگر مدیر هستید به login-admin.html بروید',
+                'برنامه تمرینی چگونه است؟': 'بعد از ورود، در داشبورد برنامه شخصی‌سازی شده خود را می‌بینید',
+                'چگونه با مربی ارتباط برقرار کنم؟': 'در داشبورد خود بخش "مربی من" را ببینید',
+                'قیمت‌ها چقدر است؟': 'به صفحه pricing.html مراجعه کنید',
+                'چگونه مربی شوم؟': 'ثبت‌نام کنید و درخواست مربیگری دهید تا مدیر تایید کند',
+                'چگونه مدیر شوم؟': 'فقط توسط مدیران ارشد سیستم قابل تنظیم است',
+                'سیستم پرداخت چگونه است؟': 'از طریق درگاه بانکی در صفحه پرداخت'
+            }
         };
+    }
+    
+    // ==================== پردازش سوال کاربر ====================
+    processQuestion(userQuestion) {
+        const question = userQuestion.toLowerCase().trim();
+        this.saveToHistory('user', userQuestion);
         
-        for (const [key, response] of Object.entries(responses)) {
-            if (lowerMessage.includes(key)) {
+        // 1. بررسی سلام و احوالپرسی
+        if (this.isGreeting(question)) {
+            return this.getGreetingResponse();
+        }
+        
+        // 2. بررسی سوالات متداول
+        const faqAnswer = this.checkFAQ(question);
+        if (faqAnswer) return faqAnswer;
+        
+        // 3. بررسی صفحات سایت
+        const pageAnswer = this.checkPages(question);
+        if (pageAnswer) return pageAnswer;
+        
+        // 4. بررسی تمرینات ورزشی
+        const workoutAnswer = this.checkWorkouts(question);
+        if (workoutAnswer) return workoutAnswer;
+        
+        // 5. بررسی تغذیه
+        const nutritionAnswer = this.checkNutrition(question);
+        if (nutritionAnswer) return nutritionAnswer;
+        
+        // 6. بررسی مدیریت
+        const managementAnswer = this.checkManagement(question);
+        if (managementAnswer) return managementAnswer;
+        
+        // 7. پاسخ پیش‌فرض
+        return this.getDefaultResponse();
+    }
+    
+    // ==================== توابع کمکی ====================
+    isGreeting(question) {
+        const greetings = ['سلام', 'hello', 'hi', 'درود', 'سلامتی', 'سلامت باشید', 'صبح بخیر', 'عصر بخیر'];
+        return greetings.some(greet => question.includes(greet));
+    }
+    
+    getGreetingResponse() {
+        const responses = [
+            'سلام! 😊 خوش آمدید به SMART FIT. چطور می‌تونم کمکتون کنم؟',
+            'درود! 💪 به دستیار هوشمند SMART FIT خوش آمدید. چه سوالی دارید؟',
+            'سلام عزیز! امروز چه کاری براتون انجام بدم؟'
+        ];
+        const response = responses[Math.floor(Math.random() * responses.length)];
+        this.saveToHistory('bot', response);
+        return response;
+    }
+    
+    checkFAQ(question) {
+        for (const [faqQuestion, answer] of Object.entries(this.knowledgeBase.faq)) {
+            if (question.includes(faqQuestion.toLowerCase())) {
+                this.saveToHistory('bot', answer);
+                return answer;
+            }
+        }
+        return null;
+    }
+    
+    checkPages(question) {
+        for (const [pageName, pageDescription] of Object.entries(this.knowledgeBase.site.pages)) {
+            if (question.includes(pageName.toLowerCase())) {
+                const response = `صفحه "${pageName}": ${pageDescription}`;
+                this.saveToHistory('bot', response);
                 return response;
             }
         }
+        return null;
+    }
+    
+    checkWorkouts(question) {
+        for (const [workoutName, workoutDescription] of Object.entries(this.knowledgeBase.fitness.workouts)) {
+            if (question.includes(workoutName.toLowerCase())) {
+                const response = `تمرین ${workoutName}: ${workoutDescription}`;
+                this.saveToHistory('bot', response);
+                return response;
+            }
+        }
+        return null;
+    }
+    
+    checkNutrition(question) {
+        for (const [nutrient, description] of Object.entries(this.knowledgeBase.fitness.nutrition)) {
+            if (question.includes(nutrient.toLowerCase())) {
+                const response = `${nutrient}: ${description}`;
+                this.saveToHistory('bot', response);
+                return response;
+            }
+        }
+        return null;
+    }
+    
+    checkManagement(question) {
+        for (const [task, description] of Object.entries(this.knowledgeBase.management)) {
+            if (question.includes(task.toLowerCase())) {
+                const response = `${task}: ${description}`;
+                this.saveToHistory('bot', response);
+                return response;
+            }
+        }
+        return null;
+    }
+    
+    getDefaultResponse() {
+        const responses = [
+            'متأسفم! کاملاً متوجه نشدم. می‌تونید سوال خود را واضح‌تر بپرسید؟',
+            'لطفاً سوال خود را به صورت دقیق‌تر مطرح کنید تا بتونم کمک کنم.',
+            'این سوال رو متوجه نشدم. در مورد صفحات سایت، تمرینات، تغذیه یا مدیریت بپرسید.',
+            'می‌تونید از من در مورد: صفحات سایت، برنامه تمرینی، تغذیه یا مدیریت سیستم بپرسید.'
+        ];
+        const response = responses[Math.floor(Math.random() * responses.length)];
+        this.saveToHistory('bot', response);
+        return response;
+    }
+    
+    saveToHistory(sender, message) {
+        this.conversationHistory.push({
+            sender,
+            message,
+            timestamp: new Date().toLocaleTimeString('fa-IR')
+        });
         
-        return responses.default;
+        // محدود کردن تاریخچه به ۵۰ پیام آخر
+        if (this.conversationHistory.length > 50) {
+            this.conversationHistory = this.conversationHistory.slice(-50);
+        }
+    }
+    
+    getConversationHistory() {
+        return this.conversationHistory;
+    }
+    
+    // آموزش چت‌بات با داده جدید
+    teach(newQuestion, newAnswer) {
+        this.knowledgeBase.faq[newQuestion] = newAnswer;
+        return `✅ آموزش دادم! حالا در مورد "${newQuestion}" می‌دانم.`;
+    }
+    
+    // گرفتن آمار چت‌بات
+    getStats() {
+        return {
+            name: this.name,
+            version: this.version,
+            totalKnowledge: Object.keys(this.knowledgeBase.faq).length + 
+                           Object.keys(this.knowledgeBase.site.pages).length +
+                           Object.keys(this.knowledgeBase.fitness.workouts).length,
+            conversationCount: this.conversationHistory.length,
+            lastActive: new Date().toLocaleString('fa-IR')
+        };
     }
 }
 
-// شروع چت بات وقتی صفحه لود شد
-document.addEventListener('DOMContentLoaded', function() {
-    window.smartFitChatbot = new SmartFitChatbot();
-});
-// فایل: assets/js/chatbot.js
-// چت‌بات کمک‌کننده ثبت‌نام
-
-const RegistrationChatbot = {
-    // تنظیمات
-    config: {
-        botName: 'دستیار SMART FIT',
-        botAvatar: '🤖',
-        userAvatar: '👤',
-        responseDelay: 800,
-        helpTopics: {
-            registration: 'ثبت‌نام',
-            roles: 'نقش‌ها',
-            verification: 'تأیید کد',
-            features: 'امکانات'
-        }
-    },
-    
-    // وضعیت چت
-    state: {
-        currentStep: 1,
-        userName: '',
-        userRole: '',
-        context: 'registration'
-    },
-    
-    // پایگاه دانش
-    knowledge: {
-        greetings: [
-            "سلام! من دستیار هوشمند SMART FIT هستم. چطور می‌تونم کمک کنم؟",
-            "درود! خوش اومدید. برای ثبت‌نام یا راهنمایی در خدمتم.",
-            "سلام عزیز! من اینجام تا ثبت‌نام رو برات راحت کنم."
-        ],
-        
-        registrationHelp: [
-            "ثبت‌نام در ۴ مرحله انجام میشه:\n1. اطلاعات شخصی\n2. مشخصات بدنی\n3. انتخاب نقش\n4. تأیید نهایی",
-            "لطفاً هر مرحله رو با دقت پر کنید. اطلاعات شما محرمانه باقی می‌مونه.",
-            "اگر در هر مرحله مشکل داشتید، من اینجام کمک کنم."
-        ],
-        
-        roleExplanations: {
-            athlete: "🏋️‍♂️ **ورزشکار**: برنامه تمرینی و تغذیه شخصی، ردیابی پیشرفت، ارتباط با مربی، شرکت در چالش‌ها",
-            coach: "👨‍🏫 **مربی**: طراحی برنامه برای ورزشکاران، مدیریت پیشرفت، ارسال توصیه، آنالیز عملکرد",
-            admin: "👑 **مدیر سیستم**: مدیریت کاربران، مشاهده گزارشات، تنظیمات سیستم، پشتیبانی"
-        },
-        
-        commonQuestions: {
-            "چطور ثبت‌نام کنم؟": "از فرم چندمرحله‌ای استفاده کنید. من در هر مرحله راهنمایی می‌کنم.",
-            "ورزشکار چه امکاناتی داره؟": "برنامه تمرینی، برنامه غذایی، ردیابی پیشرفت، چت با مربی، چالش‌ها",
-            "مربی چیکار میکنه؟": "برنامه‌نویسی تمرین، نظارت بر ورزشکاران، آنالیز داده‌ها، مشاوره",
-            "کد تأیید چیه؟": "کد ۶ رقمی که به شماره شما پیامک میشه. برای تأیید شماره لازمه.",
-            "اطلاعاتم امنه؟": "بله! اطلاعات شما رمزنگاری شده و فقط برای خدمات SMART FIT استفاده میشه."
-        }
-    },
-    
-    // تابع راه‌اندازی
-    initialize: function(context = 'registration') {
-        this.state.context = context;
-        this.setupDOM();
-        this.setupEventListeners();
-        this.sendGreeting();
-        
-        console.log('🤖 چت‌بات ثبت‌نام راه‌اندازی شد');
-    },
-    
-    // تنظیم DOM
-    setupDOM: function() {
-        const messagesContainer = document.getElementById('chatbotMessages');
-        if (!messagesContainer) {
-            console.error('❌ چت‌بات: کانتینر پیام‌ها پیدا نشد');
-            return;
-        }
-        
-        // پاک کردن پیام‌های قبلی
-        messagesContainer.innerHTML = '';
-        
-        // پیام خوش‌آمدگویی
-        this.addMessage('bot', 'در حال راه‌اندازی دستیار ثبت‌نام...');
-    },
-    
-    // تنظیم event listeners
-    setupEventListeners: function() {
-        const sendBtn = document.getElementById('sendChatbotMessage');
-        const input = document.getElementById('chatbotInput');
-        
-        if (sendBtn && input) {
-            // ارسال با کلیک
-            sendBtn.addEventListener('click', () => this.handleUserMessage());
-            
-            // ارسال با Enter
-            input.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    this.handleUserMessage();
-                }
-            });
-        }
-    },
-    
-    // مدیریت پیام کاربر
-    handleUserMessage: function() {
-        const input = document.getElementById('chatbotInput');
-        const message = input.value.trim();
-        
-        if (!message) return;
-        
-        // نمایش پیام کاربر
-        this.addMessage('user', message);
-        input.value = '';
-        
-        // پاسخ با تأخیر
-        setTimeout(() => {
-            this.generateResponse(message);
-        }, this.config.responseDelay);
-    },
-    
-    // تولید پاسخ
-    generateResponse: function(userMessage) {
-        const lowerMessage = userMessage.toLowerCase();
-        let response = '';
-        
-        // تشخیص هدف پیام
-        if (lowerMessage.includes('سلام') || lowerMessage.includes('درود')) {
-            response = this.getRandomResponse(this.knowledge.greetings);
-        }
-        else if (lowerMessage.includes('ثبت') || lowerMessage.includes('نام')) {
-            response = this.getRandomResponse(this.knowledge.registrationHelp);
-        }
-        else if (lowerMessage.includes('ورزشکار') || lowerMessage.includes('athlete')) {
-            response = this.knowledge.roleExplanations.athlete;
-        }
-        else if (lowerMessage.includes('مربی') || lowerMessage.includes('coach')) {
-            response = this.knowledge.roleExplanations.coach;
-        }
-        else if (lowerMessage.includes('مدیر') || lowerMessage.includes('admin')) {
-            response = this.knowledge.roleExplanations.admin;
-        }
-        else if (lowerMessage.includes('کد') || lowerMessage.includes('تأیید')) {
-            response = this.knowledge.commonQuestions['کد تأیید چیه؟'];
-        }
-        else if (lowerMessage.includes('امن') || lowerMessage.includes('حریم')) {
-            response = this.knowledge.commonQuestions['اطلاعاتم امنه؟'];
-        }
-        else {
-            // جستجو در سوالات متداول
-            for (const [question, answer] of Object.entries(this.knowledge.commonQuestions)) {
-                if (lowerMessage.includes(question.toLowerCase().replace('؟', ''))) {
-                    response = answer;
-                    break;
-                }
-            }
-            
-            // اگر پیدا نشد، پاسخ پیش‌فرض
-            if (!response) {
-                response = "متوجه سؤال شما نشدم. می‌تونم در مورد:\n" +
-                          "- مراحل ثبت‌نام\n" +
-                          "- نقش‌های مختلف (ورزشکار/مربی/مدیر)\n" +
-                          "- کد تأیید\n" +
-                          "- امنیت اطلاعات\n" +
-                          "کمک کنم. چه سؤالی دارید؟";
-            }
-        }
-        
-        // نمایش پاسخ
-        this.addMessage('bot', response);
-    },
-    
-    // اضافه کردن پیام به چت
-    addMessage: function(sender, text) {
-        const messagesContainer = document.getElementById('chatbotMessages');
-        if (!messagesContainer) return;
-        
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `message ${sender}`;
-        messageDiv.innerHTML = `
-            <div class="message-avatar">
-                ${sender === 'bot' ? this.config.botAvatar : this.config.userAvatar}
-            </div>
-            <div class="message-text">${this.formatText(text)}</div>
-        `;
-        
-        messagesContainer.appendChild(messageDiv);
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    },
-    
-    // فرمت‌دهی متن
-    formatText: function(text) {
-        // تبدیل خطوط جدید به <br>
-        return text.replace(/\n/g, '<br>')
-                   .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                   .replace(/\*(.*?)\*/g, '<em>$1</em>');
-    },
-    
-    // ارسال پیام خوش‌آمدگویی
-    sendGreeting: function() {
-        setTimeout(() => {
-            const greeting = this.getRandomResponse(this.knowledge.greetings);
-            this.addMessage('bot', greeting);
-            
-            // اضافه کردن راهنمایی اولیه
-            setTimeout(() => {
-                this.addMessage('bot', "می‌تونم در ثبت‌نام بهتون کمک کنم. هر سؤالی دارید بپرسید!");
-            }, 1000);
-        }, 1500);
-    },
-    
-    // نمایش راهنمایی بر اساس مرحله
-    showHelp: function(message) {
-        this.addMessage('bot', `💡 **راهنمایی**: ${message}`);
-    },
-    
-    // به‌روزرسانی وضعیت
-    updateState: function(step, userName = '', userRole = '') {
-        this.state.currentStep = step;
-        this.state.userName = userName;
-        this.state.userRole = userRole;
-        
-        // ارسال راهنمایی متناسب با مرحله
-        let helpMessage = '';
-        switch(step) {
-            case 1:
-                helpMessage = "📝 **مرحله ۱: اطلاعات شخصی**\nنام، نام خانوادگی، تاریخ تولد و اطلاعات تماس رو وارد کنید.";
-                break;
-            case 2:
-                helpMessage = "🏋️‍♂️ **مرحله ۲: مشخصات بدنی**\nقد، وزن، سطح ورزشی و هدف خودتون رو مشخص کنید.";
-                break;
-            case 3:
-                helpMessage = "👥 **مرحله ۳: انتخاب نقش**\nورزشکار، مربی یا مدیر سیستم؟ هرکدوم مزایای خاص خودشون رو دارن.";
-                break;
-            case 4:
-                helpMessage = "✅ **مرحله ۴: تأیید نهایی**\nاطلاعات رو مرور کنید و قوانین رو تأیید کنید.";
-                break;
-        }
-        
-        this.showHelp(helpMessage);
-    },
-    
-    // دریافت پاسخ تصادفی از آرایه
-    getRandomResponse: function(responsesArray) {
-        return responsesArray[Math.floor(Math.random() * responsesArray.length)];
-    }
-};
-
-// تابع عمومی برای راه‌اندازی چت‌بات
-function initializeChatbot(context = 'registration') {
-    RegistrationChatbot.initialize(context);
-}
-
-// تابع برای استفاده در سایر صفحات
-function sendChatbotMessage(message) {
-    RegistrationChatbot.addMessage('user', message);
-    setTimeout(() => {
-        RegistrationChatbot.generateResponse(message);
-    }, RegistrationChatbot.config.responseDelay);
-}
-
-// در دسترس قرار دادن برای استفاده جهانی
-window.RegistrationChatbot = RegistrationChatbot;
-window.initializeChatbot = initializeChatbot;
-window.sendChatbotMessage = sendChatbotMessage;
+// ایجاد نمونه جهانی از چت‌بات
+window.SmartFitChatbot = SmartFitChatbot;
