@@ -185,7 +185,22 @@
             justify-content: center;
         }
         
-        /* ==================== کارت‌های آماری ورزشکار ==================== */
+        /* ==================== بخش‌های مختلف ==================== */
+        .content-section {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* ==================== داشبورد اصلی ==================== */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -236,7 +251,7 @@
             font-size: 14px;
         }
         
-        /* ==================== برنامه تمرینی امروز ==================== */
+        /* ==================== برنامه تمرینی ==================== */
         .workout-plan-card {
             background: white;
             border-radius: 16px;
@@ -322,30 +337,42 @@
         .status-completed { background: #d4edda; color: #155724; }
         .status-skipped { background: #f8d7da; color: #721c24; }
         
-        /* ==================== نمودار پیشرفت ==================== */
-        .progress-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-        
-        .progress-card {
+        /* ==================== تغذیه ==================== */
+        .nutrition-card {
             background: white;
             border-radius: 16px;
             padding: 25px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            height: 350px;
-            display: flex;
-            flex-direction: column;
+            margin-bottom: 40px;
         }
         
-        .chart-container {
-            flex: 1;
-            position: relative;
+        .nutrition-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
         }
         
-        /* ==================== مربی اختصاصی ==================== */
+        .nutrition-item {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        
+        .nutrition-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 5px;
+        }
+        
+        .nutrition-label {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* ==================== مربی من ==================== */
         .coach-card {
             background: white;
             border-radius: 16px;
@@ -395,59 +422,30 @@
             font-size: 18px;
         }
         
-        .message-coach-btn {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 10px;
+        /* ==================== پیشرفت و آمار ==================== */
+        .progress-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
         }
         
-        .message-coach-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
-        }
-        
-        /* ==================== تغذیه روزانه ==================== */
-        .nutrition-card {
+        .progress-card {
             background: white;
             border-radius: 16px;
             padding: 25px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            margin-bottom: 40px;
+            height: 350px;
+            display: flex;
+            flex-direction: column;
         }
         
-        .nutrition-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+        .chart-container {
+            flex: 1;
+            position: relative;
         }
         
-        .nutrition-item {
-            text-align: center;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 12px;
-        }
-        
-        .nutrition-value {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--dark-color);
-            margin-bottom: 5px;
-        }
-        
-        .nutrition-label {
-            color: #666;
-            font-size: 14px;
-        }
-        
-        /* ==================== چالش‌های فعال ==================== */
+        /* ==================== چالش‌ها ==================== */
         .challenges-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -477,6 +475,56 @@
             border-radius: 4px;
         }
         
+        /* ==================== تنظیمات پروفایل ==================== */
+        .profile-settings {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .setting-item {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        
+        /* ==================== ویدیوهای آموزشی ==================== */
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .video-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .video-thumbnail {
+            height: 180px;
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+        }
+        
+        .video-info {
+            padding: 20px;
+        }
+        
         /* ==================== فوتر ==================== */
         .footer {
             text-align: center;
@@ -485,6 +533,23 @@
             font-size: 14px;
             border-top: 1px solid #eef2f7;
             margin-top: 40px;
+        }
+        
+        /* ==================== دکمه‌ها ==================== */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
         }
         
         /* ==================== واکنش‌گرایی ==================== */
@@ -507,7 +572,7 @@
         }
         
         @media (max-width: 768px) {
-            .stats-grid, .challenges-grid {
+            .stats-grid, .challenges-grid, .videos-grid {
                 grid-template-columns: 1fr;
             }
             
@@ -538,50 +603,50 @@
         <nav class="sidebar-menu">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link active">
+                    <a class="nav-link active" data-section="dashboard">
                         <i class="fas fa-tachometer-alt"></i>
                         <span>داشبورد</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link">
+                    <a class="nav-link" data-section="workout">
                         <i class="fas fa-dumbbell"></i>
                         <span>برنامه تمرینی</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link">
+                    <a class="nav-link" data-section="nutrition">
                         <i class="fas fa-utensils"></i>
                         <span>برنامه تغذیه</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link">
+                    <a class="nav-link" data-section="progress">
                         <i class="fas fa-chart-line"></i>
                         <span>پیشرفت و آمار</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link">
+                    <a class="nav-link" data-section="coach">
                         <i class="fas fa-user-tie"></i>
                         <span>مربی من</span>
                         <span class="badge-sidebar">پیام جدید</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link">
+                    <a class="nav-link" data-section="challenges">
                         <i class="fas fa-trophy"></i>
                         <span>چالش‌ها</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link">
+                    <a class="nav-link" data-section="videos">
                         <i class="fas fa-video"></i>
                         <span>ویدیوهای آموزشی</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link">
+                    <a class="nav-link" data-section="settings">
                         <i class="fas fa-cog"></i>
                         <span>تنظیمات پروفایل</span>
                     </a>
@@ -601,122 +666,252 @@
         <!-- نوار بالایی -->
         <div class="top-bar">
             <div class="page-title">
-                <h1>داشبورد ورزشکار</h1>
-                <p>سلام رضا! امروز روز تمرین بدنسازی است 💪</p>
+                <h1 id="pageTitle">داشبورد ورزشکار</h1>
+                <p id="pageDescription">سلام رضا! امروز روز تمرین بدنسازی است 💪</p>
             </div>
             
             <div class="top-bar-actions">
-                <button class="btn-notification">
+                <button class="btn-notification" id="notificationBtn">
                     <i class="fas fa-bell"></i>
                     <span class="notification-badge">2</span>
                 </button>
-                <div class="btn btn-primary">
+                <button class="btn-primary" id="newActivityBtn">
                     <i class="fas fa-plus"></i> ثبت فعالیت جدید
-                </div>
+                </button>
             </div>
         </div>
 
-        <!-- کارت‌های آماری -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon workouts">
-                    <i class="fas fa-dumbbell"></i>
-                </div>
-                <div class="stat-value">۱۸</div>
-                <div class="stat-label">تعداد تمرینات این ماه</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon calories">
-                    <i class="fas fa-fire"></i>
-                </div>
-                <div class="stat-value">۲,۴۵۰</div>
-                <div class="stat-label">کالری سوزانده شده امروز</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon streak">
-                    <i class="fas fa-calendar-check"></i>
-                </div>
-                <div class="stat-value">۷ روز</div>
-                <div class="stat-label">روند ادامه‌دار تمرین</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon weight">
-                    <i class="fas fa-weight"></i>
-                </div>
-                <div class="stat-value">۷۴ کیلو</div>
-                <div class="stat-label">وزن فعلی</div>
-            </div>
-        </div>
-
-        <!-- برنامه تمرینی امروز -->
-        <div class="workout-plan-card">
-            <div class="workout-header">
-                <div class="workout-title">برنامه تمرینی امروز</div>
-                <div class="workout-date">چهارشنبه ۲۰ دی ۱۴۰۳</div>
-            </div>
-            
-            <div class="exercises-list">
-                <div class="exercise-item">
-                    <div class="exercise-icon">
+        <!-- ==================== بخش داشبورد ==================== -->
+        <div id="dashboardSection" class="content-section active">
+            <!-- کارت‌های آماری -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon workouts">
                         <i class="fas fa-dumbbell"></i>
                     </div>
-                    <div class="exercise-info">
-                        <div class="exercise-name">اسکات با هالتر</div>
-                        <div class="exercise-details">
-                            <span>۳ ست × ۱۲ تکرار</span>
-                            <span>وزن: ۸۰ کیلوگرم</span>
-                            <span>استراحت: ۹۰ ثانیه</span>
-                        </div>
-                    </div>
-                    <div class="exercise-status status-completed">تکمیل شده</div>
+                    <div class="stat-value">۱۸</div>
+                    <div class="stat-label">تعداد تمرینات این ماه</div>
                 </div>
                 
-                <div class="exercise-item">
-                    <div class="exercise-icon">
-                        <i class="fas fa-running"></i>
+                <div class="stat-card">
+                    <div class="stat-icon calories">
+                        <i class="fas fa-fire"></i>
                     </div>
-                    <div class="exercise-info">
-                        <div class="exercise-name">ددلیفت</div>
-                        <div class="exercise-details">
-                            <span>۴ ست × ۸ تکرار</span>
-                            <span>وزن: ۱۰۰ کیلوگرم</span>
-                            <span>استراحت: ۱۲۰ ثانیه</span>
-                        </div>
-                    </div>
-                    <div class="exercise-status status-pending">در انتظار</div>
+                    <div class="stat-value">۲,۴۵۰</div>
+                    <div class="stat-label">کالری سوزانده شده امروز</div>
                 </div>
                 
-                <div class="exercise-item">
-                    <div class="exercise-icon">
-                        <i class="fas fa-heartbeat"></i>
+                <div class="stat-card">
+                    <div class="stat-icon streak">
+                        <i class="fas fa-calendar-check"></i>
                     </div>
-                    <div class="exercise-info">
-                        <div class="exercise-name">پرس سینه</div>
-                        <div class="exercise-details">
-                            <span>۳ ست × ۱۰ تکرار</span>
-                            <span>وزن: ۷۰ کیلوگرم</span>
-                            <span>استراحت: ۹۰ ثانیه</span>
+                    <div class="stat-value">۷ روز</div>
+                    <div class="stat-label">روند ادامه‌دار تمرین</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon weight">
+                        <i class="fas fa-weight"></i>
+                    </div>
+                    <div class="stat-value">۷۴ کیلو</div>
+                    <div class="stat-label">وزن فعلی</div>
+                </div>
+            </div>
+
+            <!-- برنامه تمرینی امروز -->
+            <div class="workout-plan-card">
+                <div class="workout-header">
+                    <div class="workout-title">برنامه تمرینی امروز</div>
+                    <div class="workout-date">چهارشنبه ۲۰ دی ۱۴۰۳</div>
+                </div>
+                
+                <div class="exercises-list">
+                    <div class="exercise-item">
+                        <div class="exercise-icon">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">اسکات با هالتر</div>
+                            <div class="exercise-details">
+                                <span>۳ ست × ۱۲ تکرار</span>
+                                <span>وزن: ۸۰ کیلوگرم</span>
+                                <span>استراحت: ۹۰ ثانیه</span>
+                            </div>
+                        </div>
+                        <div class="exercise-status status-completed">تکمیل شده</div>
+                    </div>
+                    
+                    <div class="exercise-item">
+                        <div class="exercise-icon">
+                            <i class="fas fa-running"></i>
+                        </div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">ددلیفت</div>
+                            <div class="exercise-details">
+                                <span>۴ ست × ۸ تکرار</span>
+                                <span>وزن: ۱۰۰ کیلوگرم</span>
+                                <span>استراحت: ۱۲۰ ثانیه</span>
+                            </div>
+                        </div>
+                        <div class="exercise-status status-pending">در انتظار</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- مربی و نمودار -->
+            <div class="progress-section">
+                <div class="progress-card">
+                    <h3 style="margin-bottom: 20px; color: var(--dark-color);">پیشرفت وزن</h3>
+                    <div class="chart-container">
+                        <canvas id="weightChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="coach-card">
+                    <div class="coach-profile">
+                        <div class="coach-avatar">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="coach-info">
+                            <h3>مربی علی محمدی</h3>
+                            <div class="coach-specialty">تخصص: بدنسازی</div>
+                            <div class="coach-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span style="color: #666; font-size: 14px; margin-right: 5px;">۴.۷</span>
+                            </div>
+                            <p style="color: #666; margin-top: 10px; font-size: 14px;">
+                                مربی با ۵ سال سابقه در بدنسازی حرفه‌ای
+                            </p>
+                            <button class="btn-primary" style="margin-top: 10px;">
+                                <i class="fas fa-comment"></i> ارسال پیام
+                            </button>
                         </div>
                     </div>
-                    <div class="exercise-status status-pending">در انتظار</div>
+                </div>
+            </div>
+
+            <!-- چالش‌ها -->
+            <div class="challenges-grid">
+                <div class="challenge-card">
+                    <h4 style="margin-bottom: 10px; color: var(--dark-color);">چالش ۳۰ روزه ورزش</h4>
+                    <p style="color: #666; font-size: 14px; margin-bottom: 15px;">
+                        ۲۰ روز از ۳۰ روز تکمیل شده
+                    </p>
+                    <div class="challenge-progress">
+                        <div class="challenge-progress-bar" style="width: 66%"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-top: 10px;">
+                        <span>۶۶%</span>
+                        <span>۱۰ روز باقی‌مانده</span>
+                    </div>
+                </div>
+                
+                <div class="challenge-card">
+                    <h4 style="margin-bottom: 10px; color: var(--dark-color);">چالش کاهش وزن</h4>
+                    <p style="color: #666; font-size: 14px; margin-bottom: 15px;">
+                        هدف: کاهش ۵ کیلوگرم در ۲ ماه
+                    </p>
+                    <div class="challenge-progress">
+                        <div class="challenge-progress-bar" style="width: 40%"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-top: 10px;">
+                        <span>۴۰%</span>
+                        <span>۲ کیلوگرم کاهش یافته</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- بخش نمودارها و مربی -->
-        <div class="progress-section">
-            <!-- نمودار پیشرفت وزن -->
-            <div class="progress-card">
-                <h3 style="margin-bottom: 20px; color: var(--dark-color);">پیشرفت وزن</h3>
-                <div class="chart-container">
-                    <canvas id="weightChart"></canvas>
+        <!-- ==================== بخش برنامه تمرینی ==================== -->
+        <div id="workoutSection" class="content-section">
+            <div class="workout-plan-card">
+                <div class="workout-header">
+                    <div class="workout-title">برنامه تمرینی هفتگی</div>
+                    <div class="workout-date">هفته سوم دی ۱۴۰۳</div>
+                </div>
+                
+                <div class="exercises-list">
+                    <div class="exercise-item">
+                        <div class="exercise-icon">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">شنبه - تمرین بالا تنه</div>
+                            <div class="exercise-details">
+                                <span>پرس سینه، زیربغل، سرشانه</span>
+                                <span>۴۵ دقیقه</span>
+                                <span>ساعت ۱۷:۰۰</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="exercise-item">
+                        <div class="exercise-icon">
+                            <i class="fas fa-running"></i>
+                        </div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">یکشنبه - تمرین پایین تنه</div>
+                            <div class="exercise-details">
+                                <span>اسکات، ددلیفت، پرس پا</span>
+                                <span>۵۰ دقیقه</span>
+                                <span>ساعت ۱۸:۰۰</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-            <!-- مربی اختصاصی -->
+        </div>
+
+        <!-- ==================== بخش برنامه تغذیه ==================== -->
+        <div id="nutritionSection" class="content-section">
+            <div class="nutrition-card">
+                <h3 style="margin-bottom: 20px; color: var(--dark-color);">برنامه تغذیه امروز</h3>
+                <div class="nutrition-grid">
+                    <div class="nutrition-item">
+                        <div class="nutrition-value">۲,۸۰۰</div>
+                        <div class="nutrition-label">کالری هدف</div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="nutrition-value">۱۸۰ گرم</div>
+                        <div class="nutrition-label">پروتئین</div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="nutrition-value">۳۵۰ گرم</div>
+                        <div class="nutrition-label">کربوهیدرات</div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="nutrition-value">۸۰ گرم</div>
+                        <div class="nutrition-label">چربی</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== بخش پیشرفت و آمار ==================== -->
+        <div id="progressSection" class="content-section">
+            <div class="progress-section">
+                <div class="progress-card">
+                    <h3 style="margin-bottom: 20px; color: var(--dark-color);">پیشرفت وزنه‌ها</h3>
+                    <div class="chart-container">
+                        <canvas id="strengthChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="progress-card">
+                    <h3 style="margin-bottom: 20px; color: var(--dark-color);">ساعات تمرین ماهانه</h3>
+                    <div class="chart-container">
+                        <canvas id="hoursChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== بخش مربی من ==================== -->
+        <div id="coachSection" class="content-section">
             <div class="coach-card">
                 <div class="coach-profile">
                     <div class="coach-avatar">
@@ -724,88 +919,135 @@
                     </div>
                     <div class="coach-info">
                         <h3>مربی علی محمدی</h3>
-                        <div class="coach-specialty">تخصص: بدنسازی</div>
+                        <div class="coach-specialty">تخصص: بدنسازی حرفه‌ای</div>
                         <div class="coach-rating">
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star-half-alt"></i>
-                            <span style="color: #666; font-size: 14px; margin-right: 5px;">۴.۷</span>
+                            <span style="color: #666; font-size: 14px; margin-right: 5px;">۴.۷ امتیاز</span>
                         </div>
                         <p style="color: #666; margin-top: 10px; font-size: 14px;">
-                            مربی با ۵ سال سابقه در بدنسازی حرفه‌ای
+                            <strong>سابقه:</strong> ۵ سال تجربه در مربیگری بدنسازی
                         </p>
-                        <button class="message-coach-btn">
-                            <i class="fas fa-comment"></i> ارسال پیام به مربی
+                        <p style="color: #666; font-size: 14px;">
+                            <strong>تخصص‌ها:</strong> بدنسازی، تغذیه ورزشی، تمرینات قدرتی
+                        </p>
+                        <button class="btn-primary" style="margin-top: 20px;">
+                            <i class="fas fa-comment"></i> ارسال پیام جدید
                         </button>
                     </div>
                 </div>
                 
-                <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #eef2f7;">
-                    <h4 style="margin-bottom: 15px; color: var(--dark-color);">یادآوری مربی:</h4>
-                    <p style="color: #666; background: #f8f9fa; padding: 15px; border-radius: 10px; font-size: 14px;">
-                        "رضا جان، حتما بعد از تمرین پروتئین وی مصرف کن. تغذیه بعد تمرین خیلی مهمه!"
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eef2f7;">
+                    <h4 style="margin-bottom: 15px; color: var(--dark-color);">آخرین پیام‌ها:</h4>
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 10px;">
+                        <p style="color: #666; font-size: 14px;">
+                            <strong>امروز ۱۰:۳۰:</strong> رضا جان، برنامه جدید رو برات تنظیم کردم. حتما بررسی کن.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== بخش چالش‌ها ==================== -->
+        <div id="challengesSection" class="content-section">
+            <div class="challenges-grid">
+                <div class="challenge-card">
+                    <h4 style="margin-bottom: 10px; color: var(--dark-color);">چالش ۱۰۰ روزه ورزش</h4>
+                    <p style="color: #666; font-size: 14px; margin-bottom: 15px;">
+                        ورزش مداوم به مدت ۱۰۰ روز
                     </p>
+                    <div class="challenge-progress">
+                        <div class="challenge-progress-bar" style="width: 25%"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-top: 10px;">
+                        <span>۲۵ روز تکمیل</span>
+                        <span>۷۵ روز باقی</span>
+                    </div>
+                </div>
+                
+                <div class="challenge-card">
+                    <h4 style="margin-bottom: 10px; color: var(--dark-color);">چالش ۱۰۰۰ کالری روزانه</h4>
+                    <p style="color: #666; font-size: 14px; margin-bottom: 15px;">
+                        سوزاندن ۱۰۰۰ کالری در هر روز
+                    </p>
+                    <div class="challenge-progress">
+                        <div class="challenge-progress-bar" style="width: 80%"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-top: 10px;">
+                        <span>۲۴ روز موفق</span>
+                        <span>۶ روز باقی</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- تغذیه روزانه -->
-        <div class="nutrition-card">
-            <h3 style="margin-bottom: 20px; color: var(--dark-color);">برنامه تغذیه امروز</h3>
-            <div class="nutrition-grid">
-                <div class="nutrition-item">
-                    <div class="nutrition-value">۲,۸۰۰</div>
-                    <div class="nutrition-label">کالری هدف</div>
+        <!-- ==================== بخش ویدیوهای آموزشی ==================== -->
+        <div id="videosSection" class="content-section">
+            <h3 style="margin-bottom: 20px; color: var(--dark-color);">ویدیوهای آموزشی</h3>
+            <div class="videos-grid">
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                    <div class="video-info">
+                        <h4>تمرینات صحیح اسکات</h4>
+                        <p style="color: #666; font-size: 14px; margin-top: 10px;">
+                            آموزش کامل تکنیک صحیح اسکات
+                        </p>
+                        <span style="font-size: 12px; color: #999;">۱۵ دقیقه</span>
+                    </div>
                 </div>
-                <div class="nutrition-item">
-                    <div class="nutrition-value">۱۸۰ گرم</div>
-                    <div class="nutrition-label">پروتئین</div>
-                </div>
-                <div class="nutrition-item">
-                    <div class="nutrition-value">۳۵۰ گرم</div>
-                    <div class="nutrition-label">کربوهیدرات</div>
-                </div>
-                <div class="nutrition-item">
-                    <div class="nutrition-value">۸۰ گرم</div>
-                    <div class="nutrition-label">چربی</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- چالش‌های فعال -->
-        <div class="challenges-grid">
-            <div class="challenge-card">
-                <h4 style="margin-bottom: 10px; color: var(--dark-color);">چالش ۳۰ روزه ورزش</h4>
-                <p style="color: #666; font-size: 14px; margin-bottom: 15px;">
-                    ۲۰ روز از ۳۰ روز تکمیل شده
-                </p>
-                <div class="challenge-progress">
-                    <div class="challenge-progress-bar" style="width: 66%"></div>
-                </div>
-                <div style="display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-top: 10px;">
-                    <span>۶۶%</span>
-                    <span>۱۰ روز باقی‌مانده</span>
-                </div>
-            </div>
-            
-            <div class="challenge-card">
-                <h4 style="margin-bottom: 10px; color: var(--dark-color);">چالش کاهش وزن</h4>
-                <p style="color: #666; font-size: 14px; margin-bottom: 15px;">
-                    هدف: کاهش ۵ کیلوگرم در ۲ ماه
-                </p>
-                <div class="challenge-progress">
-                    <div class="challenge-progress-bar" style="width: 40%"></div>
-                </div>
-                <div style="display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-top: 10px;">
-                    <span>۴۰%</span>
-                    <span>۲ کیلوگرم کاهش یافته</span>
+                
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                    <div class="video-info">
+                        <h4>تمرینات شکم پیشرفته</h4>
+                        <p style="color: #666; font-size: 14px; margin-top: 10px;">
+                            بهترین تمرینات برای عضلات شکم
+                        </p>
+                        <span style="font-size: 12px; color: #999;">۲۰ دقیقه</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- فوتر -->
+        <!-- ==================== بخش تنظیمات پروفایل ==================== -->
+        <div id="settingsSection" class="content-section">
+            <div class="profile-settings">
+                <h3 style="margin-bottom: 20px; color: var(--dark-color);">تنظیمات پروفایل</h3>
+                <div class="settings-grid">
+                    <div class="setting-item">
+                        <h4>اطلاعات شخصی</h4>
+                        <p style="color: #666; font-size: 14px; margin-top: 10px;">
+                            نام: رضا احمدی
+                        </p>
+                        <p style="color: #666; font-size: 14px;">
+                            ایمیل: reza.ahmadi@example.com
+                        </p>
+                        <button class="btn-primary" style="margin-top: 15px;">ویرایش اطلاعات</button>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <h4>تنظیمات اعلان‌ها</h4>
+                        <div style="margin-top: 15px;">
+                            <label style="display: block; margin-bottom: 10px;">
+                                <input type="checkbox" checked> اعلان تمرین روزانه
+                            </label>
+                            <label style="display: block; margin-bottom: 10px;">
+                                <input type="checkbox" checked> پیام‌های مربی
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== فوتر ==================== -->
         <div class="footer">
             <p>SMART FIT - سیستم هوشمند تناسب اندام | نسخه ۲.۰</p>
             <p style="font-size: 12px; color: #999; margin-top: 5px;">
@@ -816,11 +1058,125 @@
 
     <!-- ==================== اسکریپت‌ها ==================== -->
     <script>
-        // نمودار وزن
-        document.addEventListener('DOMContentLoaded', function() {
+        // داده‌های نمونه
+        const userData = {
+            name: "رضا احمدی",
+            level: "متوسط",
+            stats: {
+                workouts: 18,
+                calories: 2450,
+                streak: 7,
+                weight: 74
+            }
+        };
+
+        // متغیرهای حالت
+        let currentSection = 'dashboard';
+
+        // ==================== توابع مدیریت منو ====================
+        function showSection(sectionId) {
+            // غیرفعال کردن همه بخش‌ها
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // غیرفعال کردن همه لینک‌های منو
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // فعال کردن بخش انتخابی
+            document.getElementById(sectionId + 'Section').classList.add('active');
+            document.querySelector(`[data-section="${sectionId}"]`).classList.add('active');
+            currentSection = sectionId;
+            
+            // به‌روزرسانی عنوان صفحه
+            updatePageTitle(sectionId);
+            
+            // بارگذاری داده‌های بخش
+            loadSectionData(sectionId);
+        }
+
+        function updatePageTitle(section) {
+            const titles = {
+                dashboard: { 
+                    title: "داشبورد ورزشکار", 
+                    desc: "سلام " + userData.name + "! امروز روز تمرین بدنسازی است 💪" 
+                },
+                workout: { 
+                    title: "برنامه تمرینی", 
+                    desc: "برنامه کامل تمرینات هفتگی شما" 
+                },
+                nutrition: { 
+                    title: "برنامه تغذیه", 
+                    desc: "رژیم غذایی و کالری‌های روزانه" 
+                },
+                progress: { 
+                    title: "پیشرفت و آمار", 
+                    desc: "نمودارها و آمار پیشرفت شما" 
+                },
+                coach: { 
+                    title: "مربی من", 
+                    desc: "اطلاعات مربی و ارتباط با ایشان" 
+                },
+                challenges: { 
+                    title: "چالش‌ها", 
+                    desc: "چالش‌های فعال و پیشرفت در آن‌ها" 
+                },
+                videos: { 
+                    title: "ویدیوهای آموزشی", 
+                    desc: "آموزش‌های ویدیویی برای تمرینات بهتر" 
+                },
+                settings: { 
+                    title: "تنظیمات پروفایل", 
+                    desc: "تنظیمات حساب کاربری و اطلاعات شخصی" 
+                }
+            };
+            
+            if (titles[section]) {
+                document.getElementById('pageTitle').textContent = titles[section].title;
+                document.getElementById('pageDescription').textContent = titles[section].desc;
+            }
+        }
+
+        function loadSectionData(section) {
+            switch(section) {
+                case 'dashboard':
+                    loadDashboardData();
+                    break;
+                case 'progress':
+                    loadProgressData();
+                    break;
+            }
+        }
+
+        // ==================== توابع بارگذاری داده‌ها ====================
+        function loadDashboardData() {
+            // به‌روزرسانی آمار
+            document.querySelector('.stat-icon.workouts + .stat-value').textContent = userData.stats.workouts;
+            document.querySelector('.stat-icon.calories + .stat-value').textContent = userData.stats.calories.toLocaleString();
+            document.querySelector('.stat-icon.streak + .stat-value').textContent = userData.stats.streak + ' روز';
+            document.querySelector('.stat-icon.weight + .stat-value').textContent = userData.stats.weight + ' کیلو';
+            
+            // ایجاد نمودار وزن
+            createWeightChart();
+        }
+
+        function loadProgressData() {
+            createStrengthChart();
+            createHoursChart();
+        }
+
+        // ==================== توابع ایجاد نمودارها ====================
+        function createWeightChart() {
             const weightCtx = document.getElementById('weightChart').getContext('2d');
             
-            new Chart(weightCtx, {
+            // حذف نمودار قبلی اگر وجود دارد
+            if (window.weightChart) {
+                window.weightChart.destroy();
+            }
+            
+            window.weightChart = new Chart(weightCtx, {
                 type: 'line',
                 data: {
                     labels: ['هفته ۱', 'هفته ۲', 'هفته ۳', 'هفته ۴', 'هفته ۵', 'هفته ۶'],
@@ -855,8 +1211,128 @@
                     }
                 }
             });
+        }
+
+        function createStrengthChart() {
+            const strengthCtx = document.getElementById('strengthChart').getContext('2d');
             
-            console.log('داشبورد ورزشکار با موفقیت بارگذاری شد');
+            if (window.strengthChart) {
+                window.strengthChart.destroy();
+            }
+            
+            window.strengthChart = new Chart(strengthCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['اسکات', 'ددلیفت', 'پرس سینه', 'زیربغل'],
+                    datasets: [{
+                        label: 'وزن (کیلوگرم)',
+                        data: [80, 100, 70, 60],
+                        backgroundColor: [
+                            'rgba(67, 97, 238, 0.7)',
+                            'rgba(6, 214, 160, 0.7)',
+                            'rgba(255, 209, 102, 0.7)',
+                            'rgba(239, 71, 111, 0.7)'
+                        ],
+                        borderColor: [
+                            '#4361ee',
+                            '#06d6a0',
+                            '#ffd166',
+                            '#ef476f'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + ' کیلوگرم';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createHoursChart() {
+            const hoursCtx = document.getElementById('hoursChart').getContext('2d');
+            
+            if (window.hoursChart) {
+                window.hoursChart.destroy();
+            }
+            
+            window.hoursChart = new Chart(hoursCtx, {
+                type: 'line',
+                data: {
+                    labels: ['مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'],
+                    datasets: [{
+                        label: 'ساعات تمرین',
+                        data: [12, 15, 18, 20, 22, 25],
+                        borderColor: '#06d6a0',
+                        backgroundColor: 'rgba(6, 214, 160, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + ' ساعت';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // ==================== راه‌اندازی اولیه ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            // رویدادهای منو
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const section = this.dataset.section;
+                    if (section) {
+                        showSection(section);
+                    }
+                });
+            });
+
+            // رویدادهای دکمه‌ها
+            document.getElementById('newActivityBtn').addEventListener('click', function() {
+                alert('صفحه ثبت فعالیت جدید باز خواهد شد.');
+            });
+
+            document.getElementById('notificationBtn').addEventListener('click', function() {
+                alert('اعلان‌ها:\n1. تمرین امروز در انتظار است\n2. پیام جدید از مربی');
+            });
+
+            // بارگذاری اولیه
+            loadDashboardData();
+            
+            console.log('داشبورد ورزشکار با منوهای فعال بارگذاری شد');
         });
     </script>
     
